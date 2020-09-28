@@ -1,0 +1,190 @@
+.w {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+
+.logo{
+    height: 82px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid red;
+}
+
+
+footer{
+    border-top: 1px solid #ccc;
+    text-align:center;
+    padding-top: 10px;
+}
+
+
+.links{
+    height: 25px;
+    line-height: 25px;
+}
+
+.links a{
+    margin: 0 5px;
+}
+
+
+.regitsterarea{
+    height: 522px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+}
+
+.regitsterarea h3{
+    height: 42px;
+    line-height: 42px;
+    background-color: #ececec;
+    font-weight: 400;
+    font-size: 18px;
+    padding: 0px 15px;
+}
+
+.regitsterarea h3 span{
+    float: right;
+    font-size: 14px;
+}
+
+.regitsterarea h3 span a{
+    color: red;
+}
+
+
+.reg_form{
+    width: 600px;
+    margin: 50px auto 0;
+    /* background-color: pink; */
+}
+
+.reg_form li{
+    margin-top: 20px;
+    height: 38px;
+}
+
+.reg_form li:hover{
+    background-color: #ececec;
+}
+
+
+.reg_form label{
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    font-size: 14px;
+}
+
+.reg_form input{
+    width: 242px;
+    height: 34px;
+    margin-top: 2px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    padding-left: 5px;
+
+}
+
+.reg_form   .error,
+.reg_form .success
+{
+    font-size: 12px;
+    color: red;
+    padding-left: 5px;
+    
+}
+
+
+.reg_form .success{
+    color: green;
+}
+
+
+.reg_form .icon_error,
+.reg_form   .icon_success
+{
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    background: url('../images/error.png') no-repeat;
+}
+
+
+.reg_form   .icon_success{
+    background: url('../images/success.png') no-repeat;
+}
+
+
+.reg_form .security_level{
+    font-size: 12px;
+    color: #b2b2b2;
+    padding-left: 168px;
+    margin-top: 10px;
+}
+
+.reg_form .ruo,
+.reg_form .zhong,
+.reg_form .qiang{
+    display:inline-block;
+    padding: 0 12px;
+    color: #fff;
+}
+
+.reg_form .ruo{
+    background-color: red;
+    margin-left: 10px;
+}
+
+.reg_form .zhong{
+    background-color: #40b83f;
+}
+
+.reg_form .qiang{
+    background-color: #f79100;
+}
+
+
+.reg_form .xieyi{
+    margin-top: 22px;
+    padding-left: 100px;
+    font-size: 12px;
+    color: #4d4d4d;
+}
+
+.reg_form .xieyi input{
+    margin-right: 5px;
+    margin-top: -2px;
+    width: 15px;
+    vertical-align: middle;
+}
+
+.reg_form .xieyi a{
+    color: #1ba1e6;
+}
+
+
+.reg_form button{
+    margin: 50px auto 0px 110px;
+    width: 200px;
+    height: 35px;
+    line-height: 35px;
+    background-color: #c81623;
+    color: #fff;
+    font-size: 18px;
+   
+}
+
+
+
+
+.reg_form #agree:checked{
+    background-color: pink;
+}
+
+
+
+
+

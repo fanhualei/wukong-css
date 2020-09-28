@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动画</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        /* 定义动画 */
+        @keyframes move{
+            0%{
+                transform: translateX(0px);
+            }
+
+            100%{
+                transform:translateX(500px)
+            }
+        }
+
+        .my_move{
+            width: 50px;
+            height: 50px;
+            background-color: pink;
+            /* 使用动画 */
+            animation-name: move;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+
+
+
+
+        
+        .city {
+            position: absolute;
+            top: 200px;
+            right: 193px;
+            color: #fff;
+        }
+        
+
+        
+        .dotted {
+            width: 8px;
+            height: 8px;
+            background-color: #09f;
+            border-radius: 50%;
+        }
+        
+        .city div[class^="pulse"] {
+            /* 保证我们小波纹在父盒子里面水平垂直居中 放大之后就会中心向四周发散 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            box-shadow: 0 0 12px #009dfd;
+            border-radius: 50%;
+            animation: pulse 1.2s linear infinite;
+        }
+        
+        .city div.pulse2 {
+            animation-delay: 0.4s;
+        }
+        
+        .city div.pulse3 {
+            animation-delay: 0.8s;
+        }
+        
+        @keyframes pulse {
+            0% {}
+            70% {
+                /* transform: scale(5);  我们不要用scale 因为他会让 阴影变大*/
+                width: 40px;
+                height: 40px;
+                opacity: 1;
+            }
+            100% {
+                width: 70px;
+                height: 70px;
+                opacity: 0;
+            }
+        }
+
+
+        .text{
+            width: 0;
+            height: 30px;
+            font-size: 20px;
+            /* background-color: pink; */
+            animation-name: typein;
+            animation-duration: 2s;
+            animation-fill-mode: forwards;
+            animation-timing-function: steps(7);
+            overflow: hidden;
+        }
+        @keyframes typein{
+            0%{
+            }
+            100%{
+                width: 145px;
+            }
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="my_move"></div>
+
+
+    <div class="city">
+        <div class="dotted"></div>
+        <div class="pulse1"></div>
+        <div class="pulse2"></div>
+        <div class="pulse3"></div>
+    </div>
+
+
+    <div class="text">
+        小鱼是个好宝宝
+    </div>
+
+</body>
+</html>

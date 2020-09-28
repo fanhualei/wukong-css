@@ -1,0 +1,505 @@
+/* 首页专有模块-main start */
+
+.main{
+    /* width: 980px; */
+    height: 455px;
+    margin-left: 220px;
+    margin-top: 10px;
+}
+
+.main .foucs{
+    float: left;
+    width: 721px;
+    height: 100%;
+    background-color:purple;
+    background-image: url(../upload/focus1.png);
+}
+
+.main .newsflash{
+    float: right;
+    width: 250px;
+    height: 100%;
+    
+}
+
+.main .news{
+    border: 1px solid #e4e4e4;
+    border-bottom: 0px;
+}
+
+.main .news_hd {
+    height: 32px;
+    line-height:32px;
+    padding: 0 15px;
+    border-bottom:1px dotted #e4e4e4;
+}
+
+ .main .news_hd h3{
+    float: left;
+    font-size: 14px;
+    color: #333;
+}
+
+.main .news_hd>a{
+    float: right;
+    font-size: 12px;
+    color: #666;
+} 
+
+.main .news_hd>a::after{
+    content: '\e920';
+    font-family: 'icomoon';
+    line-height:  12px;
+}
+
+
+.main .news_bd {
+    padding: 5px  15px;
+    
+}
+
+
+
+.main .news_bd li{
+    line-height: 24px;
+
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.main .news >.service_entry{
+    border-top: 1px solid #e4e4e4;
+}
+
+.main .news >.service_entry ul{
+    width: 102%;
+}
+
+.main .news >.service_entry li{
+    position: relative;
+    float: left;
+    width: 62px;
+    height: 70px;
+    border-right: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+    text-align: center;
+}
+
+.main .news >.service_entry li:hover{
+    color: #c81623;
+}
+
+
+.main .news >.service_entry li:nth-child(4n){
+    border-right: 0px solid #e4e4e4;
+}
+
+.main .news >.service_entry li h1{
+    display: block;
+    margin-top: 14px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+}
+
+.main .news >.service_entry li img{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+
+
+
+.service_phone {
+	background: url('../images/icons.png') no-repeat -17px -16px;
+	width: 24px;
+	height: 24px;
+}
+
+
+.service_plan {
+	background: url('../images/icons.png') no-repeat -78px -16px;
+	width: 26px;
+	height: 24px;
+}
+
+.service_move {
+	background: url('../images/icons.png') no-repeat -141px -16px;
+	width: 24px;
+	height: 24px;
+}
+
+
+.service_game {
+	background: url('../images/icons.png') no-repeat -206px -16px;
+	width: 26px;
+	height: 24px;
+}
+
+
+
+.service_caipiao {
+	background: url('../images/icons.png') no-repeat -17px -88px;
+	width: 24px;
+	height: 24px;
+}
+
+.service_jiayou {
+	background: url('../images/icons.png') no-repeat -78px -88px;
+	width: 26px;
+	height: 24px;
+}
+
+.service_hospital {
+	background: url('../images/icons.png') no-repeat -141px -88px;
+	width: 26px;
+	height: 24px;
+}
+
+.service_train {
+	background: url('../images/icons.png') no-repeat -206px -88px;
+	width: 26px;
+	height: 24px;
+}
+
+
+.service_zhongchou {
+	background: url('../images/icons.png') no-repeat -17px -159px;
+	width: 26px;
+	height: 24px;
+}
+
+.service_licai {
+	background: url('../images/icons.png') no-repeat -78px -159px;
+	width: 26px;
+	height: 24px;
+}
+
+
+.service_lipinka {
+	background: url('../images/icons.png') no-repeat -141px -159px;
+	width: 26px;
+	height: 24px;
+}
+
+
+.service_baitiao {
+	background: url('../images/icons.png') no-repeat -206px -159px;
+	width: 26px;
+	height: 24px;
+}
+
+
+
+.main .newsflash >.news_ad{
+    margin-top:6px;
+}
+
+
+/* 首页专有模块-商品推荐-remon start */
+.recom{
+    height: 163px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.recom_hd{
+    float: left;
+    width: 207px;
+    height: 100%;
+    line-height: 163px;
+    background-color: #5c5251;
+    text-align: center;
+}
+
+
+
+.recom_bd{
+    float: left;
+    height: 100%;
+    width: calc(100% - 207px);
+    background-color: #ebebeb;
+}
+
+.recom_bd li{
+    position: relative;
+    float: left;
+}
+
+.recom_bd li img{
+    width: 248px;
+    height: 163px;
+}
+
+
+
+.recom_bd li:nth-child(-n+3)::after{
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10px;
+    width: 1px;
+    height: 145px;
+    background-color: #ddd;
+}
+
+/* 首页专有模块-猜你喜欢-start */
+
+
+.cai{
+    
+}
+
+.cai .cai_hd{
+    height: 30px;
+}
+.cai .cai_hd h2{
+    float: left;
+    font-size: 18px;
+    color: #333333;
+    font-weight: 400;
+}
+
+.cai .cai_hd a{
+    float: right;
+    margin-right: 20px;
+    /* 也可以用[大号字体]-[小号字体]的大小，然后取`margin-top`来做。 */
+    margin-top:6px;
+}
+
+.cai .cai_hd a::after{
+    content: '\ea2e';
+    font-family: "icomoon";
+    margin-left: 10px;
+}
+
+.cai .cai_bd{
+    height: 232px;
+    border: 1px solid #e4e4e4;
+}
+
+.cai .cai_bd> ul{
+    width: 105%;
+}
+
+.cai .cai_bd li{
+    float: left;
+    width: 200px;
+    height: 232px;
+    text-align:center;
+    padding-top: 2px;
+}
+
+.cai .cai_bd li:hover{
+    color: #df3033;
+}
+
+.cai .cai_bd img{
+    width: 155px;
+    height: 155px;
+    /* margin: 0 auto; */
+}
+
+.cai .cai_bd li>div{
+    border-right:1px solid #e4e4e4;
+}
+
+.cai .cai_bd li>div .no_border{
+    border: none;
+}
+
+.cai .cai_bd li p{
+    padding: 0 32px;
+    text-align:left;
+    line-height: 18px;
+}
+
+.price_1{
+    display: block;
+    padding: 0 32px;
+    text-align:left;
+    color: #df3033;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.price_1::before{
+    content: '¥';
+    font-size: 16px;
+}
+
+
+/* 楼层区域 floor start */
+
+.jiadian{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.shouji{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.box_hd{
+    height: 30px;
+    border-bottom: 2px solid #c81623;
+}
+
+.box_hd h3{
+    float: left;
+    font-weight: 400;
+    font-size: 18px;
+    color: #c81623;
+}
+
+.box_hd .tab_list{
+    float: right;
+}
+
+.box_hd .tab_list li{
+    line-height: 30px;
+    float: left;
+}
+
+.box_hd .tab_list li a{
+    margin: 0 10px;
+}
+
+.box_bd{
+    height: 362px;
+}
+
+.box_bd .tab_list_item>div{
+    float: left;
+}
+
+.col_left{
+    width: 210px;
+    height:  362px;
+    background-color: #f9f9f9;
+    text-align: center;
+    padding-left: 14px;
+}
+
+.col_left ul li{
+    float: left;
+    width: 82px;
+    line-height: 32px;
+    margin-right: 12px;
+    border-bottom:1px solid #e4e4e4
+}
+
+.col_left img{
+    margin-top: 8px;
+}
+
+
+
+.col_mid{
+    width: 332px;
+    height: 362px;
+    border-bottom:1px solid #e4e4e4
+}
+
+.col_mid img{
+    width: 100%;
+    height: 100%;
+}
+
+.col_right{
+    float: left;
+    width: 658px;
+    height: 362px;
+    border:1px solid #e4e4e4;
+    border-left:none;
+}
+
+.col_right ul li{
+    float: left;
+    width: 218px;
+}
+
+.top_border{
+    display: block;
+    border-top:1px solid #e4e4e4;
+}
+
+.l_border{
+    border-left:1px solid #e4e4e4;
+}
+
+
+/* 电梯 */
+
+#app{
+    position: relative;
+}
+
+.elevator{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: 615px;
+}
+
+.elevator_fix {
+    position: fixed;
+    top: 75px;
+    -webkit-animation: eleShow .5s ease both;
+    animation: eleShow .5s ease both;
+}
+
+.elevator_list li{
+    position: relative;
+    background-color: #e4e4e4;
+    text-align: center;
+    padding: 5px 10px;
+}
+
+.elevator_item a{
+    display: block;
+    width: 38px;
+    height: 38px;
+    line-height: 18px;
+    font-size: 14px;
+    text-align: center;
+}
+.elevator_item .item_line::after{
+    content: "";
+    display: block;
+    position:absolute;
+    width: 40px;
+    height: 1px;
+    bottom: 0;
+    background-color: #fff;
+}
+
+.elevator_list li:hover {
+    background-color:red;
+}
+
+/* 移动上面后 a 颜色 */
+.elevator_item a:hover {
+    color: #fff !important;
+}
+
+
+/* 移动上面后 将分割线的背景也给变了 */
+.elevator_list li:hover .item_line::after{
+    background-color:red;
+}
+
+
+.shadow{
+
+}
+
+.shadow:hover{
+    box-shadow: 0 5px 8px -4px rgba(0,0,0,0.1);
+    position: relative;
+    top: -2px;
+}

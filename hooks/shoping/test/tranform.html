@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
+
+      .translate {
+        transition: all 0.5s;
+      }
+      .translate:hover {
+        transform: rotate(360deg);
+      }
+
+      .sanjiao::after {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        transform: rotate(45deg);
+        margin-top: 10px;
+        transition: all 0.5s;
+      }
+
+      .sanjiao:hover:after {
+        transform: rotate(225deg);
+        margin-top: 14px;
+      }
+
+      .origin{
+        overflow: hidden;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+      }
+
+      .origin::after{
+        content: "小鱼";
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color:pink;
+        transform-origin: left bottom;
+        transform: rotate(180deg);
+        transition: all 0.7s;
+      }
+
+      .origin:hover::after{
+        transform: rotate(0deg);
+      }
+
+      .scale{
+          display: inline-block;
+          border: 1px solid #ccc;
+          height: 161px;
+          overflow: hidden;
+      }
+
+      .scale img:hover{
+          transform: scale(1.1);
+      }
+
+      .page{
+        width: 200px;
+        height: 50px;
+        line-height: 50px;
+        border: 1px solid #ccc;
+        margin: 0 auto ;
+        padding: 0 15px;
+      }
+
+      .page button{
+          width: 25px;
+          height: 25px;
+          border: 1px solid skyblue;
+          border-radius: 50%;
+          transition: scale 0.3s;
+          margin-left: 10px;
+          outline: none;
+      }
+
+      .page button:hover{
+        transform: scale(1.1);
+      }
+
+    
+
+
+
+
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+        position: relative;
+      "
+    >
+      <p
+        style="
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          background-color: skyblue;
+          left: 50%;
+          top: 50%;
+
+          /* margin-left: -25px;
+          margin-top: -25px;  */
+
+          transform: translate(-50%, -50%);
+        "
+      ></p>
+    </div>
+
+    <img src="upload/recom_00.png" alt="" class="translate" />
+
+    <div
+      style="
+        width: 200px;
+        height: 32px;
+        border: 1px solid #ccc;
+        text-align: right;
+        padding: 0 10px;
+      "
+      class="sanjiao"
+    ></div>
+
+    <div  class="origin"></div>
+
+
+    <div class="scale">
+        <img src="upload/recom_01.png" alt="">
+    </div>
+
+    <div class="page">
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+    </div>
+
+
+  </body>
+</html>

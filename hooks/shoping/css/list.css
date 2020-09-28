@@ -1,0 +1,135 @@
+
+
+
+
+.sk_title{
+    float: left;
+    line-height: 48px;
+    font-weight: 700;
+    font-size: 16px;
+    padding-left: 27px;    
+}
+
+.sk_title a{
+    margin-right: 56px;
+}
+
+.sk_sub_title{
+    float: left;
+    line-height: 52px;
+    font-size: 14px;
+    position: relative;
+   
+}
+
+
+.sk_sub_title a{
+    margin-right: 47px;
+}
+
+.sk_bd{
+    margin-top:27px;
+}
+
+.sk_bd ul li {
+    position: relative;
+    float: left;
+    width: 290px;
+    height: 460px;
+    font-size: 16px;
+    border: 1px solid transparent;
+    overflow: hidden;
+    margin-top: 20px;
+    margin-right: 13px;
+}
+
+.sk_bd ul li:nth-child(4n) {
+    margin-right: 0px;
+}
+
+.sk_bd ul li:hover {
+    cursor: pointer; 
+    border: 1px solid red;
+}
+
+.sk_bd ul li img{
+    width: 100%;
+}
+
+
+.sk_bd ul li .content{
+    padding: 0 12px;
+}
+
+.sk_bd ul li .content >p{
+    font-size: 16px;
+}
+
+.sk_bd ul li .price{
+    margin-top: 6px;
+}
+
+.sk_bd ul li .price >h3{
+    display: inline;
+    font-size: 22px;
+    color: red;
+    margin-right: 10px;
+}
+
+.sk_bd ul li .price >h3::before{
+    content: '￥';
+    font-size: 16px;
+}
+
+
+.sk_bd ul li .price >del{
+    font-size: 16px;
+}
+
+.sk_bd ul li .price >del::before{
+    content: '￥';
+    font-size: 16px;
+}
+
+.sk_bd ul li .desc{
+    
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.sk_bd ul li .desc .bar{
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 120px;
+    height: 17px;
+    background-color: #fff;
+    border: 1px solid red;
+    border-radius: 5px;
+    
+}
+
+.sk_bd ul li .desc .bar_in{
+    height: 100%;
+    width: 45%;
+    background-color: red;
+}
+
+
+.sk_bd ul li .desc span{
+    color: red;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.sk_bd ul li button{
+    position: absolute;
+    bottom: 0px;
+    height: 50px;
+    width: 290px;
+    background-color: red;
+    color: #fff;
+    font-size: 18px;
+}
+
+

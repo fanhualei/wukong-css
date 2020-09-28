@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .waterfall {
+        column-count: 2;
+        column-gap: 0;
+      }
+
+      .item {
+        box-sizing: border-box;
+        break-inside: avoid;
+        padding: 10px;
+      }
+      .item-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        height: auto;
+        font-size: 20px;
+        color: #686868;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="waterfall">
+      <div class="item">
+        <div class="item-content">1三月到大理赏樱花不远不近</div>
+      </div>
+      <div class="item">
+        <div class="item-content">
+          2三月到大理赏樱花不远不近，才是最好的距离余生，请带上自己的阳光回忆，在部队那些日子被遗忘的花儿春光
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-content">
+          3三月到大理赏樱花不远不近，才是最好的距离余生，请带上自己的阳光回忆
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-content">
+          4三月到大理赏樱花不远不近，才是最好的距离余生，请带上自己的阳光回忆
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-image: url(images/bear/bg1.png), url(images/bear/bg2.png);
+        background-repeat: no-repeat, no-repeat;
+        background-attachment: fixed, fixed;
+        background-position: bottom left, bottom left;
+        background-color: #3d413c;
+        /* background-size: contain, cover; */
+      }
+
+      .bear {
+        position: absolute;
+        width: 200px;
+        height: 100px;
+        bottom: 0;
+        margin-bottom: 20px;
+
+        overflow: hidden;
+        animation-name: move;
+        animation-duration: 3s;
+        animation-fill-mode: forwards;
+      }
+
+      .bear img {
+        animation-name: runing;
+        animation-timing-function: steps(8);
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes runing {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-1600px);
+        }
+      }
+
+      @keyframes move {
+        from {
+          left: 0;
+        }
+        to {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bear">
+      <img src="images/bear/bear.png" alt="" />
+    </div>
+  </body>
+</html>

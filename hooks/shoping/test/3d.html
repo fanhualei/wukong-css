@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        perspective: 300px;
+      }
+
+      .ddd {
+        width: 249px;
+        height: 161px;
+        margin: 100px auto;
+        transition: all 2s;
+        text-align: center;
+        transform-style: preserve-3d;
+      }
+
+      .ddd:hover {
+        transform: rotateX(45deg) rotateY(45deg) rotateZ(45deg);
+      }
+
+      .pai {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+
+        transition: transform 1s;
+        transform-style: preserve-3d;
+        transform: rotateX(20deg);
+      }
+
+      .pai:hover {
+        cursor: pointer;
+        transform: rotateX(20deg) rotateY(180deg);
+      }
+
+      .pai .front,
+      .pai .back {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: blue;
+        color: #fff;
+        text-align: center;
+        line-height: 100px;
+        border-radius: 50%;
+      }
+
+      .pai .back {
+        background-color: red;
+        transform: rotateY(180deg);
+      }
+
+      li {
+        perspective: 3000px;
+      }
+
+      .menu3d {
+        position: relative;
+        margin-left: 50px;
+        width: 64px;
+        height: 32px;
+        transform-style: preserve-3d;
+
+        transition: transform 0.5s;
+      }
+
+      .menu3d:hover {
+        transform: rotateX(90deg);
+      }
+
+      .menu3d .front,
+      .menu3d .bottom {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        right: 0;
+        background-color: red;
+        color: #fff;
+        text-align: center;
+        line-height: 32px;
+      }
+
+      .menu3d .bottom {
+        background-color: blue;
+        /* 必须先选准后移动，并且x轴移动的角度要做判断 */
+        transform: translateY(16px) rotateX(-90deg);
+      }
+
+      .menu3d .front {
+        z-index: 1;
+        transform: translateZ(16px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ddd">
+      <img src="../upload/recom_01.png" alt="" />
+    </div>
+
+    <div class="pai">
+      <div class="back">反面</div>
+      <div class="front">正面</div>
+    </div>
+
+    <ul>
+      <li>
+        <div class="menu3d">
+          <div class="front">正面</div>
+          <div class="bottom">反面</div>
+        </div>
+      </li>
+    </ul>
+  </body>
+</html>

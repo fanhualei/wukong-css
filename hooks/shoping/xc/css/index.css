@@ -1,0 +1,582 @@
+body,
+figure,
+h1,
+h2,
+h3,
+html,
+li,
+nav,
+p,
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+}
+body,
+html {
+  font: 400 16px/1.5 PingFangSC-regular, Tahoma, "Lucida Grande", Verdana,
+    "Microsoft Yahei", STXihei, hei;
+}
+body {
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: none;
+  -moz-user-select: none;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.app {
+  background: #f2f2f2;
+  height: 100%;
+}
+
+a {
+  color: #000;
+}
+
+/* 携程开始 */
+
+.search_box {
+  position: fixed;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  max-width: 540px;
+
+  top: 0;
+  padding: 0 10px;
+  height: 64px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+}
+
+.search_index_box {
+  flex: 1;
+  background-color: skyblue;
+  height: 30px;
+  line-height: 30px;
+  background-color: #fff;
+  border-radius: 15px;
+  margin-top: 9px;
+}
+
+.search_index_box > span {
+  color: #ccc;
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.search_index_box > span::before {
+  display: inline-block;
+  width: 35px;
+  height: 100%;
+  background: url(//pic.c-ctrip.com/platform/h5/home/home-common-sprite2x@v7.15.png)
+    15px 7px no-repeat;
+  background-size: 21px auto;
+  content: "";
+  vertical-align: middle;
+}
+
+.search_box > a {
+  margin: 7px 0px 5px 10px;
+}
+
+.search_box > a::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  background: url(//pic.c-ctrip.com/platform/h5/home/home-common-sprite2x@v7.15.png)
+    1px -36px no-repeat;
+  background-size: 21px auto;
+  margin-left: 2px;
+  display: block;
+}
+
+.search_box > a p {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: -2px;
+}
+
+/* 头部 */
+
+.header {
+  position: relative;
+  overflow: hidden;
+}
+
+.header img {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  border-bottom-left-radius: 30%;
+  border-bottom-right-radius: 30%;
+  z-index: 0;
+}
+
+.header nav {
+  position: relative;
+  height: 68px;
+  background-color: #fff;
+  margin: 128px 15px 5px 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.header nav ul {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 2px;
+}
+
+.header nav li {
+  text-align: center;
+}
+
+.header nav li p {
+  font-size: 0.75rem;
+  color: #222;
+}
+
+.header nav li [class^="icon-"] {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-image: url(//pic.c-ctrip.com/platform/h5/home/home-fivemain-sprite2x@v7.15.png);
+  background-repeat: no-repeat;
+  background-size: 40px auto;
+  display: block;
+}
+
+.header nav li .icon-local-scenic {
+  background-position: 0 0;
+}
+
+.header nav li .icon-local-around {
+  background-position: 0 -40px;
+}
+
+.header nav li .icon-local-food {
+  background-position: 0 -80px;
+}
+
+.header nav li .icon-local-oneday {
+  background-position: 0 -120px;
+}
+
+.header nav li .icon-local-strategy {
+  background-position: 0 -160px;
+}
+
+/* 表格导航 */
+.grid-nav {
+  margin: 5px 15px;
+  box-sizing: border-box;
+}
+
+.grid-nav .grid-nav-hotel {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: linear-gradient(to right, #fa5956, #fb8650 54%);
+  display: flex;
+  box-sizing: border-box;
+}
+
+.grid-nav a {
+  display: block;
+  height: 66px;
+  line-height: 66px;
+  font-size: 14px;
+  color: #fff;
+  background-repeat: no-repeat;
+}
+
+.grid-nav-hotel a:nth-child(1) {
+  padding-left: 10px;
+  width: 31%;
+  flex: 31%;
+  background-image: url(//pic.c-ctrip.com/platform/h5/home/grid-nav-items-hotel@v7.15.png);
+  background-size: 73px auto;
+
+  background-position: bottom right;
+}
+.grid-nav-hotel a:nth-child(2) {
+  width: 23%;
+  flex: 23%;
+  text-align: center;
+  border-left: 1px solid #fff;
+  background-image: url(//pic.c-ctrip.com/platform/h5/home/grid-nav-items-minsu@v7.15.png);
+  background-size: 37px auto;
+  background-position: bottom left;
+  position: relative;
+  left: -1px;
+}
+.grid-nav-hotel a:nth-child(3) {
+  border-top-right-radius: 10px;
+  width: 46%;
+  flex: 46%;
+  text-align: center;
+  color: #a05416;
+  /* 使用了多个背景图，这样就可以背景与图片都显示了 */
+  background: url(//pic.c-ctrip.com/platform/h5/home/grid-nav-items-hot.png)
+      bottom right no-repeat,
+    linear-gradient(to right, #ffbc49, #ffd252);
+  background-size: 100% auto;
+
+  border-left: 1px solid #fff;
+  margin-left: -2px;
+}
+
+.grid-nav .grid-nav-flight {
+  background: linear-gradient(to right, #4b8fed, #53bced);
+  display: flex;
+  border-top: 1px solid #fff;
+  box-sizing: border-box;
+}
+
+.grid-nav-flight a:nth-child(1) {
+  padding-left: 10px;
+  width: 31%;
+  flex: 31%;
+  background-image: url(//pic.c-ctrip.com/platform/h5/home/grid-nav-items-flight@v7.15.png);
+  background-size: 79px auto;
+
+  background-position: bottom right;
+}
+
+.grid-nav-flight a:nth-child(2) {
+  width: 23%;
+  flex: 23%;
+  text-align: center;
+
+  background-image: url(//pic.c-ctrip.com/platform/h5/home/grid-nav-items-train.png);
+  background-size: 37px auto;
+  background-position: bottom left;
+  border-left: 1px solid #fff;
+}
+
+.grid-nav-flight a:nth-child(3) {
+  width: 23%;
+  flex: 23%;
+  text-align: center;
+  border-left: 1px solid #fff;
+}
+
+.grid-nav-flight a:nth-child(4) {
+  border-left: 1px solid #fff;
+  width: 23%;
+  flex: 23%;
+  text-align: center;
+}
+
+/* ---------- */
+
+.grid-nav .grid-nav-travel {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  background: linear-gradient(to right, #34c2aa, #6cd557);
+  display: flex;
+  border-top: 1px solid #fff;
+  box-sizing: border-box;
+}
+
+.grid-nav-travel a:nth-child(1) {
+  padding-left: 10px;
+  width: 31%;
+  flex: 31%;
+  background-image: url(//pic.c-ctrip.com/platform/h5/home/grid-nav-items-travel@v7.15.png);
+  background-size: 94px auto;
+  border-bottom-left-radius: 8px;
+
+  background-position: bottom right;
+}
+
+.grid-nav-travel a:nth-child(2) {
+  width: 23%;
+  flex: 23%;
+  text-align: center;
+  border-left: 1px solid #fff;
+  background-image: url(//pic.c-ctrip.com/platform/h5/home/grid-nav-items-dingzhi@v7.15.png);
+  background-size: 61px auto;
+  background-position: bottom left;
+}
+
+.grid-nav-travel a:nth-child(3) {
+  width: 23%;
+  flex: 23%;
+  text-align: center;
+  border-left: 1px solid #fff;
+}
+
+.grid-nav-travel a:nth-child(4) {
+  width: 23%;
+  flex: 23%;
+  text-align: center;
+  border-left: 1px solid #fff;
+}
+
+/* 子导航 */
+
+.subnav-entry {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 0 15px;
+  display: flex;
+  text-align: center;
+}
+
+.subnav-entry li {
+  text-align: center;
+  flex: 20%;
+}
+
+.subnav-entry li p {
+  font-size: 0.75rem;
+  color: #222;
+  margin-top: -8px;
+}
+
+.subnav-entry li [class^="icon-"] {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  background-image: url(//pic.c-ctrip.com/platform/h5/home/un_ico_subnav2x@v7.152.png);
+  background-size: 28px auto;
+  background-repeat: no-repeat;
+  margin-top: 0.63rem;
+  margin-bottom: 0.31rem;
+}
+
+.subnav-entry li .icon-local-scenic {
+  background-position: 0 0;
+}
+
+.subnav-entry li .icon-local-wifi {
+  background-position: 0 -28px;
+}
+
+.subnav-entry li .icon-local-insurance {
+  background-position: 0 -56px;
+}
+
+.subnav-entry li .icon-local-shopping {
+  background-position: 0 -84px;
+}
+
+.subnav-entry li .icon-local-guide {
+  background-position: 0 -112px;
+}
+
+.subnav-entry li .icon-local-flight {
+  background-position: 0 -139px;
+}
+
+.subnav-entry li .icon-local-card {
+  background-position: 0 -168px;
+}
+
+.subnav-entry li .icon-local-creditCard {
+  background-position: 0 -196px;
+}
+
+.subnav-entry li .icon-local-photograph {
+  background-position: 0 -224px;
+}
+
+.subnav-entry li .icon-local-more {
+  background-position: 0 -252px;
+}
+
+/* 销售头部 */
+.sales_hd {
+  align-items: center;
+  margin-top: 10px;
+  padding: 0 15px;
+  height: 45px;
+
+  border-top: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.sales_hd * {
+  margin-top: 12px;
+}
+
+.sales_hd .icon_hot {
+  float: left;
+  width: 79px;
+  height: 20px;
+
+  background: url(//pic.c-ctrip.com/h5/home/un_home_text.png) no-repeat;
+  background-size: 79px auto;
+  background-position: 0 -18px;
+}
+
+.sales_hd .icon_gg {
+  float: left;
+  width: 36px;
+  height: 20px;
+  background: url(//pic.c-ctrip.com/platform/h5/home/icon-gg@2x.png) no-repeat;
+  background-size: 36px auto;
+  background-position: 0 2px;
+}
+
+.sales_hd a {
+  position: relative;
+  float: right;
+  display: box;
+  height: 20px;
+  line-height: 20px;
+  color: #fff;
+  font-size: 12px;
+  padding: 0 15px 0 10px;
+  background: linear-gradient(to right, #ff4e63, #ff6cc9);
+
+  border-radius: 10px;
+}
+
+.sales_hd a::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+  transform: rotate(45deg);
+}
+
+/* 销售主体 */
+
+.sales_bd {
+  border-top: 1px solid #ccc;
+}
+
+.sales_bd .row {
+  display: flex;
+}
+
+.sales_bd .hui div {
+  position: relative;
+  flex: 50%;
+  height: 80px;
+  overflow: hidden;
+}
+
+.sales_bd .hui div span {
+  position: absolute;
+  bottom: 0;
+  left: -3px;
+  padding: 0 3px;
+  border-top-right-radius: 5px;
+  display: inline-block;
+  font-size: 12px !important;
+  color: #fff;
+  background-color: #666;
+  width: 37px;
+  height: 14px;
+  line-height: 14px;
+  transform: scale(0.8);
+}
+
+.sales_bd .hui div:first-child {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-image: url("https://dimg04.c-ctrip.com/images/zg091e000001f5gizE76D.png");
+}
+
+.sales_bd .hui div:last-child {
+  border-left: 1px solid #f2f2f2;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-image: url("https://dimg04.c-ctrip.com/images/zg081e000001f380z88EC.jpg");
+}
+
+/* 尾巴 */
+
+.footer {
+  margin-top: 10px;
+}
+
+.contact {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+
+  display: flex;
+
+  padding-top: 3px;
+  font-size: 12px;
+}
+
+.contact a {
+  height: 55px;
+  text-align: center;
+  flex: 33.333%;
+  padding-top: 5px;
+}
+.contact svg {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 2px;
+  opacity: 0.3;
+}
+
+.contact a p {
+  margin-top: -3px;
+  color: rgb(136, 132, 132);
+}
+
+.footer .map {
+  text-align: center;
+  background: #f2f2f2;
+  color: #666;
+}
+
+.footer .map a {
+  margin: 0 5px;
+  color: #666;
+  font-size: 12px;
+}
+
+.icon-global {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+
+  width: 11px;
+  height: 11px;
+  background: url(//pic.c-ctrip.com/platform/h5/home/un_icon_sites.png) 0 -160px
+    no-repeat;
+  background-size: 30px auto;
+}
+
+.triangle {
+  display: inline-block;
+  border: 1px solid #666;
+  border-width: 0 1px 1px 0;
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  vertical-align: 2px;
+  margin: 0 3px;
+}
+
+.footer > p,
+.footer > p a {
+  padding: 5px 0;
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+  background: #f2f2f2;
+}

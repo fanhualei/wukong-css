@@ -1,0 +1,12 @@
+.box1 {
+  height: 200px;
+  width: 200px;
+  background-image: url('../imgs/test.jpg');
+  background-repeat: no-repeat;
+  background-size: 60%;
+  /* display: flex; */
+}
+
+img {
+  height: 300px;
+}
