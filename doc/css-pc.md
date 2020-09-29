@@ -3449,11 +3449,13 @@ visibility:hidden;
 
 ### 5.4.1 Spider - 网页抓取工具
 
-
+* 
 
 ### 5.4.2 谷歌插件 web Scraper
 
-
+* [使用说明](https://www.cnblogs.com/web-scraper/p/web-scraper-learn.html)
+* 谷歌插件库：https://www.crx4chrome.com/
+* 
 
 
 
