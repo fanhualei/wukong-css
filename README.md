@@ -9,7 +9,7 @@
 * Js入门
   * [Js入门](doc/js.md)
 * webpack打包
-  * [webpack基础知识doc/](doc/webpack.md)
+  * [webpack基础知识](doc/webpack.md)
 * react基本知识
   * [hooks](doc/hooks.md)
   * [react16](doc/react16.md)
@@ -23,5 +23,6 @@
 
 ```shell
 git commit --no-verify -m "commit"
+	
 ```
 
