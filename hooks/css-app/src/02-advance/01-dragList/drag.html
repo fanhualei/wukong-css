@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HTML5拖拽</title>
+<meta charset="utf-8">
+<style>
+.card {width:350px;height:70px;padding:10px;border:1px solid #aaaaaa;}
+</style>
+</head>
+<body>
+<p>拖动img_w3slogo.gif图片到矩形框中:</p>
+<div id="div1"  class="card" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<br>
+<img id="drag1" 
+src="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png" 
+draggable="true" 
+ondragstart="drag(event)" 
+ height="56">
+
+
+<br>
+
+
+ <input id="input1" value="aaaa"
+ draggable="true" 
+ondragstart="drag(event)" 
+ />
+
+ <br><br>
+ <div id="div2"  class="card" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+
+
+
+<script>
+function allowDrop(ev){
+    console.log("allowDrop")
+    ev.preventDefault();
+}
+
+function drag(ev){
+    console.log("drag")
+    ev.dataTransfer.setData("Text",ev.target.id);
+}
+
+function drop(ev){
+    ev.preventDefault();
+    var data=ev.dataTransfer.getData("Text");
+    console.log(data)
+    console.log(ev)
+    ev.target.appendChild(document.getElementById(data));
+}
+
+</script>
+<p>参考网址：https://www.cnblogs.com/moqiutao/p/6365113.html</p>
+
+</body>
+</html>

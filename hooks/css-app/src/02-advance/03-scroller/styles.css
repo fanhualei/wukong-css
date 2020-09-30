@@ -1,0 +1,24 @@
+
+.scroller{
+    height: 250px;
+    width: 450px;
+    overflow: hidden;
+}
+
+
+.scroller .inner::-webkit-scrollbar{
+    display: none;
+}
+
+.scroller .inner{
+    /* width: 300%;
+    transform: translateX(-33.33%); */
+
+    translate: transform 0.5s ease;
+} 
+
+
+.scroller .inner img{
+    /* width: 33.33%; */
+    height: 250px;
+}

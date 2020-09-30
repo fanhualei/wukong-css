@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>字体</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .w{
+            width: 444px;
+            height: 322px;
+            margin: 100px auto;
+        }
+
+        .icon{
+            color:red;
+        }
+
+        .sanjiao-up {
+            float: left;
+            width: 0;
+            height: 0;
+            line-height: 0;
+            font-size: 0;
+            border: 5px solid transparent;
+            border-bottom-color: pink ;
+        }
+
+        .sanjiao-down {
+            float: left;
+            width: 0;
+            height: 0;
+            line-height: 0;
+            font-size: 0;
+            margin-top:5px;
+            border: 5px solid transparent;
+            border-top-color: pink ;
+        }
+
+        .jd{
+            position:relative;
+            width: 120px;
+            height: 249px;  
+            margin-left: 50px;
+            background-color:pink;
+        }
+
+        .jd-up {
+            position: absolute;
+            top: -10px;
+            left: 80%;
+            width: 0;
+            height: 0;
+            line-height: 0;
+            font-size: 0;
+            border: 5px solid transparent;
+            border-bottom-color:pink ;
+        }
+     
+    </style>
+</head>
+
+<body>
+    <div class="w">
+        <span class="icon-database icon"></span>
+        <i class="icon-database icon"></i>
+        <div class="sanjiao-up"></div>  
+        <div class="sanjiao-down"></div>
+    </div>
+
+    <div class="jd">
+        <div class="jd-up"></div>
+    </div>
+
+
+</body>

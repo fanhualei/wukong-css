@@ -1,0 +1,11 @@
+
+.box{
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+}
+
+.box-start{
+    margin-left: 100px;
+    transition: margin-left .3s ease;
+}

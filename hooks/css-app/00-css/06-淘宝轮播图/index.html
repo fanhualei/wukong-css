@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>学车在线首页</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        li{
+            list-style: none;
+            display:inline-block;
+        }
+
+        .tb-promo{
+            position: relative;
+            margin: 100px auto;
+            width: 520px;
+            height: 280px;
+            background-color: pink;
+        }
+
+        .tb-promo> img{
+            width: 100%;
+        }
+
+        .tb-promo .prev,
+        .tb-promo .next{
+            position:absolute;
+            top: 50%;
+            margin-top: -15px;
+
+            width: 20px;
+            height: 30px;
+            line-height: 28px;
+            
+            text-align: center;
+            background-color: rgba(0, 0, 0, .1);
+
+            font-size: 20px;
+        }
+
+
+        .tb-promo .prev{
+            left: 0;
+            border-radius:0 50% 50% 0;
+        }
+
+
+        .tb-promo .next{
+            right: 0;
+            border-radius:50% 0   0 50%;
+        }
+
+        .promo-nav{
+            position:absolute;
+            bottom:15px;
+            left: 50%;
+            margin-left: -34px;
+
+            width: 68px;
+            height: 20px;
+            line-height: 20px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .promo-nav li a{
+            display: block;
+            width: 8px;
+            height: 8px;
+    
+            border-radius: 50%;
+            background-color:#fff;
+        }
+
+        .promo-nav li .bc-red{
+            background-color: #ff5000;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <div class="tb-promo">
+        <img src="tb.jpg" alt="">
+        <a href="" class="prev">&lt;</a>
+        <a href="" class="next">&gt;</a>
+        <ul class="promo-nav">
+            <li><a href=""></a></li>
+            <li><a href=""></a></li>
+            <li><a href="" class="bc-red"></a></li>
+            <li><a href=""></a></li>
+            <li><a href=""></a></li>
+        </ul>
+    </div>
+
+</body>

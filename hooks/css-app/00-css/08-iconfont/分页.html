@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>分页</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .w{
+            width: 1240px;
+            margin: 0px auto;
+        }
+
+        .box{
+            margin: 10px auto;
+            text-align: center;
+            
+        }
+
+        .box a{
+            display:inline-block;
+            width: 37px;
+            height: 37px;
+            border: 1px solid #ccc;
+            background-color: #f7f7f7;
+
+            line-height: 37px;
+            text-decoration:none;
+            text-align: center;
+            color: #333;
+        }
+
+        .box .prev,
+        .box .next
+        {
+            width: 86px;
+        }
+
+        .box .epl,
+        .box .current{
+            background-color: #fff;
+            border:none;
+        }
+
+        .box input{
+            width: 37px;
+            height: 37px;
+            border: 1px solid #ccc;
+            outline: none;
+            margin: 0 5px;
+            text-align: center;
+        }
+
+
+        .box .button{
+            width: 64px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="box w">
+        <a href="#" class="prev">&lt;上一页</a>
+        <a href="#">1</a>
+        <a href="#" class="current">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">6</a>
+        <a href="#" class="epl">...</a>
+        <a href="#" class="next">下一页&gt;</a>
+        &nbsp;&nbsp;到第<input/>页&nbsp;&nbsp;  
+        <a class="button" href="#">确定</a>
+    </div>
+
+
+
+</body>

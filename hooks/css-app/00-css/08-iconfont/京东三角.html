@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>分页</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .w{
+            width: 1240px;
+            margin: 0px auto;
+        }
+
+        em, i {
+            font-style: normal;
+        }
+
+        .box{
+            margin: 10px auto;
+            text-align: center;
+            background-color:pink;
+            width: 180px;
+            height: 24px;
+            border: 1px solid red;
+        }
+
+        .box .left{
+            float: left;
+            width: 50%;
+            height: 24px;
+            background-color: red;
+            color: #fff;
+            text-align: center;
+            line-height: 24px;
+        }
+
+        .box .sj{
+            float: left;
+            /* 1.只保留右边的边框有颜色*/
+            border-color: transparent  #fff transparent transparent;
+            /* 2.样式都是solid */
+            border-style: solid;
+            /* 3. 上边框宽度要大，
+            右边框宽度稍小，其 余的边框该为0 */
+            border-width: 24px 12px 0 0;
+            margin-left: -12px;
+        }
+
+        .box .right{
+            float: left;
+            width: 50%;
+            height: 24px;
+            background-color: #fff;
+            text-align: center;
+            line-height: 24px;
+            color: #999;
+            text-decoration: line-through;
+            font-size: 12px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="left">
+            <i>¥</i>
+            <span>98.80</span>
+        </div>
+        <div class="sj"></div>
+        <div class="right">
+            <i>¥</i>
+            <span>198.80</span>
+        </div>
+    </div>
+</body>

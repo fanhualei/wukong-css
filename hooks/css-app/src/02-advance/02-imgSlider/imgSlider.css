@@ -1,0 +1,27 @@
+
+
+.scroller{
+    width: 400px;
+    height: 250px;
+    overflow:hidden;
+}
+
+
+.scroller .inner::-webkit-scrollbar{
+    display: none;
+}
+
+
+.scroller .inner{
+    overflow: scroll;
+    transition: transform 0.3s ease;
+    /* transform: translateX(-20%); */
+}
+
+.scroller .inner img{
+    /* width: 33.33%; */
+    display: block;
+    height: 250px;
+    float: left;
+}
+
