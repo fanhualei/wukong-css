@@ -27,6 +27,24 @@ export default defineConfig({
       ],
     },
     {
+      path: '/admin',
+      name: '系统管理',
+      access: 'canAdmin',
+      icon: 'smile',
+      routes: [
+        {
+          name: '角色管理',
+          path: '/admin/role',
+          component: '@/pages/admin/role',
+        },
+        {
+          name: '用户管理',
+          path: '/admin/user',
+          component: 'admin/users',
+        },
+      ],
+    },
+    {
       component: './404',
     },
   ],

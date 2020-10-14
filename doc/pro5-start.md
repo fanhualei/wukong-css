@@ -53,9 +53,15 @@ yarn build
 
 ### 2.1.1 全局布局
 
+[ProLayout - 高级布局官方说明](https://procomponents.ant.design/components/layout)
+
+这里有一个坑，如果用UMI来生成项目，那么使用的`pro-layout`版本比较低，需要参考`antPro5`中的版本，使用最新的`pro-layout`。
+
 #### ① 基本配置
 
 比如想要 ant-design-pro 的布局。在配置文件中添加：
+
+这个方法好像不太灵活。
 
 ```diff
 import { defineConfig } from 'umi';
@@ -83,7 +89,14 @@ export default defineConfig({
 
 
 
+#### ③ 添加Footer与Header
 
+[自定义页脚](https://procomponents.ant.design/components/layout#自定义页脚)
+
+有两种方法：
+
+* 单独做一个layout，来实现。
+* 使用app.tsx扩展能力来实现。
 
 ### 2.1.2 局部布局
 
@@ -115,7 +128,7 @@ export default defineConfig({
 
 #### ②  创建特有Layout
 
-[官方文档]([https://umijs.org/zh-CN/docs/convention-routing#%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1](https://umijs.org/zh-CN/docs/convention-routing#动态路由)) , 目录下有 `_layout.tsx` 时会生成嵌套路由。
+[官方文档](https://umijs.org/zh-CN/docs/convention-routing#动态路由) , 目录下有 `_layout.tsx` 时会生成嵌套路由。
 
 
 
@@ -142,6 +155,63 @@ export default defineConfig({
       ],
     },
 ```
+
+
+
+## 2.2 运行时配置
+
+运行时配置和配置的区别是他跑在浏览器端，基于此，我们可以在这里写函数、jsx、import 浏览器端依赖等等，注意不要引入 node 依赖。[参考文档](https://umijs.org/zh-CN/docs/runtime-config)
+
+约定 `src/app.tsx` 为运行时配置。
+
+### 2.2.1 应用点
+
+* 修改路由：patchRoutes
+* 覆盖渲染：render
+  * 比如用于渲染之前做权限校验
+  * 请求服务端根据响应动态更新路由
+* 路由切换：onRouteChange
+  * 埋点统计
+  * 设置标题
+
+### 2.2.2 插件
+
+[官网地址](https://umijs.org/zh-CN/plugins/preset-react)
+
+* 权限管理
+* 统计管理
+  * 百度
+  * google
+* 初始化数据管理
+  * 导出 `getInitialState` 方法时启用
+
+### 2.2.3 自定义插件
+
+[官网说明](https://umijs.org/zh-CN/guide/plugin-develop)
+
+
+
+
+
+
+
+
+
+
+
+## 2.3 添加菜单
+
+
+
+### 2.3.1 手工添加
+
+
+
+
+
+### 2.3.2 自动添加
+
+
 
 
 

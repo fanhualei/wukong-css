@@ -20,7 +20,11 @@
     ]
   },
   "dependencies": {
-    "@ant-design/pro-layout": "^5.0.12",
+    "@ant-design/icons": "^4.0.0",
+    "@ant-design/pro-descriptions": "^1.0.16",
+    "@ant-design/pro-layout": "^6.4.16",
+    "@ant-design/pro-table": "^2.7.2",
+    "antd": "^4.6.3",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.22",
     "ahooks": "^2.6.1",

@@ -31,6 +31,7 @@ export async function getInitialState(): Promise<{
       settings: defaultSettings,
     };
   }
+
   return {
     fetchUserInfo,
     settings: defaultSettings,
