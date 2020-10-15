@@ -10,9 +10,11 @@ import defaultSettings from '../config/defaultSettings';
 
 export async function getInitialState(): Promise<{
   settings?: LayoutSettings;
+  currentUser: API.CurrentUser;
 }> {
   return {
     settings: defaultSettings,
+    currentUser: {},
   };
 }
 

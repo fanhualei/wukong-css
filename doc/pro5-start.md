@@ -191,9 +191,23 @@ export default defineConfig({
 
 
 
+### 2.2.4 具体使用(重点)
 
 
 
+#### ① 得到初始化数据
+
+例如：`src\components\RightContent\index.tsx`
+
+使用useModel
+
+```tsx
+  const { initialState } = useModel('@@initialState');
+
+  if (!initialState || !initialState.settings) {
+    return null;
+  }
+```
 
 
 
@@ -210,6 +224,36 @@ export default defineConfig({
 
 
 ### 2.3.2 自动添加
+
+
+
+## 2.4 使用多语言
+
+ant Pro5中默认是没有多语言的。如果要使用，必须要开启。
+
+### ① 开启
+
+有两步
+
+> config.ts中使用
+
+```ts
+  locale: {
+    // default zh-CN
+    default: 'zh-CN',
+    antd: true,
+    // default true, when it is true, will use `navigator.language` overwrite default
+    baseNavigator: true,
+  },
+```
+
+
+
+> 添加 src/locales
+
+讲antPro的这个目录复制一份就可以了
+
+### ② 使用
 
 
 
@@ -234,4 +278,47 @@ export default defineConfig({
 * antPro Demo的css写的一般，可以参考
 * 要重点了解antPro中一些可以公用的CSS
 * `vscode`中，使用逗点，可以自动出现下拉框，把less文件中的css显示出来。
+
+
+
+## 3.1 疑问
+
+
+
+```less
+@import '~antd/es/style/themes/default.less';
+
+@pro-header-hover-bg: rgba(0, 0, 0, 0.025);   
+
+&:global(.opened) {
+      background: @pro-header-hover-bg;
+}
+```
+
+
+
+
+
+# 4. 组件
+
+
+
+## 4.1 布局
+
+
+
+### ① Space间距
+
+[参考网址](https://ant.design/components/space-cn/)
+
+- 适合行内元素的水平间距。
+- 可以设置各种水平对齐方式。
+
+使用起来也很简单，使用`space`包裹，然后哦设置参数就可以了。
+
+```tsx
+<Space>
+    .........
+</Space>    
+```
 
