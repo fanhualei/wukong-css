@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './index.less';
+import LoginFrom from './components/Login';
 
 export default () => {
-  return <div>1111</div>;
+  return <LoginFrom>1111</LoginFrom>;
 };
