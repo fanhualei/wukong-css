@@ -3,16 +3,29 @@
 
 .right {
   .action {
+    display: flex;
     align-items: center;
     height: 48px;
     padding: 0 12px;
     cursor: pointer;
     transition: all 0.3s;
+    > span {
+      vertical-align: middle;
+    }
     &:hover {
       background: @pro-header-hover-bg;
     }
     &:global(.opened) {
       background: @pro-header-hover-bg;
+    }
+  }
+
+  .account {
+    .avatar {
+      margin-right: 8px;
+      color: @primary-color;
+
+      background: rgba(255, 255, 255, 0.85);
     }
   }
 }
