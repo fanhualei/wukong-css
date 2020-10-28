@@ -27,6 +27,8 @@ import {
   WeiboCircleOutlined,
 } from '@ant-design/icons';
 
+import { LoginParamsType, fakeAccountLogin } from '@/services/login';
+
 const { TabPane } = Tabs;
 const { Countdown } = Statistic;
 
@@ -34,13 +36,25 @@ export default () => {
   const [loginType, setLoginType] = useState('1');
   const [autoLogin, setAutoLogin] = useState(true);
   const [captchaFlag, setCaptchaFlag] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (values: LoginParamsType) => {
+  const handleSubmit = async (values: LoginParamsType) => {
+    setSubmitting(true);
     values.type = loginType;
     values.autoLogin = autoLogin;
     console.log('Received values of form: ', values);
-
-    console.log(autoLogin);
+    try {
+      // 登录
+      const msg = await fakeAccountLogin(values);
+      console.log(msg);
+      if (msg.status === 'ok') {
+        message.success('登录成功！');
+      }
+      // 如果失败去设置用户错误信息
+    } catch (error) {
+      message.error('登录失败，请重试！');
+    }
+    setSubmitting(false);
   };
 
   const onTabChange = (activeKey: any) => {
@@ -167,6 +181,7 @@ export default () => {
             type="primary"
             htmlType="submit"
             className={styles.login_button}
+            loading={submitting}
           >
             登录
           </Button>

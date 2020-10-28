@@ -1,5 +1,6 @@
 import mockjs from 'mockjs';
 import { Request, Response } from 'express';
+import { delay } from 'roadhog-api-doc';
 
 export default {
   // 支持值为 Object 和 Array

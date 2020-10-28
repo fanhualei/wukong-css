@@ -34,6 +34,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet-async": "^1.0.4",
+    "roadhog-api-doc": "^1.1.2",
     "umi": "^3.2.14",
     "umi-request": "^1.0.8",
     "use-merge-value": "^1.0.1"
@@ -73,5 +74,4 @@
     "stylelint": "^13.0.0",
     "typescript": "^3.9.7"
   }
-
 }
