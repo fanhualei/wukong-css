@@ -31,12 +31,15 @@ const { TabPane } = Tabs;
 const { Countdown } = Statistic;
 
 export default () => {
-  const [loginType, setLoginType] = useState(1);
+  const [loginType, setLoginType] = useState('1');
   const [autoLogin, setAutoLogin] = useState(true);
   const [captchaFlag, setCaptchaFlag] = useState(false);
 
-  const onSubmit = (values: any) => {
+  const handleSubmit = (values: LoginParamsType) => {
+    values.type = loginType;
+    values.autoLogin = autoLogin;
     console.log('Received values of form: ', values);
+
     console.log(autoLogin);
   };
 
@@ -60,10 +63,10 @@ export default () => {
 
   return (
     <div className={styles.main}>
-      <Form size="large" onFinish={onSubmit}>
+      <Form size="large" onFinish={handleSubmit}>
         <Tabs defaultActiveKey="1" onChange={onTabChange} centered>
           <TabPane tab="账户密码登录" key="1">
-            {1 == loginType && (
+            {'1' == loginType && (
               <div>
                 <Form.Item
                   name="username"
@@ -78,7 +81,7 @@ export default () => {
                   name="password"
                   rules={[{ required: true, message: '请输入密码！' }]}
                 >
-                  <Input
+                  <Input.Password
                     prefix={<LockTwoTone className={styles.prefixIcon} />}
                     placeholder="密码: ant.design"
                   />
@@ -87,7 +90,7 @@ export default () => {
             )}
           </TabPane>
           <TabPane tab="手机号登录" key="2">
-            {2 == loginType && (
+            {'2' == loginType && (
               <div>
                 <Form.Item
                   name="mobile"

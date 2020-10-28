@@ -6,6 +6,7 @@ export interface LoginParamsType {
   mobile: string;
   captcha: string;
   type: string;
+  autoLogin: boolean;
 }
 
 export async function fakeAccountLogin(params: LoginParamsType) {
@@ -13,10 +14,6 @@ export async function fakeAccountLogin(params: LoginParamsType) {
     method: 'POST',
     data: params,
   });
-}
-
-export async function getFakeCaptcha(mobile: string) {
-  return request(`/api/login/captcha?mobile=${mobile}`);
 }
 
 export async function outLogin() {
