@@ -2,7 +2,7 @@ import mockjs from 'mockjs';
 import { Request, Response } from 'express';
 import { delay } from 'roadhog-api-doc';
 
-export default {
+const proxy = {
   // 支持值为 Object 和 Array
   'GET /api/users': { users: [1, 2] },
   // GET 可忽略
@@ -18,3 +18,5 @@ export default {
     'list|100': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
   }),
 };
+
+export default delay(proxy, 1000);

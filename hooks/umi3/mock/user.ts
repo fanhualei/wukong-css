@@ -23,6 +23,7 @@ const getAccess = () => {
 const proxy = {
   // 支持值为 Object 和 Array
   'GET /api/currentUser': (req: Request, res: Response) => {
+    console.log(req.headers.authorization);
     if (!getAccess() && false) {
       res.status(401).send({
         data: {
@@ -31,6 +32,7 @@ const proxy = {
         errorCode: '401',
         errorMessage: '请先登录！',
         success: true,
+        showType: 1,
       });
       return;
     }
@@ -128,7 +130,7 @@ const proxy = {
       access = 'user';
       return;
     }
-    if (type === 'mobile') {
+    if (type === '2') {
       res.send({
         status: 'ok',
         type,

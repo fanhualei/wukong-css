@@ -11,6 +11,7 @@ import {
   Col,
   Statistic,
   message,
+  Alert,
 } from 'antd';
 
 import { Link, useModel, history, History } from 'umi';
@@ -32,11 +33,26 @@ import { LoginParamsType, fakeAccountLogin } from '@/services/login';
 const { TabPane } = Tabs;
 const { Countdown } = Statistic;
 
+/**
+ * 此方法会跳转到 redirect 参数所在的位置
+ */
+const replaceGoto = () => {
+  const { query } = history.location;
+  const { redirect } = query as { redirect: string };
+  if (!redirect) {
+    history.replace('/');
+    return;
+  }
+  (history as History).replace(redirect);
+};
+
 export default () => {
+  const [userLoginState, setUserLoginState] = useState<API.LoginStateType>({});
   const [loginType, setLoginType] = useState('1');
   const [autoLogin, setAutoLogin] = useState(true);
   const [captchaFlag, setCaptchaFlag] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const { initialState, setInitialState } = useModel('@@initialState');
 
   const handleSubmit = async (values: LoginParamsType) => {
     setSubmitting(true);
@@ -47,9 +63,28 @@ export default () => {
       // 登录
       const msg = await fakeAccountLogin(values);
       console.log(msg);
-      if (msg.status === 'ok') {
+      if (msg.status === 'ok' && initialState) {
         message.success('登录成功！');
+        const currentUser = await initialState?.fetchUserInfo();
+        if (!currentUser) {
+          setUserLoginState({
+            status: 'error',
+            type: '2222222222222222',
+          });
+          setSubmitting(false);
+          return;
+        }
+        setInitialState({
+          ...initialState,
+          currentUser,
+          token: '456789',
+        });
+        replaceGoto();
+        return;
       }
+      // 如果失败去设置用户错误信息
+      setUserLoginState(msg);
+
       // 如果失败去设置用户错误信息
     } catch (error) {
       message.error('登录失败，请重试！');
@@ -82,6 +117,17 @@ export default () => {
           <TabPane tab="账户密码登录" key="1">
             {'1' == loginType && (
               <div>
+                {userLoginState.status == 'error' && (
+                  <Alert
+                    message="账户或密码错误（admin/ant.design）"
+                    type="error"
+                    style={{
+                      marginBottom: 24,
+                    }}
+                    showIcon
+                  />
+                )}
+
                 <Form.Item
                   name="username"
                   rules={[{ required: true, message: '请输入用户名!' }]}

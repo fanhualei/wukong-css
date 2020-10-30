@@ -5,7 +5,8 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request<API.CurrentUser>('/api/currentUser');
+  const aa = request<API.CurrentUser>('/api/currentUser');
+  return aa;
 }
 
 export async function queryNotices(): Promise<any> {
