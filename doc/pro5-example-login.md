@@ -116,7 +116,7 @@
 
 
 
-## 1.3 公用逻辑-app.tsx
+## 1.3 运行配置-app.tsx
 
 UMI默认的一个运行配置，具体运行时配置，[见这个文档](https://umijs.org/zh-CN/docs/runtime-config)。
 
@@ -134,12 +134,15 @@ antDesignPro的app.tsx主要用到了下面的内容：
 * [网络请求和错误处理方案](https://umijs.org/zh-CN/plugins/plugin-request)
   * 错误处理
   * 拦截器
+  * 
 
-### 1.3.1 网络请求
+## 1.4 网络请求
 
 `@umijs/plugin-request` 基于 [umi-request](https://github.com/umijs/umi-request) 和 [ahooks](http://ahooks.js.org/hooks) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
 
 
+
+### 1.4.1 主要接口
 
 #### ① useRequest
 
@@ -193,7 +196,7 @@ request('/api/user', {
 
 
 
-### 1.3.2 统一返回格式
+### 1.4.2 统一返回格式
 
 错误处理是所有项目都会遇到的问题，我们约定了一个接口格式规范如下：
 
@@ -243,7 +246,7 @@ springboot提供的错误返回值，要做相应的处理。
 
 
 
-### 1.3.3 默认错误处理
+### 1.4.3 默认错误处理
 
 antDesignPro使用自定义错误处理，我看了UMI的文档，实际antPro的错误还没有默认的错误处理机制好。
 
@@ -266,7 +269,7 @@ export enum ErrorShowType {
 
 
 
-### 1.3.4 自定义错误处理
+### 1.4.4 自定义错误处理
 
 当然如果感觉默认的错误提示不详细，可以使用自定错误处理机制，建议在antPro的基础上进行修改。
 
@@ -321,7 +324,7 @@ export const request: RequestConfig = {
 
 
 
-### 1.3.5 页面中捕获错误
+### 1.4.5 页面中捕获错误
 
 使用`try` 来捕获错误，并且使用`const { response, data } = error`，来得到错误的内容
 
@@ -343,22 +346,9 @@ export const request: RequestConfig = {
 
 
 
-### 1.3.6 request 拦截器
-
-requestInterceptors该配置接收一个数组，数组的每一项为一个 request 拦截器。等同于 umi-request 的 `request.interceptors.request.use()`。具体见 umi-request 的[拦截器文档](https://github.com/umijs/umi-request#interceptor)。
-
-```
-可以拦截下来，去刷新一个新的token
-```
-
-> 参考文档
-
-* [做jwt拦截器](https://github.com/ant-design/ant-design-pro/issues/7225)
-* 
 
 
-
-### 1.3.7 Jwt的token
+### 1.4.6 Jwt的token
 
 ①②③④⑤⑥⑦⑧⑨
 
@@ -433,7 +423,13 @@ export function setToken(token) {
 }
 ```
 
+> 上面有一个隐患
 
+网上有人说：`sessionStorage` 当打开一个新的页面时候，会消失
+
+
+
+> 我试着将token保存到
 
 
 
@@ -452,13 +448,84 @@ export const request: RequestConfig = {
 
 #### ④ 刷新token
 
+通过request 拦截器来进行处理
+
+### 1.4.7 request 拦截器
+
+requestInterceptors该配置接收一个数组，数组的每一项为一个 request 拦截器。等同于 umi-request 的 `request.interceptors.request.use()`。具体见 umi-request 的[拦截器文档](https://github.com/umijs/umi-request#interceptor)。
+
+```
+可以拦截下来，去刷新一个新的token
+```
+
+> 参考文档
+
+* [做jwt拦截器](https://github.com/ant-design/ant-design-pro/issues/7225)
+
+  
+
+> 例子代码
+
+```typescript
+import { ResponseError, RequestOptionsInit } from 'umi-request';
+const requestInterceptors = (url: string, options: RequestOptionsInit) => {
+  console.log('---------------------------');
+  console.log(url);
+  console.log(options);
+  return {
+    url,
+    options: { ...options },
+  };
+};
+
+export const request: RequestConfig = {
+  errorHandler,
+  headers: {
+    Authorization: `123456789`,
+  },
+  requestInterceptors: [requestInterceptors],
+};
+```
 
 
-## 1.4 逻辑设计
+
+## 1.5 API调用
+
+有两种调用方法：
+
+* 在service调用，页面调用service
+* 在页面中调用。
+
+### 1.5.1 useRequest
+
+还有点问题，data没有得到
+
+```typescript
+import {  useRequest } from 'umi';
+const { data, error, loading } = useRequest('/api/tags');
+  if (loading) {
+    return <div>loading...</div>;
+  }
+  if (error) {
+    return <div>{error.message}</div>;
+  }
+  console.log(data);
+  return <div>111:</div>;
+```
 
 
 
-### 1.4.2 login
+
+
+
+
+
+
+## 1.6 逻辑设计
+
+
+
+### 1.6.1 login
 
 整理一下思路：
 

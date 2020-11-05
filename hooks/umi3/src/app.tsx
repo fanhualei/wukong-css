@@ -6,7 +6,7 @@ import {
 } from '@ant-design/pro-layout';
 import Footer from '@/components/Footer';
 import { history, RequestConfig } from 'umi';
-import { ResponseError } from 'umi-request';
+import { ResponseError, RequestOptionsInit } from 'umi-request';
 import RightContent from '@/components/RightContent';
 import defaultSettings from '../config/defaultSettings';
 import { queryCurrent } from './services/user';
@@ -22,10 +22,10 @@ export async function getInitialState(): Promise<{
       const currentUser = await queryCurrent();
       return currentUser;
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       const { response, data } = error;
-      console.log(response);
-      console.log(data);
+      //console.log(response);
+      //console.log(data);
       history.push('/user/login');
     }
     return undefined;
@@ -100,9 +100,20 @@ const errorHandler = (error: ResponseError) => {
   throw error;
 };
 
+const requestInterceptors = (url: string, options: RequestOptionsInit) => {
+  //console.log('---------------------------');
+  //console.log(url);
+  //console.log(options);
+  return {
+    url,
+    options: { ...options },
+  };
+};
+
 export const request: RequestConfig = {
   errorHandler,
   headers: {
     Authorization: `123456789`,
   },
+  requestInterceptors: [requestInterceptors],
 };

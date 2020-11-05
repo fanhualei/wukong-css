@@ -12,3 +12,7 @@ export async function queryCurrent() {
 export async function queryNotices(): Promise<any> {
   return request<{ data: API.NoticeIconData[] }>('/api/notices');
 }
+
+export async function queryTags() {
+  return request<API.Tags[]>('/api/tags');
+}

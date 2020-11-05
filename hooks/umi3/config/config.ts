@@ -1,5 +1,9 @@
 import { defineConfig } from 'umi';
 
+import proxy from './proxy';
+
+const { REACT_APP_ENV } = process.env;
+
 export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
@@ -36,17 +40,17 @@ export default defineConfig({
     },
     {
       path: '/admin',
-      name: '系统管理',
+      name: 'sysadmin',
       access: 'canAdmin',
       icon: 'smile',
       routes: [
         {
-          name: '角色管理',
+          name: 'role',
           path: '/admin/role',
           component: '@/pages/admin/role',
         },
         {
-          name: '用户管理',
+          name: 'user',
           path: '/admin/user',
           component: 'admin/users',
         },
@@ -56,4 +60,6 @@ export default defineConfig({
       component: './404',
     },
   ],
+  // @ts-ignore
+  proxy: proxy[REACT_APP_ENV || 'dev'],
 });

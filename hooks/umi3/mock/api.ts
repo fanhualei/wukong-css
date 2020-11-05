@@ -15,8 +15,10 @@ const proxy = {
   },
   // 使用 mockjs 等三方库
   'GET /api/tags': mockjs.mock({
-    'list|100': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
+    'list|10': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
   }),
+
+  'GET /api/random': '39553204a',
 };
 
 export default delay(proxy, 1000);

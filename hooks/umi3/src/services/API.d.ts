@@ -32,4 +32,10 @@ declare namespace API {
     extra: any;
     status: string;
   }
+
+  export interface Tags {
+    name: string;
+    value: number;
+    type: number;
+  }
 }
