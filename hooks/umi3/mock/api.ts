@@ -14,10 +14,14 @@ const proxy = {
     res.end('ok');
   },
   // 使用 mockjs 等三方库
-  'GET /api/tags': mockjs.mock({
-    'list|10': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
-  }),
-
+  'GET /api/tags': (req: Request, res: Response) => {
+    //console.log(req.headers.authorization);
+    res.send(
+      mockjs.mock({
+        'list|10': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
+      }),
+    );
+  },
   'GET /api/random': '39553204a',
 };
 

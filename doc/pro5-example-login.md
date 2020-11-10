@@ -498,19 +498,81 @@ export const request: RequestConfig = {
 
 ### 1.5.1 useRequest
 
-还有点问题，data没有得到
+要单独安装并导入：`import { useRequest } from 'ahooks';`
+
+
+
+> 模拟一个API函数
 
 ```typescript
-import {  useRequest } from 'umi';
-const { data, error, loading } = useRequest('/api/tags');
-  if (loading) {
+  // 使用 mockjs 等三方库
+  'GET /api/tags': (req: Request, res: Response) => {
+    //console.log(req.headers.authorization);
+    res.send(
+      mockjs.mock({
+        'list|10': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
+      }),
+    );
+  },
+```
+
+
+
+> 可以在此程序中调用
+
+在这个程序中，可以调用 service或者api的函数
+
+```tsx
+import React from 'react';
+import { useRequest } from 'ahooks';
+import { List, Avatar } from 'antd';
+import { queryCurrent } from '@/services/user';
+import styles from './index.less';
+
+export interface tag {
+  name: string;
+  value: number;
+  type?: number;
+}
+
+export default () => {
+  //直接从一个api获取数据
+  const tagsReq = useRequest('/api/tags');
+
+  //从一个service中获取数据
+  const userReq = useRequest(queryCurrent);
+
+  if (tagsReq.loading) {
     return <div>loading...</div>;
   }
-  if (error) {
-    return <div>{error.message}</div>;
+  if (tagsReq.error) {
+    return <div>{tagsReq.error.message}</div>;
   }
-  console.log(data);
-  return <div>111:</div>;
+
+  console.log(tagsReq.data);
+  console.log(userReq.data);
+
+  return (
+    <div>
+      <div>
+        <Avatar src={userReq?.data?.avatar} />
+        {userReq?.data?.name}
+      </div>
+      <List
+        itemLayout="horizontal"
+        dataSource={tagsReq.data.list}
+        renderItem={(item: tag) => (
+          <List.Item>
+            <List.Item.Meta
+              title={item.name}
+              description={'生产总值：' + item.value + '亿元'}
+            />
+          </List.Item>
+        )}
+      />
+    </div>
+  );
+};
 ```
 
 
