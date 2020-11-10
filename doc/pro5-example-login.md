@@ -350,7 +350,7 @@ export const request: RequestConfig = {
 
 ### 1.4.6 Jwt的token
 
-①②③④⑤⑥⑦⑧⑨
+
 
 #### ① 得到token
 
@@ -489,14 +489,14 @@ export const request: RequestConfig = {
 
 
 
-## 1.5 API调用
+## 1.5 useRequest
 
 有两种调用方法：
 
 * 在service调用，页面调用service
 * 在页面中调用。
 
-### 1.5.1 useRequest
+### 1.5.1 基本用法
 
 要单独安装并导入：`import { useRequest } from 'ahooks';`
 
@@ -576,6 +576,126 @@ export default () => {
 ```
 
 
+
+### 1.5.2 update例子
+
+①②③④⑤⑥⑦⑧⑨
+
+
+
+#### ① 模拟一个mock
+
+```js
+  //模拟了一个update数据
+  'POST /api/setting/update': (req: Request, res: Response) => {
+    console.log(req.body);
+    console.log('--------------------');
+    const { name, value } = req.body;
+    console.log(name + ':' + value);
+    res.send({ data: { name, value }, success: true });
+  },
+```
+
+
+
+#### ② 页面中调用(不推荐)
+
+主要是传递参数太复杂了，可以将这段函数，放到service中。
+
+```jsx
+  //手工触发一个update
+  const [sName, setSName] = useState('');
+  const userSettingUpdate = useRequest(
+    {
+      url: '/api/setting/update',
+      method: 'post',
+       body: '{ "name": "wwww", "value": "123" }',
+      //body: JSON.stringify({ name: sName }),
+      headers: { 'Content-Type': 'application/json' },
+    },
+    {
+      manual: true,
+      onSuccess: (result, params) => {
+        // console.log(result);
+        // console.log(params);
+        if (result.sucess) {
+        }
+      },
+    },
+  );
+
+
+      <input
+        onChange={(e) => setSName(e.target.value)}
+        value={sName}
+        placeholder="请输入名称"
+        style={{ width: 240, marginRight: 16 }}
+      />
+      <button
+        disabled={userSettingUpdate.loading}
+        type="button"
+        onClick={() => userSettingUpdate.run({ name: 'sss', value: '123' })}
+      >
+        {userSettingUpdate.loading ? 'loading' : 'Edit'}
+      </button>
+```
+
+
+
+#### ③ service中调用
+
+
+
+> 创建一个service
+
+```typescript
+//模拟一个update
+
+export interface updateSettingParamType {
+  name?: string;
+  value?: number;
+}
+
+export async function updateSetting(params: updateSettingParamType) {
+  console.log(params);
+  return request<any>('/api/setting/update', {
+    method: 'POST',
+    data: params,
+  });
+}
+```
+
+
+
+> 页面中调用
+
+```jsx
+  //手工触发一个update
+  const [sName, setSName] = useState('');
+  const userSettingUpdate = useRequest(updateSetting, {
+    manual: true,
+    onSuccess: (result, params) => {
+      console.log(result);
+      // console.log(params);
+      if (result.sucess) {
+      }
+    },
+  });
+
+      <input
+        onChange={(e) => setSName(e.target.value)}
+        value={sName}
+        placeholder="请输入名称"
+        style={{ width: 240, marginRight: 16 }}
+      />
+      <button
+        disabled={userSettingUpdate.loading}
+        type="button"
+        onClick={() => userSettingUpdate.run({ name: sName, value: 123 })}
+      >
+        {userSettingUpdate.loading ? 'loading' : 'Edit'}
+      </button>
+```
 
 
 

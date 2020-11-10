@@ -18,11 +18,20 @@ const proxy = {
     //console.log(req.headers.authorization);
     res.send(
       mockjs.mock({
-        'list|10': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
+        'list|3': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
       }),
     );
   },
   'GET /api/random': '39553204a',
+
+  //模拟了一个update数据
+  'POST /api/setting/update': (req: Request, res: Response) => {
+    console.log(req.body);
+    console.log('--------------------');
+    const { name, value } = req.body;
+    console.log(name + ':' + value);
+    res.send({ data: { name, value }, success: true });
+  },
 };
 
 export default delay(proxy, 1000);

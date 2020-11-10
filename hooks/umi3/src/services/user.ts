@@ -16,3 +16,18 @@ export async function queryNotices(): Promise<any> {
 export async function queryTags() {
   return request<API.Tags[]>('/api/tags');
 }
+
+//模拟一个update
+
+export interface updateSettingParamType {
+  name?: string;
+  value?: number;
+}
+
+export async function updateSetting(params: updateSettingParamType) {
+  console.log(params);
+  return request<any>('/api/setting/update', {
+    method: 'POST',
+    data: params,
+  });
+}
