@@ -22,7 +22,9 @@ const proxy = {
       }),
     );
   },
-  'GET /api/random': '39553204a',
+  'GET /api/random': (req: Request, res: Response) => {
+    res.send('"' + mockjs.mock('@cname') + '"');
+  },
 
   //模拟了一个update数据
   'POST /api/setting/update': (req: Request, res: Response) => {

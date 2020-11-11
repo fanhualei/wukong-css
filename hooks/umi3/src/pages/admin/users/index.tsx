@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRequest } from 'ahooks';
-import { List, Avatar, Divider } from 'antd';
+import { List, Avatar, Divider, Card } from 'antd';
 import {
   queryCurrent,
   updateSetting,
@@ -33,6 +33,12 @@ export default () => {
     },
   });
 
+  //做一个轮询
+  const usePolling = useRequest('/api/random', {
+    pollingInterval: 3000,
+    pollingWhenHidden: false,
+  });
+
   if (tagsReq.loading) {
     return <div>loading...</div>;
   }
@@ -44,7 +50,7 @@ export default () => {
   //console.log(userReq.data);
 
   return (
-    <div>
+    <Card title="useRequest例子" bordered={false}>
       <Divider orientation="left" plain dashed>
         从service获取数据
       </Divider>
@@ -85,6 +91,31 @@ export default () => {
       >
         {userSettingUpdate.loading ? 'loading' : 'Edit'}
       </button>
-    </div>
+
+      <Divider orientation="left" plain dashed>
+        轮询
+      </Divider>
+
+      <p>UserName:{usePolling.loading ? 'loading.....' : usePolling.data}</p>
+      <button type="button" onClick={usePolling.run}>
+        start
+      </button>
+      <button
+        type="button"
+        onClick={usePolling.cancel}
+        style={{ marginLeft: 8 }}
+      >
+        stop
+      </button>
+
+      <Divider orientation="left" plain dashed>
+        并行处理：同一个函数
+      </Divider>
+      <p>
+        默认情况下，新请求会覆盖旧请求。如果设置了
+        fetchKey，则可以实现多个请求并行，fetches
+        存储了多个请求的状态。外层的状态为最新触发的 fetches 数据。
+      </p>
+    </Card>
   );
 };

@@ -699,6 +699,49 @@ export async function updateSetting(params: updateSettingParamType) {
 
 
 
+### 1.5.3 轮询
+
+[官方网址]([https://ahooks.js.org/zh-CN/hooks/async#%E8%BD%AE%E8%AF%A2](https://ahooks.js.org/zh-CN/hooks/async#轮询))
+
+> 模拟一个API
+
+一定要有一个双引号
+
+```js
+  'GET /api/random': (req: Request, res: Response) => {
+    res.send('"' + mockjs.mock('@cname') + '"');
+  },
+```
+
+
+
+> 页面中的代码
+
+可以点击stop停止查询，点击start 来启动
+
+```jsx
+  //做一个轮询
+  const usePolling = useRequest('/api/random', {
+    pollingInterval: 3000,
+    pollingWhenHidden: false,
+  });
+
+
+      <p>UserName:{usePolling.loading ? 'loading.....' : usePolling.data}</p>
+      <button type="button" onClick={usePolling.run}>
+        start
+      </button>
+      <button
+        type="button"
+        onClick={usePolling.cancel}
+        style={{ marginLeft: 8 }}
+      >
+        stop
+      </button>
+```
+
+
+
 
 
 

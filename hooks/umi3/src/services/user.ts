@@ -13,6 +13,7 @@ export async function queryNotices(): Promise<any> {
   return request<{ data: API.NoticeIconData[] }>('/api/notices');
 }
 
+//模拟查询tags
 export async function queryTags() {
   return request<API.Tags[]>('/api/tags');
 }
