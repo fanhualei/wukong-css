@@ -34,6 +34,24 @@ const proxy = {
     console.log(name + ':' + value);
     res.send({ data: { name, value }, success: true });
   },
+
+  //模拟得到用户列表
+  'GET /api/demo/getUsers': (req: Request, res: Response) => {
+    res.send([
+      { id: '1', username: 'A' },
+      { id: '2', username: 'B' },
+      { id: '3', username: 'C' },
+    ]);
+  },
+  //模拟删除一个用户
+  'POST /api/demo/delUser': (req: Request, res: Response) => {
+    console.log(req.query.id);
+    res.send('1');
+  },
+  'GET /api/demo/delUser': (req: Request, res: Response) => {
+    console.log(req.query.id + 'ddd');
+    res.send('1');
+  },
 };
 
 export default delay(proxy, 1000);

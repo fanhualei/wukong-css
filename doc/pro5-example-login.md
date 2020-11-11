@@ -742,6 +742,96 @@ export async function updateSetting(params: updateSettingParamType) {
 
 
 
+### 1.5.4 并发操作
+
+[官网的例子]([https://ahooks.js.org/zh-CN/hooks/async#%E5%B9%B6%E8%A1%8C%E8%AF%B7%E6%B1%82](https://ahooks.js.org/zh-CN/hooks/async#并行请求))
+
+默认情况下，新请求会覆盖旧请求。如果设置了 fetchKey，则可以实现多个请求并行，fetches 存储了多个请求的状态。外层的状态为最新触发的 fetches 数据。
+
+#### ① 模拟一个mock
+
+如果让一个接口同时支持Post 与Get，还没有找到更好的方法，只能复制一份了。
+
+```js
+  //模拟得到用户列表
+  'GET /api/demo/getUsers': (req: Request, res: Response) => {
+    res.send([
+      { id: '1', username: 'A' },
+      { id: '2', username: 'B' },
+      { id: '3', username: 'C' },
+    ]);
+  },
+  //模拟删除一个用户
+  'POST /api/demo/delUser': (req: Request, res: Response) => {
+    console.log(req.query.id);
+    res.send('1');
+  },
+  'GET /api/demo/delUser': (req: Request, res: Response) => {
+    console.log(req.query.id + 'ddd');
+    res.send('1');
+  },
+```
+
+
+
+####  ②  创建service
+
+```typescript
+//模拟得到一个用户列表，或删除一个用户列表
+export interface userType {
+  id: string;
+  username: string;
+}
+
+export async function getUsers() {
+  return request<userType[]>('/api/demo/getUsers');
+}
+
+export async function delUser(id: string) {
+  return request<number>('/api/demo/delUser?id=' + id, { method: 'POST' });
+}
+```
+
+
+
+#### ③ 页面中调用
+
+
+
+```jsx
+  //做一个并发的例子
+  const useUserList = useRequest(getUsers);
+  const useDelUser = useRequest(delUser, {
+    manual: true,
+    fetchKey: (id) => id,
+    onSuccess: (result, params) => {
+      console.log(result);
+      if (result) {
+        message.success(`Disabled user ${params[0]}`);
+      }
+    },
+  });
+
+
+      <ul>
+        {useUserList?.data?.map((user) => (
+          <li key={user.id} style={{ marginTop: 8 }}>
+            <button
+              type="button"
+              disabled={useDelUser?.fetches[user.id]?.loading}
+              onClick={() => {
+                useDelUser?.run(user.id);
+              }}
+            >
+              delete {user.username}
+            </button>
+          </li>
+        ))}
+      </ul>
+```
+
+
+
 
 
 

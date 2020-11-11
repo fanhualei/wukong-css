@@ -2,9 +2,7 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-
 const { REACT_APP_ENV } = process.env;
-
 export default defineConfig({
   hash: true,
   antd: {},
@@ -63,6 +61,24 @@ export default defineConfig({
       ],
     },
     {
+      name: '卡片列表',
+      icon: 'smile',
+      path: '/listcardlist',
+      component: './ListCardList',
+    },
+    {
+      name: '搜索列表（应用）',
+      icon: 'smile',
+      path: '/listsearchapplications',
+      component: './ListSearchApplications',
+    },
+    {
+      name: '搜索列表',
+      icon: 'smile',
+      path: '/listsearch',
+      component: './ListSearch',
+    },
+    {
       name: 'list.table-list',
       icon: 'table',
       path: '/list',
@@ -71,6 +87,18 @@ export default defineConfig({
     {
       path: '/',
       redirect: '/welcome',
+    },
+    {
+      name: '基础详情页',
+      icon: 'smile',
+      path: '/profilebasic',
+      component: './ProfileBasic',
+    },
+    {
+      name: '高级详情页',
+      icon: 'smile',
+      path: '/profileadvanced',
+      component: './ProfileAdvanced',
     },
     {
       component: './404',

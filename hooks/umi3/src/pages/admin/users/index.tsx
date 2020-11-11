@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useRequest } from 'ahooks';
-import { List, Avatar, Divider, Card } from 'antd';
+import { List, Avatar, Divider, Card, message } from 'antd';
 import {
   queryCurrent,
   updateSetting,
   updateSettingParamType,
+  getUsers,
+  delUser,
 } from '@/services/user';
 import styles from './index.less';
+import { result } from 'lodash';
 
 export interface tag {
   name: string;
@@ -37,6 +40,19 @@ export default () => {
   const usePolling = useRequest('/api/random', {
     pollingInterval: 3000,
     pollingWhenHidden: false,
+  });
+
+  //做一个并发的例子
+  const useUserList = useRequest(getUsers);
+  const useDelUser = useRequest(delUser, {
+    manual: true,
+    fetchKey: (id) => id,
+    onSuccess: (result, params) => {
+      console.log(result);
+      if (result) {
+        message.success(`Disabled user ${params[0]}`);
+      }
+    },
   });
 
   if (tagsReq.loading) {
@@ -116,6 +132,21 @@ export default () => {
         fetchKey，则可以实现多个请求并行，fetches
         存储了多个请求的状态。外层的状态为最新触发的 fetches 数据。
       </p>
+      <ul>
+        {useUserList?.data?.map((user) => (
+          <li key={user.id} style={{ marginTop: 8 }}>
+            <button
+              type="button"
+              disabled={useDelUser?.fetches[user.id]?.loading}
+              onClick={() => {
+                useDelUser?.run(user.id);
+              }}
+            >
+              delete {user.username}
+            </button>
+          </li>
+        ))}
+      </ul>
     </Card>
   );
 };

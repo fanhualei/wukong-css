@@ -32,3 +32,17 @@ export async function updateSetting(params: updateSettingParamType) {
     data: params,
   });
 }
+
+//模拟得到一个用户列表，或删除一个用户列表
+export interface userType {
+  id: string;
+  username: string;
+}
+
+export async function getUsers() {
+  return request<userType[]>('/api/demo/getUsers');
+}
+
+export async function delUser(id: string) {
+  return request<number>('/api/demo/delUser?id=' + id, { method: 'POST' });
+}
