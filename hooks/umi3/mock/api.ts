@@ -52,6 +52,21 @@ const proxy = {
     console.log(req.query.id + 'ddd');
     res.send('1');
   },
+
+  //模拟并行操作
+  'GET /api/demo/getUserByName': (req: Request, res: Response) => {
+    console.log('getUserByName');
+    res.send({ id: '1', username: mockjs.mock('@cname') });
+  },
+  'GET /api/demo/getUserTodoList': (req: Request, res: Response) => {
+    console.log(req.query.id + ':todo List');
+    res.send([
+      { id: '1', todoname: '吃' },
+      { id: '2', todoname: '喝' },
+      { id: '3', todoname: '玩' },
+      { id: '4', todoname: '乐' },
+    ]);
+  },
 };
 
 export default delay(proxy, 1000);

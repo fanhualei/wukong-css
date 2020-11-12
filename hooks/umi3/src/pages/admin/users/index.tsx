@@ -55,6 +55,15 @@ export default () => {
     },
   });
 
+  //做一个串行的例子
+  const useChun1 = useRequest('/api/demo/getUserByName?name=123', {
+    manual: true,
+  });
+  const useChun2 = useRequest('/api/demo/getUserTodoList?id=1', {
+    ready: !!useChun1?.data,
+  });
+  console.log(useChun2?.data?.length);
+
   if (tagsReq.loading) {
     return <div>loading...</div>;
   }
@@ -147,6 +156,27 @@ export default () => {
           </li>
         ))}
       </ul>
+
+      <Divider orientation="left" plain dashed>
+        串行处理：例如：先查询出用户编号，然后再查出待办事项
+      </Divider>
+      <p>
+        User: {useChun1?.loading ? 'loading....' : useChun1?.data?.username}
+      </p>
+      <p>
+        Size:{' '}
+        {useChun1?.loading || useChun2?.loading
+          ? 'loading....'
+          : useChun2?.data?.length}
+      </p>
+      <button
+        type="button"
+        onClick={() => {
+          useChun1?.run();
+        }}
+      >
+        查询
+      </button>
     </Card>
   );
 };

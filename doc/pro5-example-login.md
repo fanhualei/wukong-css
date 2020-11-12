@@ -832,6 +832,65 @@ export async function delUser(id: string) {
 
 
 
+### 1.5.5 串行操作
+
+这个有缓存，只能执行一次。[官方文档]([https://ahooks.js.org/zh-CN/hooks/async#%E4%BE%9D%E8%B5%96%E8%AF%B7%E6%B1%82](https://ahooks.js.org/zh-CN/hooks/async#依赖请求))
+
+#### ① 模拟mock
+
+```js
+  //模拟并行操作
+  'GET /api/demo/getUserByName': (req: Request, res: Response) => {
+    console.log('getUserByName');
+    res.send({ id: '1', username: mockjs.mock('@cname') });
+  },
+  'GET /api/demo/getUserTodoList': (req: Request, res: Response) => {
+    console.log(req.query.id + ':todo List');
+    res.send([
+      { id: '1', todoname: '吃' },
+      { id: '2', todoname: '喝' },
+      { id: '3', todoname: '玩' },
+      { id: '4', todoname: '乐' },
+    ]);
+  },
+```
+
+
+
+####  ②  页面中调用
+
+```jsx
+  //做一个串行的例子
+  const useChun1 = useRequest('/api/demo/getUserByName?name=123', {
+    manual: true,
+  });
+  const useChun2 = useRequest('/api/demo/getUserTodoList?id=1', {
+    ready: !!useChun1?.data,
+  });
+  console.log(useChun2?.data?.length);
+
+
+      <p>
+        User: {useChun1?.loading ? 'loading....' : useChun1?.data?.username}
+      </p>
+      <p>
+        Size:{' '}
+        {useChun1?.loading || useChun2?.loading
+          ? 'loading....'
+          : useChun2?.data?.length}
+      </p>
+      <button
+        type="button"
+        onClick={() => {
+          useChun1?.run();
+        }}
+      >
+        查询
+      </button>
+```
+
+
+
 
 
 
