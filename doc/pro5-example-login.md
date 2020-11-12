@@ -846,12 +846,11 @@ export async function delUser(id: string) {
   },
   'GET /api/demo/getUserTodoList': (req: Request, res: Response) => {
     console.log(req.query.id + ':todo List');
-    res.send([
-      { id: '1', todoname: '吃' },
-      { id: '2', todoname: '喝' },
-      { id: '3', todoname: '玩' },
-      { id: '4', todoname: '乐' },
-    ]);
+    res.send(
+      mockjs.mock({
+        'list|3': [{ 'id|+1': 1, todoname: '去 @city', 'value|1-100': 50 }],
+      }).list,
+    );
   },
 ```
 
@@ -874,10 +873,15 @@ export async function delUser(id: string) {
         User: {useChun1?.loading ? 'loading....' : useChun1?.data?.username}
       </p>
       <p>
-        Size:{' '}
-        {useChun1?.loading || useChun2?.loading
-          ? 'loading....'
-          : useChun2?.data?.length}
+        {useChun1?.loading || useChun2?.loading ? (
+          'loading....'
+        ) : (
+          <ul style={{ marginLeft: 28 }}>
+            {useChun2?.data?.map((todo: any) => (
+              <li key={todo.id}>{todo.todoname}</li>
+            ))}
+          </ul>
+        )}
       </p>
       <button
         type="button"

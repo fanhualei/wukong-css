@@ -62,7 +62,7 @@ export default () => {
   const useChun2 = useRequest('/api/demo/getUserTodoList?id=1', {
     ready: !!useChun1?.data,
   });
-  console.log(useChun2?.data?.length);
+  console.log(useChun2?.data);
 
   if (tagsReq.loading) {
     return <div>loading...</div>;
@@ -164,10 +164,15 @@ export default () => {
         User: {useChun1?.loading ? 'loading....' : useChun1?.data?.username}
       </p>
       <p>
-        Size:{' '}
-        {useChun1?.loading || useChun2?.loading
-          ? 'loading....'
-          : useChun2?.data?.length}
+        {useChun1?.loading || useChun2?.loading ? (
+          'loading....'
+        ) : (
+          <ul style={{ marginLeft: 28 }}>
+            {useChun2?.data?.map((todo: any) => (
+              <li key={todo.id}>{todo.todoname}</li>
+            ))}
+          </ul>
+        )}
       </p>
       <button
         type="button"
@@ -177,6 +182,10 @@ export default () => {
       >
         查询
       </button>
+
+      <Divider orientation="left" plain dashed>
+        防抖
+      </Divider>
     </Card>
   );
 };
