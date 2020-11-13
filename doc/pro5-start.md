@@ -899,3 +899,91 @@ const { loading, run } = useRequest((username) => ({
 
 ### 5.2.2 分页
 
+#### ① 模拟mock
+
+```js
+  //模拟一个分页列表
+  'GET /api/demo/getUserList': (req: Request, res: Response) => {
+    console.log(`/api/demo/getUserList`);
+    const current = req.query.current || 1;
+    const pageSize = req.query.pageSize || 10;
+    res.send(
+      mockjs.mock({
+        total: 55,
+        [`list|${pageSize}`]: [
+          {
+            id: '@guid',
+            name: '@cname',
+            'gender|1': ['male', 'female'],
+            email: '@email',
+            disable: false,
+          },
+        ],
+      }),
+    );
+  },
+```
+
+
+
+#### ②  创建service
+
+```js
+//模拟一个分页列表
+export interface UserListItem {
+  id: string;
+  name: string;
+  gender: 'male' | 'female';
+  email: string;
+  disabled: boolean;
+}
+
+export async function getUserList(params: {
+  current: number;
+  pageSize: number;
+  gender?: string;
+}) {
+  return request<{ total: number; list: UserListItem[] }>(
+    `/api/demo/getUserList?current=${params?.current}&pageSize=${params?.pageSize}`,
+  );
+}
+```
+
+
+
+#### ③ 页面中调用
+
+```jsx
+  // 模拟一个分页
+  const usePage = useRequest(
+    ({ current, pageSize }) => getUserList({ current, pageSize }),
+    {
+      paginated: true,
+    },
+  );
+
+      {usePage?.loading ? (
+        <p>Loading....</p>
+      ) : (
+        <ul style={{ marginLeft: 28 }}>
+          {usePage?.data?.list?.map((user) => (
+            <li key={user.id}>
+              {user.name} - {user.email}
+            </li>
+          ))}
+        </ul>
+      )}
+      <Pagination
+        {...(usePage?.pagination as any)}
+        showQuickJumper
+        showSizeChanger
+        onShowSizeChange={usePage?.pagination?.onChange}
+        style={{ marginTop: 16, textAlign: 'right' }}
+        disabled={usePage?.loading}
+      ></Pagination>
+```
+
+
+
+### 5.2.3 Table
+

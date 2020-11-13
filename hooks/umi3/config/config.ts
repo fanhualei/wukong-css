@@ -54,6 +54,11 @@ export default defineConfig({
           path: '/admin/user',
           component: 'admin/users',
         },
+        {
+          name: 'table',
+          path: '/admin/table',
+          component: 'admin/table',
+        },
       ],
     },
     {

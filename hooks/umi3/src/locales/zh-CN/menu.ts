@@ -52,4 +52,5 @@ export default {
   'menu.sysadmin': '系统管理',
   'menu.sysadmin.role': '角色管理',
   'menu.sysadmin.user': '用户管理',
+  'menu.sysadmin.table': '表格例子',
 };

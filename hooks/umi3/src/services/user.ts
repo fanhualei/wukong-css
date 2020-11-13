@@ -50,3 +50,22 @@ export async function delUser(id: string) {
 export async function getSchool(id: string) {
   return request<string>('/api/demo/getSchool?id=' + id);
 }
+
+//模拟一个分页列表
+export interface UserListItem {
+  id: string;
+  name: string;
+  gender: 'male' | 'female';
+  email: string;
+  disabled: boolean;
+}
+
+export async function getUserList(params: {
+  current: number;
+  pageSize: number;
+  gender?: string;
+}) {
+  return request<{ total: number; list: UserListItem[] }>(
+    `/api/demo/getUserList?current=${params?.current}&pageSize=${params?.pageSize}`,
+  );
+}

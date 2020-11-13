@@ -86,6 +86,27 @@ const proxy = {
         res.status(200).send('none12333');
     }
   },
+
+  //模拟一个分页列表
+  'GET /api/demo/getUserList': (req: Request, res: Response) => {
+    console.log(`/api/demo/getUserList`);
+    const current = req.query.current || 1;
+    const pageSize = req.query.pageSize || 10;
+    res.send(
+      mockjs.mock({
+        total: 55,
+        [`list|${pageSize}`]: [
+          {
+            id: '@guid',
+            name: '@cname',
+            'gender|1': ['male', 'female'],
+            email: '@email',
+            disable: false,
+          },
+        ],
+      }),
+    );
+  },
 };
 
 export default delay(proxy, 1000);

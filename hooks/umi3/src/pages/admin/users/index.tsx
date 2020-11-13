@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRequest } from 'ahooks';
-import { List, Avatar, Divider, Card, message } from 'antd';
+import { List, Avatar, Divider, Card, message, Pagination } from 'antd';
 import {
   queryCurrent,
   updateSetting,
@@ -8,6 +8,8 @@ import {
   getUsers,
   delUser,
   getSchool,
+  getUserList,
+  UserListItem,
 } from '@/services/user';
 import styles from './index.less';
 import { result, runInContext } from 'lodash';
@@ -92,15 +94,24 @@ export default () => {
     refreshDeps: [schoolId],
   });
 
+  // 模拟一个分页
+  const usePage = useRequest(
+    ({ current, pageSize }) => getUserList({ current, pageSize }),
+    {
+      paginated: true,
+    },
+  );
+
+  //console.log(usePage?.pagination);
+
+  //下面是html代码
+
   if (tagsReq.loading) {
     return <div>loading...</div>;
   }
   if (tagsReq.error) {
     return <div>{tagsReq.error.message}</div>;
   }
-
-  //console.log(tagsReq.data);
-  //console.log(userReq.data);
 
   return (
     <Card title="useRequest例子" bordered={false}>
@@ -267,6 +278,29 @@ export default () => {
         <option value="3">school3</option>
       </select>
       <p>School:{useDep?.loading ? 'loading' : useDep?.data}</p>
+
+      <Divider orientation="left" plain dashed>
+        分页
+      </Divider>
+      {usePage?.loading ? (
+        <p>Loading....</p>
+      ) : (
+        <ul style={{ marginLeft: 28 }}>
+          {usePage?.data?.list?.map((user) => (
+            <li key={user.id}>
+              {user.name} - {user.email}
+            </li>
+          ))}
+        </ul>
+      )}
+      <Pagination
+        {...(usePage?.pagination as any)}
+        showQuickJumper
+        showSizeChanger
+        onShowSizeChange={usePage?.pagination?.onChange}
+        style={{ marginTop: 16, textAlign: 'right' }}
+        disabled={usePage?.loading}
+      ></Pagination>
     </Card>
   );
 };
