@@ -23,6 +23,7 @@ const proxy = {
     );
   },
   'GET /api/random': (req: Request, res: Response) => {
+    console.log('run /api/random');
     res.send('"' + mockjs.mock('@cname') + '"');
   },
 
@@ -65,6 +66,25 @@ const proxy = {
         'list|3': [{ 'id|+1': 1, todoname: '去 @city', 'value|1-100': 50 }],
       }).list,
     );
+  },
+
+  //模拟依赖刷新
+  'GET /api/demo/getSchool': (req: Request, res: Response) => {
+    console.log(req.query.id);
+    const id = req.query.id;
+    switch (id) {
+      case '1':
+        res.status(200).send('Tsinghua University');
+        break;
+      case '2':
+        res.status(200).send('Beijing University');
+        break;
+      case '3':
+        res.status(200).send('Zhejiang University');
+        break;
+      default:
+        res.status(200).send('none12333');
+    }
   },
 };
 

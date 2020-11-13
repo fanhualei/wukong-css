@@ -895,6 +895,133 @@ export async function delUser(id: string) {
 
 
 
+### 1.5.6 防抖&节流
+
+在一个框中输入内容，就会根据内容来检索程序。 中间可以设置500ms的间隔时间。
+
+防抖使用：debounceInterval
+
+节流使用：throttleInterval
+
+```jsx
+  //做一个防抖例子
+  const useDeb = useRequest('/api/demo/getUserTodoList', {
+    debounceInterval: 500,
+    manual: true,
+  });
+
+
+      <p>请输入内容</p>
+      <input type="text" onChange={(e) => useDeb?.run(e.target.value)} />
+      {useDeb?.loading ? (
+        <p>loading...</p>
+      ) : (
+        <ul style={{ marginLeft: 28 }}>
+          {useDeb?.data?.map((todo: any) => (
+            <li key={todo.id}> {todo.todoname}</li>
+          ))}
+        </ul>
+      )}
+```
+
+
+
+### 1.5.7 缓存 & SWR & 预加载
+
+这里例子需要把相应的内容做成组件。不符合常用的编程习惯。[详细见官方的例子]([https://ahooks.js.org/zh-CN/hooks/async#%E7%BC%93%E5%AD%98--swr](https://ahooks.js.org/zh-CN/hooks/async#缓存--swr))。
+
+
+
+如果在里面添加上了`manual: true`， 那么就没有缓存这个功能，但是官方说可以做`预加载`，感觉实用性不强。
+
+
+
+### 1.5.8 屏幕聚焦重新请求
+
+如果你设置了 `options.refreshOnWindowFocus = true` ，则在浏览器窗口 `refocus` 和 `revisible` 时，会重新发起请求。你可以通过设置 `options.focusTimespan` 来设置请求间隔，默认为 `5000ms` 。
+
+
+
+### 1.5.9 修改返回值
+
+通过`mutate`来修改返回值
+
+```jsx
+      <button
+        onClick={() => {
+          useMutate?.run({});
+        }}
+      >
+        search
+      </button>
+      <p>{useMutate?.data}</p>
+//做一个突变
+  const useMutate = useRequest('/api/random', {
+    manual: true,
+    onSuccess: (result) => {
+      useMutate.mutate('dddd');
+    },
+  });
+```
+
+
+
+### 1.5.10 依赖刷新
+
+#### ① 模拟一个mock
+
+```js
+  //模拟依赖刷新
+  'GET /api/demo/getSchool': (req: Request, res: Response) => {
+    console.log(req.query.id);
+    const id = req.query.id;
+    switch (id) {
+      case '1':
+        res.status(200).send('Tsinghua University');
+        break;
+      case '2':
+        res.status(200).send('Beijing University');
+        break;
+      case '3':
+        res.status(200).send('Zhejiang University');
+        break;
+      default:
+        res.status(200).send('none12333');
+    }
+  },
+```
+
+
+
+#### ②  创建service
+
+```js
+export async function getSchool(id: string) {
+  return request<string>('/api/demo/getSchool?id=' + id);
+}
+```
+
+
+
+#### ③ 页面中调用
+
+```jsx
+  const [schoolId, setSchoolId] = useState('1');
+  const useDep = useRequest(() => getSchool(schoolId), {
+    refreshDeps: [schoolId],
+  });
+
+      <select onChange={(e) => setSchoolId(e.target.value)} value={schoolId}>
+        <option value="1">school1</option>
+        <option value="2">school2</option>
+        <option value="3">school3</option>
+      </select>
+      <p>School:{useDep?.loading ? 'loading' : useDep?.data}</p>
+
+```
+
+
+
 
 
 

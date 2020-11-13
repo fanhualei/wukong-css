@@ -46,3 +46,7 @@ export async function getUsers() {
 export async function delUser(id: string) {
   return request<number>('/api/demo/delUser?id=' + id, { method: 'POST' });
 }
+
+export async function getSchool(id: string) {
+  return request<string>('/api/demo/getSchool?id=' + id);
+}

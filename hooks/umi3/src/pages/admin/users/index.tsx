@@ -7,9 +7,10 @@ import {
   updateSettingParamType,
   getUsers,
   delUser,
+  getSchool,
 } from '@/services/user';
 import styles from './index.less';
-import { result } from 'lodash';
+import { result, runInContext } from 'lodash';
 
 export interface tag {
   name: string;
@@ -40,6 +41,7 @@ export default () => {
   const usePolling = useRequest('/api/random', {
     pollingInterval: 3000,
     pollingWhenHidden: false,
+    manual: true,
   });
 
   //做一个并发的例子
@@ -62,7 +64,33 @@ export default () => {
   const useChun2 = useRequest('/api/demo/getUserTodoList?id=1', {
     ready: !!useChun1?.data,
   });
-  console.log(useChun2?.data);
+  //console.log(useChun2?.data);
+
+  //做一个防抖例子
+  const useDeb = useRequest('/api/demo/getUserTodoList', {
+    debounceInterval: 500,
+    manual: true,
+  });
+
+  //做一个缓存 & SWR
+  const useSwr = useRequest('/api/demo/getUserTodoList', {
+    cacheKey: 'article',
+    manual: true,
+  });
+
+  //做一个突变
+  const useMutate = useRequest('/api/random', {
+    manual: true,
+    onSuccess: (result) => {
+      useMutate.mutate('dddd');
+    },
+  });
+
+  //依赖
+  const [schoolId, setSchoolId] = useState('1');
+  const useDep = useRequest(() => getSchool(schoolId), {
+    refreshDeps: [schoolId],
+  });
 
   if (tagsReq.loading) {
     return <div>loading...</div>;
@@ -163,17 +191,17 @@ export default () => {
       <p>
         User: {useChun1?.loading ? 'loading....' : useChun1?.data?.username}
       </p>
-      <p>
-        {useChun1?.loading || useChun2?.loading ? (
-          'loading....'
-        ) : (
-          <ul style={{ marginLeft: 28 }}>
-            {useChun2?.data?.map((todo: any) => (
-              <li key={todo.id}>{todo.todoname}</li>
-            ))}
-          </ul>
-        )}
-      </p>
+
+      {useChun1?.loading || useChun2?.loading ? (
+        <p>'loading....'</p>
+      ) : (
+        <ul style={{ marginLeft: 28 }}>
+          {useChun2?.data?.map((todo: any) => (
+            <li key={todo.id}>{todo.todoname}</li>
+          ))}
+        </ul>
+      )}
+
       <button
         type="button"
         onClick={() => {
@@ -184,8 +212,61 @@ export default () => {
       </button>
 
       <Divider orientation="left" plain dashed>
-        防抖
+        防抖：debounceInterval
       </Divider>
+      <p>请输入内容</p>
+      <input type="text" onChange={(e) => useDeb?.run(e.target.value)} />
+      {useDeb?.loading ? (
+        <p>loading...</p>
+      ) : (
+        <ul style={{ marginLeft: 28 }}>
+          {useDeb?.data?.map((todo: any) => (
+            <li key={todo.id}> {todo.todoname}</li>
+          ))}
+        </ul>
+      )}
+
+      <Divider orientation="left" plain dashed>
+        缓存 SWR
+      </Divider>
+      <button
+        onClick={() => {
+          useSwr?.run({});
+        }}
+      >
+        search
+      </button>
+      {useSwr?.loading ? (
+        'loading....'
+      ) : (
+        <ul>
+          {useSwr?.data?.map((todo: any) => (
+            <li key={todo.id}>{todo.todoname}</li>
+          ))}
+        </ul>
+      )}
+
+      <Divider orientation="left" plain dashed>
+        突变
+      </Divider>
+      <button
+        onClick={() => {
+          useMutate?.run({});
+        }}
+      >
+        search
+      </button>
+      <p>{useMutate?.data}</p>
+
+      <Divider orientation="left" plain dashed>
+        依赖
+      </Divider>
+      <select onChange={(e) => setSchoolId(e.target.value)} value={schoolId}>
+        <option value="1">school1</option>
+        <option value="2">school2</option>
+        <option value="3">school3</option>
+      </select>
+      <p>School:{useDep?.loading ? 'loading' : useDep?.data}</p>
     </Card>
   );
 };
