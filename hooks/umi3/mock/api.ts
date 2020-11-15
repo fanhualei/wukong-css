@@ -2,6 +2,40 @@ import mockjs from 'mockjs';
 import { Request, Response } from 'express';
 import { delay } from 'roadhog-api-doc';
 
+export interface UserListItem {
+  id: string;
+  name: string;
+  gender: 'male' | 'female';
+  email: string;
+  disabled: boolean;
+}
+
+export interface UserSearchParams {
+  current: number;
+  pageSize: number;
+  filters?: {};
+  sorter?: { field?: string; order?: ['ascend', 'descend'] };
+}
+
+function fakeUserList(count: number): UserListItem[] {
+  const list: UserListItem[] = [];
+
+  for (let i = 1; i < count + 1; i++) {
+    list.push(
+      mockjs.mock({
+        id: `${i}`,
+        name: `@cname`,
+        'gender|1': ['male', 'female'],
+        email: '@email',
+        'disabled|1': [true, false],
+      }),
+    );
+  }
+  return list;
+}
+
+const userListConst: UserListItem[] = fakeUserList(55);
+
 const proxy = {
   // 支持值为 Object 和 Array
   'GET /api/users': { users: [1, 2] },
@@ -90,22 +124,62 @@ const proxy = {
   //模拟一个分页列表
   'GET /api/demo/getUserList': (req: Request, res: Response) => {
     console.log(`/api/demo/getUserList`);
-    const current = req.query.current || 1;
-    const pageSize = req.query.pageSize || 10;
-    res.send(
-      mockjs.mock({
-        total: 55,
-        [`list|${pageSize}`]: [
-          {
-            id: '@guid',
-            name: '@cname',
-            'gender|1': ['male', 'female'],
-            email: '@email',
-            disable: false,
-          },
-        ],
-      }),
+
+    let current: number = <number>(req.query.current || 1);
+    const pageSize: number = <number>(req.query.pageSize || 10);
+
+    const total: number = userListConst.length;
+    const totalPage: number = Math.ceil(total / pageSize);
+
+    const sorter = JSON.parse(
+      (req.query.sorter ? req.query.sorter : '{}') as string,
     );
+    const filters = JSON.parse(
+      (req.query.filters ? req.query.filters : '{}') as string,
+    );
+
+    let currentList: UserListItem[] = userListConst;
+
+    console.log(sorter);
+    if (sorter) {
+      currentList = currentList.sort((prev, next) => {
+        const key = sorter['field'] as string;
+        // @ts-ignore
+        if (sorter[key] === 'descend') {
+          // @ts-ignore
+          return next[key] - prev[key];
+        } else {
+          // @ts-ignore
+          return prev[key] - next[key];
+        }
+      });
+    } else {
+      currentList = userListConst;
+    }
+
+    if (current > totalPage) {
+      current = totalPage;
+    }
+    if (current <= 0) {
+      current = 1;
+    }
+    console.log(current);
+
+    //const currentList: UserListItem[] = [];
+
+    let renList: UserListItem[] = currentList.slice(
+      (current - 1) * pageSize,
+      current * pageSize,
+    );
+
+    res.send({
+      total,
+      list: renList,
+    });
+  },
+
+  'GET /api/demo/getUserList1': (req: Request, res: Response) => {
+    res.send(userListConst);
   },
 };
 

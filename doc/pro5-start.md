@@ -987,3 +987,236 @@ export async function getUserList(params: {
 
 ### 5.2.3 Table
 
+#### ① 模拟mock
+
+下面的代码，关于排序那部分，没有实现
+
+```js
+ //模拟一个分页列表
+  'GET /api/demo/getUserList': (req: Request, res: Response) => {
+    console.log(`/api/demo/getUserList`);
+
+    let current: number = <number>(req.query.current || 1);
+    const pageSize: number = <number>(req.query.pageSize || 10);
+
+    const total: number = userListConst.length;
+    const totalPage: number = Math.ceil(total / pageSize);
+
+    const sorter = JSON.parse(
+      (req.query.sorter ? req.query.sorter : '{}') as string,
+    );
+    const filters = JSON.parse(
+      (req.query.filters ? req.query.filters : '{}') as string,
+    );
+
+    let currentList: UserListItem[] = userListConst;
+
+    console.log(sorter);
+    if (sorter) {
+      currentList = currentList.sort((prev, next) => {
+        const key = sorter['field'] as string;
+        // @ts-ignore
+        if (sorter[key] === 'descend') {
+          // @ts-ignore
+          return next[key] - prev[key];
+        } else {
+          // @ts-ignore
+          return prev[key] - next[key];
+        }
+      });
+    } else {
+      currentList = userListConst;
+    }
+
+    if (current > totalPage) {
+      current = totalPage;
+    }
+    if (current <= 0) {
+      current = 1;
+    }
+    console.log(current);
+
+    //const currentList: UserListItem[] = [];
+
+    let renList: UserListItem[] = currentList.slice(
+      (current - 1) * pageSize,
+      current * pageSize,
+    );
+
+    res.send({
+      total,
+      list: renList,
+    });
+  },
+```
+
+
+
+#### ②  创建service
+
+```js
+//模拟一个分页列表
+export interface UserListItem {
+  id: string;
+  name: string;
+  gender: 'male' | 'female';
+  email: string;
+  disabled: boolean;
+}
+
+export async function getUserList(params: {
+  current: number;
+  pageSize: number;
+  filters?: {};
+  sorter?: { field?: string; order?: ['ascend', 'descend'] };
+}) {
+  // console.log(params?.filters);
+  // console.log(params?.sorter);
+  return request<{ total: number; list: UserListItem[] }>(
+    `/api/demo/getUserList`,
+    {
+      params: { ...params },
+    },
+  );
+}
+```
+
+
+
+#### ③ 页面中调用
+
+```jsx
+import React, { useState } from 'react';
+import { useRequest } from 'ahooks';
+import { Card, Button, Divider, message, Table } from 'antd';
+
+import { getUserList, UserListItem } from '@/services/user';
+import listTest from '@/pages/listTest';
+
+const getUserListFun = (params: { current: number; pageSize: number }) => {
+  return getUserList({ ...params });
+};
+
+const columns = [
+  {
+    title: '编号',
+    dataIndex: 'id',
+    sorter: true,
+    filters: [
+      { text: '1-10', value: '10' },
+      { text: '11-?', value: '55' },
+    ],
+  },
+  { title: '名称', dataIndex: 'name', sorter: true },
+  {
+    title: '性别',
+    dataIndex: 'gender',
+    sorter: true,
+    filters: [
+      { text: '男', value: 'male' },
+      { text: '女', value: 'female' },
+    ],
+  },
+];
+
+export default () => {
+  const useTable = useRequest(getUserListFun, {
+    paginated: true,
+    defaultPageSize: 10,
+  });
+  //console.log(useTable?.params);
+  //定义查询与排序
+  const { sorter = {}, filters = {} } = useTable?.params[0] || ({} as any);
+  return (
+    <Card>
+      <Button onClick={useTable?.refresh} style={{ marginBottom: 16 }}>
+        刷新
+      </Button>
+      <Table columns={columns} rowKey="id" {...useTable?.tableProps} />
+    </Card>
+  );
+};
+```
+
+
+
+### 5.2.4 LoadMore
+
+#### ① 通过按钮LoadMore
+
+还用的上面Table例子的mock与service
+
+```jsx
+  //loadmore例子
+  const pageSize = 10;
+  const useLoadMore = useRequest(
+    (d: { total: number; list: [] } | undefined) => {
+      const current = d ? d?.list.length / pageSize + 1 : 1;
+      return getUserListFun({ current, pageSize });
+    },
+    {
+      loadMore: true,
+    },
+  );
+
+
+      <Divider orientation="left" plain dashed>
+        loadmore
+      </Divider>
+
+      {useLoadMore.loading ? (
+        <p>loading</p>
+      ) : (
+        <ul style={{ marginLeft: 28 }}>
+          {useLoadMore.data?.list.map((user: UserListItem) => (
+            <li key={user.id}>
+              {user.id} - {user.name}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <Button
+        onClick={useLoadMore?.loadMore}
+        disabled={useLoadMore.data?.total === useLoadMore.data?.list.length}
+        loading={useLoadMore.loadingMore}
+      >
+        LoadMore
+      </Button>
+```
+
+
+
+#### ② 滚动轴loadMore
+
+如果 options 中存在 `ref`，则在滚动到底部时，自动触发 loadMore。当然此时你必须设置 `isNoMore`, 以便让 `useRequest` 知道何时停止。
+
+追加下面的代码
+
+```diff
+  //loadmore例子
++ const containerRef = useRef<HTMLDivElement>(null);
+  const pageSize = 10;
+  const useLoadMore = useRequest(
+    (d: { total: number; list: [] } | undefined) => {
+      const current = d ? d?.list.length / pageSize + 1 : 1;
+      return getUserListFun({ current, pageSize });
+    },
+    {
+      loadMore: true,
++     ref: containerRef,
++     isNoMore: (d) => (d ? d.list.length >= d.total : false),
+    },
+  );
+```
+
+
+
+在整个页面中，追加一个Div
+
+```jsx
+<div ref={containerRef} style={{ height: 200, overflowY: 'auto' }}>
+  .................................
+</div>
+```
+

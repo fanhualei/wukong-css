@@ -63,9 +63,15 @@ export interface UserListItem {
 export async function getUserList(params: {
   current: number;
   pageSize: number;
-  gender?: string;
+  filters?: {};
+  sorter?: { field?: string; order?: ['ascend', 'descend'] };
 }) {
+  // console.log(params?.filters);
+  // console.log(params?.sorter);
   return request<{ total: number; list: UserListItem[] }>(
-    `/api/demo/getUserList?current=${params?.current}&pageSize=${params?.pageSize}`,
+    `/api/demo/getUserList`,
+    {
+      params: { ...params },
+    },
   );
 }
