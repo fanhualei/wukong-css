@@ -59,6 +59,11 @@ export default defineConfig({
           path: '/admin/table',
           component: 'admin/table',
         },
+        {
+          name: 'ui',
+          path: '/admin/ui',
+          component: 'admin/ui',
+        },
       ],
     },
     {

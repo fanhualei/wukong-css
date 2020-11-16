@@ -1220,3 +1220,159 @@ export default () => {
 </div>
 ```
 
+
+
+## 5.3 UI
+
+
+
+### 5.3.1 useDrop & useDrag
+
+一对帮助你处理在拖拽中进行数据转移的 hooks
+
+> useDrop 可以单独使用来接收文件、文字和网址的拖拽。
+>
+> useDrag 允许一个 dom 节点被拖拽，需要配合 useDrop 使用。
+>
+> 向节点内触发粘贴时也会被视为拖拽的内容
+
+
+
+* 可以拖动的内容有：
+  * file：系统上的一个文件
+  * Html上的一个组件
+  * 黏贴操作
+  * 在浏览器地址栏中拖动一个Url
+
+
+
+
+
+```less
+.drawer {
+  border: 1px dashed #e8e8e8;
+  padding: 16px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.box {
+  border: 1px solid #e8e8e8;
+  padding: 16px;
+  width: 80px;
+  text-align: center;
+  margin-right: 16px;
+}
+```
+
+
+
+
+
+```jsx
+import React, { useState } from 'react';
+import { Card, Divider } from 'antd';
+import { useDrag, useDrop } from 'ahooks';
+import styles from './index.less';
+
+export default () => {
+  //设置一个中间变量
+  const [dragging, setDragging] = useState<string | null>(null);
+  const getDragProps = useDrag({
+    onDragStart: (data) => {
+      setDragging(data);
+    },
+    onDragEnd: () => {
+      setDragging(null);
+    },
+  });
+
+  const getDropsProps = (id: string) => {
+    return useDrop({
+      onDom: (content: string, e) => {
+        alert(`${id}: ${content} 被放入了`);
+      },
+      onFiles: (files, e) => {
+        console.log(e, files);
+        alert(`${id}: ${files.length} file dropped`);
+      },
+      onUri: (uri, e) => {
+        console.log(e);
+        alert(`${id}: uri= ${uri} dropped`);
+      },
+      onText: (text, e) => {
+        console.log(e);
+        alert(`'${id}: text= ${text}' dropped`);
+      },
+    });
+  };
+
+  const [drop1Props, { isHovering: drop1Hovering }] = getDropsProps('d1');
+  const [drop2Props, { isHovering: drop2Hovering }] = getDropsProps('d2');
+
+  return (
+    <Card>
+      <Divider orientation="left" plain dashed>
+        拖拽
+      </Divider>
+      <div id="a1" className={styles.drawer} {...drop1Props}>
+        {drop1Hovering ? ' release here ' : 'drop here 1'}
+      </div>
+
+      <div id="a2" className={styles.drawer} {...drop2Props}>
+        {drop2Hovering ? ' release here ' : 'drop here 1'}
+      </div>
+      <div
+        style={{
+          marginTop: 12,
+          marginBottom: 12,
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <div className={styles.box} {...getDragProps(`box1`)}>
+          box1
+        </div>
+        <div className={styles.box} {...getDragProps(`box2`)}>
+          box2
+        </div>
+        <a {...getDragProps(`a1`)}>你好呀</a>
+      </div>
+      <div>{dragging ? <>正在拖动:{dragging}</> : '没有拖动'}</div>
+    </Card>
+  );
+};
+
+
+```
+
+
+
+### 5.3.2 useDynamicList
+
+一个帮助你管理列表状态，并能生成唯一 key 的 Hook。
+
+动态生成UI的组件。
+
+
+
+#### ① Form的使用
+
+Form的基本用法
+
+* Form设置
+  * 给整体指定初始化值`initialValues={{ remember: true }}`
+  * `Form.Item` 来设定校验标准
+* Form函数
+  * 使用`const [form] = Form.useForm();`来调用相关函数
+  * `from.validateFields().then().catch()`
+
+
+
+#### ②  useDynamicList使用
+
+* 定义一个`useDynamicList`对象。
+* 定义一个`Row`函数，会调用`useDynamicList`对象的函数：
+  * getKey：生成ID
+  * remove: 移除
+  * push：追加
