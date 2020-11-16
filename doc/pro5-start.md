@@ -1222,7 +1222,7 @@ export default () => {
 
 
 
-## 5.3 UI
+## 5.3 UI-hooks
 
 
 
@@ -1376,3 +1376,194 @@ Form的基本用法
   * getKey：生成ID
   * remove: 移除
   * push：追加
+
+
+
+在拖动的过程中，会使用一个[react组件](https://github.com/raisezhang/react-drag-listview)
+
+
+
+```jsx
+ //动态添加html元素的例子
+  const useDy = useDynamicList(['小鱼', '岑岑']);
+  const [form] = Form.useForm();
+
+  const [resule, setResult] = useState('');
+  const Row = (index: number, item: any) => (
+    <div
+      style={{ display: 'flex', alignItems: 'baseline' }}
+      key={useDy.getKey(index)}
+    >
+      <div>
+        <Form.Item
+          rules={[{ required: true, message: 'required' }]}
+          name={['id', useDy.getKey(index)]}
+          initialValue={item}
+        >
+          <Input style={{ width: 300 }} placeholder="please input you name" />
+        </Form.Item>
+      </div>
+      <div>
+        {useDy.list.length > 1 && (
+          <MinusCircleOutlined
+            style={{ marginLeft: 8 }}
+            onClick={() => useDy.remove(index)}
+          />
+        )}
+        <PlusCircleOutlined
+          style={{ marginLeft: 8 }}
+          onClick={() => useDy.push('')}
+        />
+      </div>
+    </div>
+  );
+
+
+return (
+    <Card>
+       <Divider orientation="left" plain dashed>
+        useDynamicList:动态增加组件
+      </Divider>
+      <Form form={form}>{useDy.list.map((ele, index) => Row(index, ele))}</Form>
+
+      <Button
+        style={{ marginTop: 8 }}
+        type="primary"
+        onClick={() =>
+          form
+            .validateFields()
+            .then((val) => {
+              console.log(val);
+              setResult(
+                JSON.stringify(
+                  (val || {}).id.filter((e: string) => {
+                    console.log(!!e);
+                    return !!e;
+                  }),
+                ),
+              );
+            })
+            .catch(() => {})
+        }
+      >
+        提交
+      </Button>
+
+      <div>{resule}</div>
+    </Card>
+  );
+```
+
+
+
+### 5.3.3 useSelections
+
+常见联动 checkbox 逻辑封装，支持多选，单选，全选逻辑，还提供了是否选择，是否全选，是否半选的状态。
+
+下面是一个例子，从服务器获取数据，然后进行选中。
+
+```jsx
+  //useSelections:常见联动 checkbox 逻辑封装 例子
+  const useUserList = useRequest(getUserList, {
+    onSuccess: ({ list }) => {
+      //设置那个元素被选中，也可以这样来用
+      useUserSelection.setSelected([list[1]]);
+    },
+  });
+  const useUserSelection = useSelections(
+    useUserList?.data?.list ? useUserList?.data?.list : [],
+    [],
+  );
+
+  const selectedStr = (selected: UserListItem[]) => {
+    let ren: string = '';
+    selected.forEach((user: UserListItem) => {
+      ren = ren + ' ' + user.name;
+    });
+    return ren;
+  };
+
+      <Divider orientation="left" plain dashed>
+        useSelections:常见联动 checkbox 逻辑封装
+      </Divider>
+      <em>
+        支持多选，单选，全选逻辑，还提供了是否选择，是否全选，是否半选的状态。
+      </em>
+      <div style={{ marginTop: 20 }}></div>
+      <div style={{ marginTop: 20 }}>
+        <Checkbox
+          checked={useUserSelection.allSelected}
+          onClick={useUserSelection.toggleAll}
+          indeterminate={useUserSelection.partiallySelected}
+        >
+          Check All
+        </Checkbox>
+        {'    '}[选中：{selectedStr(useUserSelection.selected)}]
+      </div>
+
+      <div style={{ marginTop: 20 }}>
+        {useUserList.data?.list.map((user) => (
+          <Checkbox
+            checked={useUserSelection.isSelected(user)}
+            onClick={() => useUserSelection.toggle(user)}
+            key={user.id}
+          >
+            {user.name}
+          </Checkbox>
+        ))}
+      </div>
+```
+
+
+
+### 5.3.4 useVirtualList
+
+提供虚拟化列表能力的 Hook，用于解决展示海量数据渲染时首屏渲染缓慢和滚动卡顿问题。
+
+提供一个列表，用来显示很多数据，具体看[官网的介绍](https://ahooks.js.org/zh-CN/hooks/ui/use-virtual-list)
+
+
+
+## 5.4 SideEffect Hooks
+
+
+
+| 名称          | 说明                              |
+| ------------- | --------------------------------- |
+| useDebounce   | 处理防抖值的 Hook                 |
+| useDebounceFn | 处理防抖函数的 Hook               |
+| useInterval   | 处理 setInterval 的 Hook          |
+| useThrottle   | 处理节流值的 Hook                 |
+| useThrottleFn | 处理节流函数的 Hook，跟防抖差不多 |
+| useTimeout    | 处理 setTimeout 计时器函数的 Hook |
+
+
+
+## 5.5 State
+
+
+
+| 名称                   | 说明                                                         |
+| ---------------------- | ------------------------------------------------------------ |
+| useUrlState            | 将状态同步到 url query 中                                    |
+| useBoolean             | 优雅的管理 boolean 值的 Hook                                 |
+| useControllableValue   | 在某些组件开发时，我们需要组件的状态即可以自己管理，也可以被外部控制，useControllableValue 就是帮你管理这种状态的 Hook。 |
+| useCookieState         | 一个可以将状态持久化存储在 cookie 中的 Hook                  |
+| useCountDown           | 一个用于管理倒计时的Hook                                     |
+| useCounter             | 一个可以管理 count 的 Hook                                   |
+| useHistoryTravel       | 优雅的管理状态变化历史，可以快速在状态变化历史中穿梭 - 前进跟后退。例如设置成undo redo |
+| useLocalStorageState   | 一个可以将状态持久化存储在 localStorage 中的 Hook 。         |
+| useMap                 | 一个可以管理 Map 类型状态的 Hook                             |
+| useNetwork             | 一个可以管理网络连接状态的 Hook。                            |
+| usePrevious            | 保存上一次渲染时状态的 Hook                                  |
+| useSessionStorageState | 一个可以将状态持久化存储在 sessionStorage 中的 Hook。        |
+| useSetState            | 管理 object 类型 state 的 Hooks，用法与 class 组件的 `this.setState` 基本一致。 |
+| useTitle               | 用于设置页面标题的 Hook                                      |
+| useToggle              | 用于在两个状态值间切换的 Hook。                              |
+| useWebSocket           | 用于处理 WebSocket 的 Hook。                                 |
+| useWhyDidYouUpdate     | 帮助开发者排查是什么改变导致了组件的 rerender                |
+
+
+
+### 5.5.1 useWebSocket
+

@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { Card, Divider, Button, Input, Form } from 'antd';
+import { Card, Divider, Button, Input, Form, Checkbox } from 'antd';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { useDrag, useDrop, useDynamicList } from 'ahooks';
+import {
+  useDrag,
+  useDrop,
+  useDynamicList,
+  useRequest,
+  useSelections,
+} from 'ahooks';
+
+import { getUserList, UserListItem } from '@/services/user';
 import styles from './index.less';
 
 export default () => {
@@ -73,6 +81,26 @@ export default () => {
     </div>
   );
 
+  //useSelections:常见联动 checkbox 逻辑封装 例子
+  const useUserList = useRequest(getUserList, {
+    onSuccess: ({ list }) => {
+      //设置那个元素被选中，也可以这样来用
+      useUserSelection.setSelected([list[1]]);
+    },
+  });
+  const useUserSelection = useSelections(
+    useUserList?.data?.list ? useUserList?.data?.list : [],
+    [],
+  );
+
+  const selectedStr = (selected: UserListItem[]) => {
+    let ren: string = '';
+    selected.forEach((user: UserListItem) => {
+      ren = ren + ' ' + user.name;
+    });
+    return ren;
+  };
+
   return (
     <Card>
       <Divider orientation="left" plain dashed>
@@ -130,8 +158,37 @@ export default () => {
       >
         提交
       </Button>
-
       <div>{resule}</div>
+
+      <Divider orientation="left" plain dashed>
+        useSelections:常见联动 checkbox 逻辑封装
+      </Divider>
+      <em>
+        支持多选，单选，全选逻辑，还提供了是否选择，是否全选，是否半选的状态。
+      </em>
+      <div style={{ marginTop: 20 }}></div>
+      <div style={{ marginTop: 20 }}>
+        <Checkbox
+          checked={useUserSelection.allSelected}
+          onClick={useUserSelection.toggleAll}
+          indeterminate={useUserSelection.partiallySelected}
+        >
+          Check All
+        </Checkbox>
+        {'    '}[选中：{selectedStr(useUserSelection.selected)}]
+      </div>
+
+      <div style={{ marginTop: 20 }}>
+        {useUserList.data?.list.map((user) => (
+          <Checkbox
+            checked={useUserSelection.isSelected(user)}
+            onClick={() => useUserSelection.toggle(user)}
+            key={user.id}
+          >
+            {user.name}
+          </Checkbox>
+        ))}
+      </div>
     </Card>
   );
 };
