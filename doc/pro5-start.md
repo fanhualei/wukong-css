@@ -1567,3 +1567,17 @@ return (
 
 ### 5.5.1 useWebSocket
 
+> 基本知识
+
+* useState
+  * 一旦修改了它就会造成组件的重新渲染
+* useRef
+  * 修改也不会引起组件渲染
+  * 另外一个作用是关联一个组件。
+* useMemo 
+  * 用于性能优化，通过记忆值来避免在每个渲染上执⾏高开销的计算。
+* useWebSocket 
+  * aHooks的组件
+
+
+

@@ -64,6 +64,11 @@ export default defineConfig({
           path: '/admin/ui',
           component: 'admin/ui',
         },
+        {
+          name: 'state',
+          path: '/admin/state',
+          component: 'admin/state',
+        },
       ],
     },
     {

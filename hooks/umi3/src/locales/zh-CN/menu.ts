@@ -54,4 +54,5 @@ export default {
   'menu.sysadmin.user': '用户管理',
   'menu.sysadmin.table': '表格例子',
   'menu.sysadmin.ui': 'UI-hooks例子',
+  'menu.sysadmin.state': '状态例子',
 };
