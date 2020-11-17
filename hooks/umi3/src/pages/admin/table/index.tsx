@@ -41,7 +41,9 @@ export default () => {
   const { sorter = {}, filters = {} } = useTable?.params[0] || ({} as any);
 
   //loadmore例子
+
   const containerRef = useRef<HTMLDivElement>(null);
+
   const pageSize = 10;
   const useLoadMore = useRequest(
     (d: { total: number; list: [] } | undefined) => {

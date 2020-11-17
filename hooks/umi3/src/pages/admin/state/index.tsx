@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useState } from 'react';
-import { Card, Input, Button, Space } from 'antd';
-import { useWebSocket } from 'ahooks';
+import { Card, Input, Button, Space, Divider } from 'antd';
+import { useWebSocket, useFullscreen } from 'ahooks';
 import styles from './index.less';
 
 enum ReadyState {
@@ -21,7 +21,7 @@ export default () => {
     connect,
   } = useWebSocket('wss://echo.websocket.org');
 
-  console.log(messageHistory);
+  //console.log(messageHistory);
 
   messageHistory.current = useMemo(() => {
     if (latestMessage) {
@@ -30,8 +30,15 @@ export default () => {
     return messageHistory.current;
   }, [latestMessage]);
 
+  //全屏的例子
+  const ref = useRef();
+  const [isFullscreen, { setFull, exitFull, toggleFull }] = useFullscreen(ref);
+
   return (
     <Card>
+      <Divider orientation="left" plain dashed>
+        websocket
+      </Divider>
       {text}
       <div>
         <Input
@@ -54,9 +61,25 @@ export default () => {
 
       <div>
         <p>received message: </p>
-        {messageHistory.current.map((message, index) => (
-          <p key={index}>{message?.data}</p>
+        {messageHistory.current.map((value, index) => (
+          <p key={index}>{value?.data}</p>
         ))}
+      </div>
+
+      <Divider orientation="left" plain dashed>
+        全屏
+      </Divider>
+      <div ref={ref} style={{ background: 'pink' }}>
+        dddd
+        <button type="button" onClick={setFull}>
+          setFull
+        </button>
+        <button type="button" onClick={exitFull} style={{ margin: '0 8px' }}>
+          exitFull
+        </button>
+        <button type="button" onClick={toggleFull}>
+          toggle
+        </button>
       </div>
     </Card>
   );

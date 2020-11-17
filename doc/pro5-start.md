@@ -1579,5 +1579,106 @@ return (
 * useWebSocket 
   * aHooks的组件
 
+> 下面的代码可以发送消息
 
+```jsx
+enum ReadyState {
+  Connecting = 0,
+  Open = 1,
+  Closing = 2,
+  Closed = 3,
+}
+
+export default () => {
+  const [text, setText] = useState('send message');
+  const messageHistory = useRef([]);
+  const {
+    readyState,
+    sendMessage,
+    latestMessage,
+    disconnect,
+    connect,
+  } = useWebSocket('wss://echo.websocket.org');
+
+  //console.log(messageHistory);
+
+  messageHistory.current = useMemo(() => {
+    if (latestMessage) {
+      return messageHistory.current.concat(latestMessage);
+    }
+    return messageHistory.current;
+  }, [latestMessage]);
+
+  return (
+    <Card>
+      {text}
+      <div>
+        <Input
+          value={text}
+          style={{ width: '50%' }}
+          onChange={(e) => setText(e.target.value)}
+        />
+      </div>
+
+      <Space style={{ marginTop: 16, marginBottom: 16 }}>
+        <Button
+          disabled={readyState !== ReadyState.Open}
+          onClick={() => sendMessage && sendMessage(text)}
+        >
+          send
+        </Button>
+        <Button disabled={readyState !== ReadyState.Open}>disconnect</Button>
+        <Button disabled={readyState == ReadyState.Open}>connect</Button>
+      </Space>
+
+      <div>
+        <p>received message: </p>
+        {messageHistory.current.map((value, index) => (
+          <p key={index}>{value?.data}</p>
+        ))}
+      </div>
+    </Card>
+  );
+};
+```
+
+
+
+## 5.6 Dom相关
+
+
+
+| 名称                  | 说明                                                         |
+| --------------------- | ------------------------------------------------------------ |
+| useClickAway          | 优雅的管理目标元素外点击事件的 Hook。例如单击 右键           |
+| useDocumentVisibility | 可以获取页面可见状态的 Hook。                                |
+| useEventListener      | 优雅使用 addEventListener 的 Hook。                          |
+| useEventTarget        | 常见表单控件(通过 e.target.value 获取表单值) 的 onChange 跟 value 逻辑封装，支持自定义值转换和重置功能。 |
+| useFavicon            | 用于设置与切换页面 favicon。                                 |
+| useFullscreen         | 一个用于处理 dom 全屏的 Hook。                               |
+| useHover              | 一个用于追踪 dom 元素是否有鼠标悬停的 Hook。                 |
+| useInViewport         | 一个用于判断 dom 元素是否在可视范围之内的 Hook。             |
+| useKeyPress           | 一个优雅的管理 keyup 和 keydown 键盘事件的 Hook，支持键盘组合键，定义键盘事件的 key 和 keyCode 别名输入 。 |
+| useMouse              | 一个跟踪鼠标位置的 Hook                                      |
+| useResponsive         | 在组件中获取响应式信息                                       |
+| useScroll             | 获取元素的滚动状态。                                         |
+| useSize               | 一个用于监听 dom 节点尺寸变化的 Hook                         |
+| useTextSelection      | 实时获取用户当前选取的文本内容及位置。配合 Popover 做划词翻译 |
+|                       |                                                              |
+|                       |                                                              |
+|                       |                                                              |
+
+
+
+## 5.7 Advanced
+
+
+
+| 名称            | 说明                                                         |
+| --------------- | ------------------------------------------------------------ |
+| useCreation     | `useCreation` 是 `useMemo` 或 `useRef` 的替代品。            |
+| useEventEmitter | 在多个组件之间进行事件通知有时会让人非常头疼，借助 EventEmitter ，可以让这一过程变得更加简单。 |
+| useLockFn       | 用于给一个异步函数增加竞态锁，防止并发执行。                 |
+| usePersistFn    | 持久化 function 的 Hook                                      |
+| useReactive     | 提供一种数据响应式的操作体验,定义数据状态不需要写`useState` , 直接修改属性即可刷新视图。 |
 
