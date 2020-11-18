@@ -1,4 +1,8 @@
-# Pro5 
+# Pro5 相关知识
+
+
+
+[TOC]
 
 
 
@@ -1681,4 +1685,71 @@ export default () => {
 | useLockFn       | 用于给一个异步函数增加竞态锁，防止并发执行。                 |
 | usePersistFn    | 持久化 function 的 Hook                                      |
 | useReactive     | 提供一种数据响应式的操作体验,定义数据状态不需要写`useState` , 直接修改属性即可刷新视图。 |
+
+
+
+# 6. ProComponents
+
+[官方代码](https://procomponents.ant.design/)
+
+
+
+## 6.1 ProLayout - 高级布局
+
+ProLayout 可以提供一个标准又不失灵活的中后台标准布局，同时提供一键切换布局形态，自动生成菜单等功能。与 PageContainer 配合使用可以自动生成面包屑，页面标题，并且提供低成本方案接入页脚工具栏。
+
+
+
+### 6.1.1 Layout使用
+
+在`app.txs`可以配置layout的属性。
+
+```jsx
+export const layout = ({
+  initialState,
+}: {
+  initialState: { settings?: LayoutSettings };
+}): BasicLayoutProps => {
+  return {
+    rightContentRender: () => <RightContent />,
+    footerRender: () => <Footer />,
+    ...initialState?.settings,
+  };
+};
+```
+
+
+
+### 6.1.2 PageContainer
+
+可以在模板文件中配置一个通用的`PageContainer`， 但是常用的是在每个页面中来设置。
+
+![](imgs/demo-proLayout.png)
+
+```jsx
+    <PageContainer
+      content="欢迎使用 ProLayout 组件"
+      extra={[
+        <Button key="3">操作</Button>,
+        <Button key="2">操作</Button>,
+        <Button key="1" type="primary">
+          主操作
+        </Button>,
+      ]}
+      avatar={{
+        icon: <AntDesignOutlined />,
+      }}
+      tags={tags()}
+      onBack={() => window.history.back()}
+      footer={[<Button>重置</Button>, <Button type="primary">提交</Button>]}
+    >
+```
+
+
+
+## 6.2 ProForm - 高级表单
+
+
+
+## 6.3 ProTable - 高级表格
 
