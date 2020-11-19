@@ -55,4 +55,6 @@ export default {
   'menu.sysadmin.table': '表格例子',
   'menu.sysadmin.ui': 'UI-hooks例子',
   'menu.sysadmin.state': '状态例子',
+  'menu.pro': '高级组件',
+  'menu.pro.form': '表单',
 };

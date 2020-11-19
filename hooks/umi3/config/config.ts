@@ -72,6 +72,19 @@ export default defineConfig({
       ],
     },
     {
+      path: '/pro',
+      name: 'pro',
+      access: 'canAdmin',
+      icon: 'smile',
+      routes: [
+        {
+          name: 'form',
+          path: '/pro/form',
+          component: '@/pages/pro/form',
+        },
+      ],
+    },
+    {
       component: './404',
     },
   ],

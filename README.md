@@ -24,6 +24,7 @@
 
 ```shell
 git commit --no-verify -m "commit"
-	
+
+推荐使用rmdir 命令，批量删除大量文件时比del 更高效快速。
 ```
 

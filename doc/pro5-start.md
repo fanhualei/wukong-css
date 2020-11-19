@@ -1692,6 +1692,17 @@ export default () => {
 
 [官方代码](https://procomponents.ant.design/)
 
+> 有时候会在vscode出现错误提示，但是程序还可以执行。
+
+```
+1:删除yarn.lock
+2:删除：node_modules目录
+3:重新：tyran install
+4:重新打开vscode 
+```
+
+
+
 
 
 ## 6.1 ProLayout - 高级布局
@@ -1748,6 +1759,233 @@ export const layout = ({
 
 
 ## 6.2 ProForm - 高级表单
+
+
+
+当你想快速实现一个表单但不想花太多时间去布局时 ProForm 是最好的选择。
+
+
+
+### 6.2.1 表单设置
+
+
+
+#### ①  最基本类型
+
+默认情况下，在程序中输入下面代码，就会出现相关的按钮，只用实现`onFinish`函数就可以了
+
+```jsx
+<ProForm
+    onFinish={async (values) => {
+        console.log(values);
+    }}
+>
+    ....................
+    
+</ProForm>
+```
+
+
+
+> 重点内容
+
+| 属性          | 说明     |
+| ------------- | -------- |
+| onFinish      | 提交函数 |
+| initialValues | 默认值   |
+|               |          |
+|               |          |
+
+
+
+如期选中框的格式为字符型`date: "2020-11-24"`，如果想变成`date: 1606186124364` ，要在form中设置`dateFormatter="number"`
+
+
+
+#### ② 分组
+
+```jsx
+        <ProForm.Group title="基本属性">
+          <ProFormText
+            name="company"
+            label="我方公司名称"
+            placeholder="请输入名称"
+          />
+        </ProForm.Group>
+```
+
+
+
+
+
+
+
+#### ③ 改变按钮设置
+
+默认有两个按钮`提交与重置`，可以通过下面代码改变相关属性，下面的代码是例子，逻辑上不通的。
+
+```jsx
+<ProForm
+  submitter={{
+    // 配置按钮文本
+    searchConfig: {
+      resetText: '重置',
+      submitText: '提交',
+    },
+    // 配置按钮的属性
+    resetButtonProps: {},
+    submitButtonProps: {
+            size: 'large',
+            style: {
+              width: '100%',
+            },
+    },
+    // 完全自定义整个区域
+    render: (props, doms) => {
+      return (
+        <button type="button" id="rest" onClick={() => props?.onReset?.()}>
+          rest
+        </button>
+      );
+    },
+  }}
+/>
+```
+
+
+
+①②③④⑤⑥⑦⑧⑨
+
+### 6.2.2 表单布局
+
+
+
+#### ① 默认布局：从上到下
+
+![](imgs/pro-com-form-layout-base.png)
+
+这样也挺好，比较简单。从上到下，比较方便。
+
+```jsx
+export default () => {
+  return (
+    <div>
+      <ProForm
+        onFinish={async (values) => {
+          console.log(values);
+        }}
+      >
+        <ProFormText
+          name="company"
+          label="公司名称"
+          placeholder="请输入名称"
+          width="s"
+          tooltip="会在 label 旁增加一个 icon，悬浮后展示配置的信息"
+        />
+        <ProFormDatePicker name="date" label="日期" />
+      </ProForm>
+    </div>
+  );
+};
+```
+
+
+
+#### ② 从左到右(不建议用）
+
+label在左边，需要使用的span
+
+![](imgs/pro-com-form-layout-ex.png)
+
+
+
+```jsx
+export default () => {
+  const formItemLayout = {
+    labelCol: { span: 6 },
+    wrapperCol: { span: 18 },
+  };
+
+  return (
+    <div style={{ width: '80%', margin: 'auto' }}>
+      <ProForm
+        onFinish={async (values) => {
+          console.log(values);
+        }}
+        layout="horizontal"
+        {...formItemLayout}
+        submitter={{
+          render: (props, doms) => {
+            return (
+              <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
+                <Space>{doms}</Space>
+              </Form.Item>
+            );
+          },
+        }}
+      >
+        <ProFormText
+          name="company"
+          label="公司名称"
+          placeholder="请输入名称"
+          width="s"
+          tooltip="会在 label 旁增加一个 icon，悬浮后展示配置的信息"
+        />
+
+        <ProFormDatePicker name="date" label="日期"  />
+      </ProForm>
+    </div>
+  );
+};
+```
+
+
+
+#### ③  group分组
+
+![](imgs/pro-com-form-layout-group.png)
+
+
+
+
+
+### 6.2.3 功能分类
+
+#### ①  分步
+
+
+
+
+
+### 6.2.4 输入组件
+
+* 如何分组
+* 如何只读
+* 如何不可编辑
+* 如何给初始化数值
+* 如何显示必填
+* 如何验证
+
+
+
+
+
+#### ①  总览
+
+| 名称                   | 说明     |
+| ---------------------- | -------- |
+| ProFormText            | 文本输入 |
+| ProFormCaptcha         | 验证码   |
+| ProFormDateRangePicker |          |
+| ProFormSelect          |          |
+|                        |          |
+|                        |          |
+|                        |          |
+|                        |          |
+
+
+
+
 
 
 
