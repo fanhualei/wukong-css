@@ -1951,7 +1951,190 @@ export default () => {
 
 ### 6.2.3 功能分类
 
-#### ①  分步
+#### ①  分步表单
+
+通过设置`SetpsForm.StepForm`来实现
+
+```jsx
+import React from 'react';
+import ProForm, {
+  StepsForm,
+  ProFormText,
+  ProFormDatePicker,
+  ProFormSelect,
+  ProFormTextArea,
+  ProFormCheckbox,
+  ProFormDateRangePicker,
+} from '@ant-design/pro-form';
+
+import { Form, Space } from 'antd';
+import StepForm from '@ant-design/pro-form/lib/layouts/StepsForm/StepForm';
+
+const waitTime = (time: number = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
+
+export default () => {
+  return (
+    <div>
+      <StepsForm
+        onFinish={async (values) => {
+          console.log(values);
+        }}
+      >
+        <StepsForm.StepForm
+          name="base"
+          title="创建实验"
+          onFinish={async () => {
+            await waitTime(2000);
+            return true;
+          }}
+        >
+          <ProFormText
+            name="company"
+            label="公司名称"
+            placeholder="请输入名称"
+            width="s"
+            tooltip="会在 label 旁增加一个 icon，悬浮后展示配置的信息"
+          />
+          <ProFormDatePicker
+            name="date"
+            label="日期"
+            extra={
+              <div>
+                请输入注册日期，如果不知道，点击 <a>查询链接</a>
+              </div>
+            }
+            rules={[
+              {
+                required: true,
+                message: '请输入手机号!',
+              },
+            ]}
+          />
+        </StepsForm.StepForm>
+
+        <StepsForm.StepForm name="checkbox" title="设置参数">
+          <ProFormText
+            name="age"
+            label="年龄"
+            placeholder="请输入年龄"
+            width="s"
+          />
+        </StepsForm.StepForm>
+
+        <StepsForm.StepForm name="time" title="发布实验">
+          <ProFormText
+            name="test"
+            label="实验"
+            placeholder="请输入实验"
+            width="s"
+          />
+        </StepsForm.StepForm>
+      </StepsForm>
+    </div>
+  );
+};
+```
+
+
+
+#### ② 弹出表单
+
+弹出表单简化了`ant Modal`的功能，并给出了深度定制的入口
+
+> 如何打开？
+
+只能使用`trigger` 来弹出对话框，使用`ant 的 OnCancle`不行，需要深度定制。
+
+`onCancel={() => setVisiable(!visiable)}`
+
+```jsx
+export default () => {
+  return (
+    <div>
+      <ModalForm
+        title="新建表单"
+        trigger={
+          <Button type="primary">
+            {' '}
+            <PlusOutlined /> 新建表单
+          </Button>
+        }
+        onFinish={async (values) => {
+          console.log(values);
+          await waitTime(2000);
+          message.success('提交成功');
+          return true;
+        }}
+      >
+        <ProFormText name="id" initialValue="师父，什么是自然呀？" />
+      </ModalForm>
+    </div>
+  );
+};
+```
+
+
+
+> 如何深度定制
+
+通过`modalProps`来设置ant内部的属性
+
+```jsx
+        modalProps={{
+          maskClosable: false,
+        }}
+```
+
+
+
+#### ③ 弹出表单-包含分步
+
+这里就不能用`ModalForm`，使用ant的`Modal`，思路是：
+
+* 创建一个boolean变量：visible
+* 定义一个`StepsForm` ，例如分三步。
+  * 修改：`stepsFormRender` 让其刷新的时候，中间添加一个弹出框
+    * 按照`ant Modal`的属性进行设置。
+
+> 下面给出了例子代码
+
+```jsx
+<StepsForm
+        onFinish={async (values) => {
+          console.log(values);
+          await waitTime(1000);
+          setVisible(false);
+          message.success('提交成功！');
+        }}
+        formProps={{
+          validateMessages: {
+            required: '此项为必填项',
+          },
+        }}
+        stepsFormRender={(dom, submitter) => {
+          return (
+            <Modal
+              title="分布表单"
+              width={800}
+              onCancel={() => setVisible(false)}
+              visible={visible}
+              footer={submitter}
+              destroyOnClose
+            >
+              {dom}
+            </Modal>
+          );
+        }}
+      >
+```
+
+
 
 
 
