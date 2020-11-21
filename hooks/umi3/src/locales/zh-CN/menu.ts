@@ -57,4 +57,5 @@ export default {
   'menu.sysadmin.state': '状态例子',
   'menu.pro': '高级组件',
   'menu.pro.form': '表单',
+  'menu.pro.formFoot': '固定按钮',
 };

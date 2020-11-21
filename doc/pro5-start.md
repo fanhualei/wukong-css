@@ -2473,26 +2473,39 @@ export default () => {
 
 修改`ProForm中的submitter` 来重新渲染页面元素，把页面元素修改成：`<FooterToolbar>{dom}</FooterToolbar>`
 
+```jsx
+import React from 'react';
+import { Card } from 'antd';
+import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
+
+export default () => {
+  return (
+    <PageContainer>
+      <Card>
+        <ProForm
+          onFinish={async (values) => {
+            console.log(values);
+          }}
+          submitter={{
+            render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>,
+          }}
+        >
+          <ProFormText name="name" label="姓名" />
+        </ProForm>
+      </Card>
+    </PageContainer>
+  );
+};
+```
+
 
 
 
 
 ①②③④⑤⑦⑧⑨
 
-### 6.2.5 输入组件
-
-* 如何分组
-* 如何只读
-* 如何不可编辑
-* 如何给初始化数值
-* 如何显示必填
-* 如何验证
-
-
-
-
-
-#### ①  总览
+## 6.3 原子组件
 
 | 名称                   | 说明     |
 | ---------------------- | -------- |
@@ -2507,9 +2520,253 @@ export default () => {
 
 
 
+### 6.3.1 基本用法
+
+基本上与antd一样，有以下基本用法：
+
+* 如何分组
+* 如何只读
+* 如何不可编辑
+* 如何给初始化数值
+* 如何显示必填
+* 如何验证
 
 
 
 
-## 6.3 ProTable - 高级表格
+
+### 6.3.2 特殊用法
+
+#### ① ProFormSelect
+
+与 [select](https://ant.design/components/select-cn/) 相同。支持了 request 和 valueEnum 两种方式来生成 options。
+
+请求远程数据比较复杂，详细可以看[这里](https://procomponents.ant.design/components/field#远程数据)。
+
+> 有了 options 为什么要支持 valueEnum 呢？
+
+ valueEnum 可以与 table，descriptions 共用，在工程化上有优势。
+
+
+
+### 6.3.3  远程数据
+
+对于 `select`, `checkbox`, `radio`, `radioButton` 这四个 valueType,我们统一支持了 `request`,`params`,`fieldProps.options`，`valueEnum` 来支持远程数据，这几个属性分别有不同的用法。
+
+
+
+#### ① valueEnum
+
+valueEnum 是最基础的用法， 它支持传入一个 [`Object`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object) 或者是 [`Map`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Map)，相比于 options 支持更加丰富的定义，比如在表格中常见的各种 [badge](https://ant.design/components/badge-cn/#Badge)。
+
+```tsx
+const valueEnum = {
+  all: { text: '全部', status: 'Default' },
+  open: {
+    text: '未解决',
+    status: 'Error',
+  },
+  closed: {
+    text: '已解决',
+    status: 'Success',
+  },
+};
+```
+
+
+
+
+
+#### ② fieldProps.options
+
+options 是 antd 定义的标准，但是只有部分组件支持， ProComponents 扩展了组件，使得 `select`, `checkbox`, `radio`, `radioButton` 都支持了 `options`, 他们的用法是相同的。
+
+```tsx
+const options = [
+  {
+    label: 'item 1',
+    value: 'a',
+  },
+  {
+    label: 'item 2',
+    value: 'b',
+  },
+  {
+    label: 'item 3',
+    value: 'c',
+  },
+];
+
+// 或者不需要 label
+const options = ['chapter', 'chapter2'];
+
+// 列中定义
+const columns = [
+  {
+    title: '创建者',
+    width: 120,
+    dataIndex: 'creator',
+    valueType: 'select',
+    fieldProps: {
+      options: [
+        {
+          label: 'item 1',
+          value: 'a',
+        },
+        {
+          label: 'item 2',
+          value: 'b',
+        },
+        {
+          label: 'item 3',
+          value: 'c',
+        },
+      ],
+    },
+  },
+];
+```
+
+
+
+#### ③  `request` 和 `params`
+
+大部分时候我们是从网络中获取数据，但是获取写一个 hooks 访问访问还是比较繁琐的，同时要定义一系列状态，所以我们提供了 `request` 和 `params` 来获取数据。
+
+- `request` 是一个 promise,需要返回一个 options 相同的数据
+- `params` 一般而言 `request` 是惰性的，params 修改会触发一次 `request`
+
+```tsx
+const request = async () => [
+  { label: '全部', value: 'all' },
+  { label: '未解决', value: 'open' },
+  { label: '已解决', value: 'closed' },
+  { label: '解决中', value: 'processing' },
+];
+
+<ProFormSelect
+  name="select2"
+  label="Select"
+  params={{}}
+  valueType="select"
+  request={request}
+  placeholder="Please select a country"
+/>;
+
+// 列中定义
+const columns = [
+  {
+    title: '创建者',
+    width: 120,
+    dataIndex: 'creator',
+    valueType: 'select',
+    request,
+    params: {},
+  },
+];
+```
+
+在实际的使用中 `request` 增加了一个 5s 缓存，可能会导致数据更新不及时，如果需要频繁更新，建议使用 `state`+`fieldProps.options`。
+
+
+
+#### ④ 综合案例
+
+这个案例给出如何用request 以及 valueEnum与Option的方法。
+
+如果是这样，那么需要在后台给一个转换的函数，能将数据转换成前台需要的格式。
+
+```jsx
+import React from 'react';
+import { Button, Card } from 'antd';
+import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
+import ProForm, { ProFormText, ProFormSelect } from '@ant-design/pro-form';
+
+const valueEnum1 = {
+  all: { text: '全部', status: 'Default' },
+  open: {
+    text: '未解决',
+    status: 'Error',
+  },
+  closed: {
+    text: '已解决',
+    status: 'Success',
+  },
+};
+
+const valueEnum2 = {
+  all: '全部',
+  open: '未解决',
+  closed: '已解决',
+};
+
+const valueEnum3 = {
+  all: { text: '全部', age: 123 },
+  open: {
+    text: '未解决',
+    status: 'Error',
+  },
+  closed: {
+    text: '已解决',
+    status: 'Success',
+  },
+};
+
+const request1 = async (values: {}) => {
+  console.log('values--------');
+  console.log(values);
+
+  return [
+    { text: 'text', label: '全部', value: 'all' },
+    { label: '未解决', value: 'open' },
+    { label: '已解决', value: 'closed' },
+    { label: '解决中', value: 'processing' },
+  ];
+};
+
+export default () => {
+  const [params, setParams] = React.useState({});
+
+  return (
+    <PageContainer>
+      <Card>
+        <ProForm
+          onFinish={async (values) => {
+            console.log(values);
+          }}
+          submitter={{
+            render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>,
+          }}
+        >
+          <ProFormText name="name" label="姓名" />
+          <ProFormSelect name="s1" label="选择1" valueEnum={valueEnum1} />
+          <ProFormSelect name="s2" label="选择2" valueEnum={valueEnum2} />
+          <ProFormSelect name="s3" label="选择3" valueEnum={valueEnum3} />
+          <ProFormSelect
+            name="select2"
+            label="Select"
+            request={request1}
+            params={params}
+            placeholder="Please select a country"
+          />
+          <Button
+            onClick={() => {
+              setParams({ name: 'test' });
+            }}
+          >
+            修改按钮
+          </Button>
+        </ProForm>
+      </Card>
+    </PageContainer>
+  );
+};
+
+```
+
+
+
+
+
+## 6.4 ProTable - 高级表格
 

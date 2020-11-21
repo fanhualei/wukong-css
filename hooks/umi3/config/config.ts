@@ -82,6 +82,11 @@ export default defineConfig({
           path: '/pro/form',
           component: '@/pages/pro/form',
         },
+        {
+          name: 'formFoot',
+          path: '/pro/formFoot',
+          component: '@/pages/pro/formFoot',
+        },
       ],
     },
     {
