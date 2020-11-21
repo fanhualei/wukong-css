@@ -2334,6 +2334,149 @@ export default () => {
 
 
 
+#### ⑦ 轻量级检索
+
+![](imgs/pro-demo-light-quesry1.png)
+
+* collapse 只会放在一个图标中。
+* bordered 用来设置是否有边框
+* size 用来设置大小
+* ProFormRadio.Group 的`radioType="button"` 选择起来更方便
+
+```jsx
+export default () => {
+  const [size, setSize] = React.useState<SizeType>('middle');
+  const [border, setBorder] = React.useState<boolean>(false);
+  const [params, setParams] = React.useState({});
+
+  return (
+    <div key="lightquery" id="lightquery">
+      <Form>
+        <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}>
+          <Radio.Button value="middle">Middle</Radio.Button>
+          <Radio.Button value="small">Small</Radio.Button>
+        </Radio.Group>
+        <Checkbox
+          style={{ marginLeft: 35 }}
+          checked={border}
+          onChange={(e) => {
+            console.log(e.target.checked);
+            setBorder(e.target.checked);
+          }}
+        >
+          边框
+        </Checkbox>
+      </Form>
+      <br />
+      <LightFilter
+        size={size}
+        onFinish={async (values) => {
+          console.log(values);
+          setParams(values);
+        }}
+        bordered={border}
+      >
+        <ProFormText name="name" label="名称" />
+        <ProFormSelect
+          name="sex"
+          label="性别"
+          //valueEnum={{ man: '男', woman: '女' }}
+          options={[
+            { value: 'man', label: '男' },
+            { value: 'woman', label: '女' },
+          ]}
+        />
+
+        <ProFormSelect
+          name="area"
+          label="地区"
+          mode="multiple"
+          valueEnum={{
+            beijing: '北京',
+            shanghai: '上海',
+            guangzhou: '广州',
+            long: '这是一个很长的用来测试溢出的项目',
+          }}
+        />
+
+        <ProFormRadio.Group
+          name="radio"
+          radioType="button"
+          options={[
+            { value: 'weekly', label: '每周' },
+            {
+              value: 'quarterly',
+              label: '每季度',
+            },
+            {
+              value: 'monthly',
+              label: '每月',
+            },
+            {
+              value: 'yearly',
+              label: '每年',
+            },
+          ]}
+        />
+
+        <ProFormSlider name="range" label="范围" range max={200} />
+        <ProFormDigit name="count" label="数量" />
+        <ProFormSwitch name="open" label="开关" />
+
+        <ProFormDatePicker
+          name="name3"
+          label="不能清空的日期"
+          allowClear={false}
+        />
+        <ProFormDateRangePicker name="date" label="日期范围" secondary />
+        <ProFormDateTimePicker name="datetime" label="日期时间" secondary />
+        <ProFormTimePicker name="time" label="时间" secondary />
+      </LightFilter>
+      <Divider />
+      检索条件：{JSON.stringify(params)}
+    </div>
+  );
+};
+```
+
+
+
+#### ⑧ 固定按钮
+
+有两个思路：
+
+> 思路1：使用PageContainer 的footer
+
+* 做一个ref来指向form
+* 然后在`PageContainer 的footer`中调用`ref`的函数。
+
+```jsx
+    <PageContainer
+      content="欢迎使用 ProLayout 组件"
+      extra={[
+        <Button key="3">操作</Button>,
+        <Button key="2">操作</Button>,
+        <Button key="1" type="primary">
+          主操作
+        </Button>,
+      ]}
+      avatar={{
+        icon: <AntDesignOutlined />,
+      }}
+      tags={tags()}
+      onBack={() => window.history.back()}
+      footer={[<Button>重置</Button>, <Button type="primary">提交</Button>]}
+    >
+```
+
+> 思路2：官方介绍的方法。
+
+修改`ProForm中的submitter` 来重新渲染页面元素，把页面元素修改成：`<FooterToolbar>{dom}</FooterToolbar>`
+
+
+
+
+
 ①②③④⑤⑦⑧⑨
 
 ### 6.2.5 输入组件

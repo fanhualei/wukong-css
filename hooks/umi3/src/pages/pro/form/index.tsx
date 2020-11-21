@@ -14,6 +14,7 @@ import ModalStep from './modalStep';
 import Drawer from './drawer';
 import Query from './query';
 import QueryAdvance from './queryAdvance';
+import LightFilter from './lightFilter';
 
 export default () => {
   return (
@@ -40,16 +41,11 @@ export default () => {
           <Link href="#demoQuery" title="基本用法" />
           <Link href="#demoQueryAdvance" title="高级查询" />
         </Link>
+        <Link href="#demoLight" title="轻量查询">
+          <Link href="#demoLight" title="基本用法" />
+        </Link>
       </Anchor>
       <PageContainer subTitle="高级表单相关例子">
-        <Button
-          type="primary"
-          onClick={() => {
-            console.log('dddddd');
-          }}
-        >
-          ddddd
-        </Button>
         <Card title="模拟登录" style={{ marginBottom: 16 }} id="demoLogin">
           <Login />
         </Card>
@@ -104,6 +100,14 @@ export default () => {
           id="demoQueryAdvance"
         >
           <QueryAdvance />
+        </Card>
+        <Card
+          title="轻量检索"
+          style={{ marginBottom: 16 }}
+          key="demoLight"
+          id="demoLight"
+        >
+          <LightFilter />
         </Card>
       </PageContainer>
     </>
