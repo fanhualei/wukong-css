@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Space, Anchor } from 'antd';
+import { Card, Space, Anchor, Button } from 'antd';
 const { Link } = Anchor;
 import { PageContainer } from '@ant-design/pro-layout';
 
@@ -11,14 +11,17 @@ import SampleGroup from './sampleGroup';
 import StepForm from './stepForm';
 import Modal from './modal';
 import ModalStep from './modalStep';
+import Drawer from './drawer';
+import Query from './query';
+import QueryAdvance from './queryAdvance';
 
 export default () => {
   return (
     <>
       <Anchor
         affix={true}
-        style={{ float: 'right', marginRight: 65 }}
-        offsetTop={180}
+        style={{ float: 'right', marginRight: 25, paddingRight: 40 }}
+        offsetTop={230}
       >
         <Link href="#demoLogin" title="登录表单" />
         <Link href="#demoSqmple" title="基础用法">
@@ -31,8 +34,22 @@ export default () => {
           <Link href="#demoModal" title="基本用法" />
           <Link href="#demoModalStep" title="分步提交" />
         </Link>
+        <Link href="#demoDrawer" title="抽屉表单" />
+
+        <Link href="#demoQuery" title="查询表单">
+          <Link href="#demoQuery" title="基本用法" />
+          <Link href="#demoQueryAdvance" title="高级查询" />
+        </Link>
       </Anchor>
       <PageContainer subTitle="高级表单相关例子">
+        <Button
+          type="primary"
+          onClick={() => {
+            console.log('dddddd');
+          }}
+        >
+          ddddd
+        </Button>
         <Card title="模拟登录" style={{ marginBottom: 16 }} id="demoLogin">
           <Login />
         </Card>
@@ -71,6 +88,22 @@ export default () => {
           id="demoModalStep"
         >
           <ModalStep />
+        </Card>
+
+        <Card title="抽屉表单" style={{ marginBottom: 16 }} id="demoDrawer">
+          <Drawer />
+        </Card>
+
+        <Card title="查询表单" style={{ marginBottom: 16 }} id="demoQuery">
+          <Query />
+        </Card>
+
+        <Card
+          title="高级查询"
+          style={{ marginBottom: 16 }}
+          id="demoQueryAdvance"
+        >
+          <QueryAdvance />
         </Card>
       </PageContainer>
     </>

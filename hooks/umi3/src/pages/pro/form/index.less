@@ -12,3 +12,27 @@
   text-align: center;
   margin-right: 16px;
 }
+
+.quickSearch {
+  margin-left: 15px;
+  line-height: 40px;
+  a {
+    margin-right: 5px;
+    color: #999;
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+}
+
+.hiddenFilter {
+  display: none;
+}
+
+.hiddenLine {
+  :global {
+    .ant-tabs-nav::before {
+      border-bottom: 0;
+    }
+  }
+}

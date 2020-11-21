@@ -1766,7 +1766,35 @@ export const layout = ({
 
 
 
-### 6.2.1 表单设置
+### 6.2.1 重要事项
+
+* 尽量把`Input`组件放在一个Form中，不然有可能出现ID重复的警告。
+* 如果一个ProForm没有明显的按钮，可以使用useRef来获得函数(见检索-高级表单)
+  * const formRef: any = useRef();
+  * formRef.current.submit();
+  * formRef={formRef}
+
+
+
+> 如何得到表单的数值
+
+```jsx
+// 通过表单的onFinish
+
+// 通过ref,下面两种方法不友好，得到的日期类型不对。
+formRef.current.getFieldsValue()
+formRef.current.validateFields().then((values: any) => {
+}
+                                      
+//如果是ref，要先提交，然后在onFinish中得到
+formRef.current.submit();                                      
+```
+
+
+
+
+
+### 6.2.2 表单设置
 
 
 
@@ -1854,9 +1882,9 @@ export const layout = ({
 
 
 
-①②③④⑤⑥⑦⑧⑨
 
-### 6.2.2 表单布局
+
+### 6.2.3 表单布局
 
 
 
@@ -1949,7 +1977,7 @@ export default () => {
 
 
 
-### 6.2.3 功能分类
+### 6.2.4 功能分类
 
 #### ①  分步表单
 
@@ -2136,11 +2164,179 @@ export default () => {
 
 
 
+#### ④ 抽屉表单
+
+
+
+* 有几个注意点
+  * 使用trigger来控制是否显示
+
+```jsx
+export default () => {
+  return (
+    <DrawerForm
+      title="新建表单"
+      trigger={
+        <Button type="primary">
+          <PlusOutlined /> 新建
+        </Button>
+      }
+      onFinish={async (values) => {
+        console.log(values);
+        waitTime(1000);
+        message.success('提交成功！');
+        return true;
+      }}
+    >
+      <ProForm.Group>
+        <ProFormText
+          name="customer"
+          label="签约客户名称"
+          width="m"
+          tooltip="最长为 24 位"
+          placeholder="请输入名称"
+        />
+
+        <ProFormText
+          name="company"
+          label="我方公司名称"
+          placeholder="请输入名称"
+          width="m"
+        />
+
+        <ProFormDatePicker name="date" label="签约时间" width="m" />
+
+        <ProFormSelect
+          width="m"
+          name="unuseMode"
+          label="合约失效方式"
+          options={[
+            { value: 'time', label: '履行完毕' },
+            { value: 'person', label: '人为' },
+          ]}
+        />
+      </ProForm.Group>
+
+      <ProFormText width="m" name="id" label="主合同编号" />
+      <ProFormText name="project" label="项目名称" />
+    </DrawerForm>
+  );
+};
+```
+
+
+
+#### ⑤ 检索表单
+
+这个表单label与输入框是在一行的。
+
+* `defaultCollapsed` 会自动收起
+* `layout="vertical"` 是垂直显示
 
 
 
 
-### 6.2.4 输入组件
+
+#### ⑥ 检索-高级表单
+
+这个例子有点绕，看下面的图片吧。
+
+![](imgs/pro-demo-advance-form.png)
+
+```jsx
+import React, { useState, useRef } from 'react';
+import { Form, Card, Input, Tabs } from 'antd';
+const { TabPane } = Tabs;
+const { Search } = Input;
+import ProForm, {
+  QueryFilter,
+  ProFormText,
+  ProFormDatePicker,
+} from '@ant-design/pro-form';
+import styles from './index.less';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
+
+export default () => {
+  const quickSearch = ['小程序开发', '入驻', 'ISV 权限'];
+  const [showFilter, setShowFilter] = useState<boolean>(true);
+  const formRef: any = useRef();
+  const tabKey = useRef<string>('articles');
+  const [params, setParams] = useState({});
+
+  return (
+    <Card>
+      <div></div>
+      <Form>
+        <Input.Search
+          enterButton="搜索"
+          size="large"
+          onSearch={(value) => {
+            setParams({ search: value, type: tabKey.current });
+            formRef.current.submit();
+          }}
+          style={{ maxWidth: 500, width: '100%' }}
+        />
+        <span className={styles.quickSearch}>
+          {quickSearch.map((text) => (
+            <a key={text}>{text}</a>
+          ))}
+        </span>
+      </Form>
+
+      <Tabs
+        onChange={(key) => {
+          console.log(key);
+          tabKey.current = key;
+        }}
+        tabBarExtraContent={
+          <a
+            className={styles.filterTrigger}
+            onClick={() => {
+              setShowFilter(!showFilter);
+            }}
+          >
+            高级筛选{showFilter ? <UpOutlined /> : <DownOutlined />}
+          </a>
+        }
+      >
+        <TabPane tab="文章" key="articles" />
+        <TabPane tab="项目" key="projects" />
+        <TabPane tab="应用" key="application" />
+      </Tabs>
+
+      <QueryFilter
+        submitter={false}
+        span={24}
+        labelWidth="auto"
+        split
+        className={showFilter ? '' : styles.hiddenFilter}
+        formRef={formRef}
+        onFinish={async (values) => {
+          setParams({ ...params, ...values });
+          console.log(values);
+          console.log(params);
+        }}
+      >
+        <ProForm.Group title="名称">
+          <ProFormText name="name" />
+        </ProForm.Group>
+        <ProForm.Group title="详情">
+          <ProFormText name="age" label="年龄" />
+          <ProFormDatePicker name="replyDate" label="反馈时间" />
+        </ProForm.Group>
+      </QueryFilter>
+
+      <p>检索条件：{JSON.stringify(params)}</p>
+    </Card>
+  );
+};
+```
+
+
+
+①②③④⑤⑦⑧⑨
+
+### 6.2.5 输入组件
 
 * 如何分组
 * 如何只读
