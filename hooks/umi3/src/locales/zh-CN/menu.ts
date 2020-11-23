@@ -58,4 +58,5 @@ export default {
   'menu.pro': '高级组件',
   'menu.pro.form': '表单',
   'menu.pro.formFoot': '固定按钮',
+  'menu.pro.table': '高级表格',
 };

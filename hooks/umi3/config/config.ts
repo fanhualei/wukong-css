@@ -87,6 +87,11 @@ export default defineConfig({
           path: '/pro/formFoot',
           component: '@/pages/pro/formFoot',
         },
+        {
+          name: 'table',
+          path: '/pro/table',
+          component: '@/pages/pro/table',
+        },
       ],
     },
     {
