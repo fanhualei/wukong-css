@@ -8,6 +8,8 @@ import style from './index.less';
 
 import QueryTable from './queryTable';
 
+import NoQueryTable from './noQueryTable';
+
 export default () => {
   return (
     <>
@@ -26,6 +28,12 @@ export default () => {
       <PageContainer>
         <Card title="查询表格">
           <QueryTable />
+        </Card>
+      </PageContainer>
+
+      <PageContainer>
+        <Card title="不带查询条件的表格">
+          <NoQueryTable />
         </Card>
       </PageContainer>
     </>

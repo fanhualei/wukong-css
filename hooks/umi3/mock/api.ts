@@ -8,6 +8,10 @@ export interface UserListItem {
   gender: 'male' | 'female';
   email: string;
   disabled: boolean;
+  creator: string;
+  status: string;
+  createdAt: number;
+  memo: string;
 }
 
 export interface UserSearchParams {
@@ -16,6 +20,14 @@ export interface UserSearchParams {
   filters?: {};
   sorter?: { field?: string; order?: ['ascend', 'descend'] };
 }
+
+const valueEnum = {
+  0: 'close',
+  1: 'running',
+  2: 'online',
+  3: 'error',
+};
+const creators = ['付小小', '曲丽丽', '林东东', '陈帅帅', '兼某某'];
 
 function fakeUserList(count: number): UserListItem[] {
   const list: UserListItem[] = [];
@@ -28,6 +40,13 @@ function fakeUserList(count: number): UserListItem[] {
         'gender|1': ['male', 'female'],
         email: '@email',
         'disabled|1': [true, false],
+        creator: creators[Math.floor(Math.random() * creators.length)],
+        status: valueEnum[Math.floor(Math.random() * 10) % 4],
+        createdAt: Date.now() - Math.floor(Math.random() * 100000),
+        memo:
+          i % 2 === 1
+            ? '很长很长很长很长很长很长很长的文字要展示但是要留下尾巴'
+            : '简短备注文案',
       }),
     );
   }
@@ -164,8 +183,6 @@ const proxy = {
       current = 1;
     }
     console.log(current);
-
-    //const currentList: UserListItem[] = [];
 
     let renList: UserListItem[] = currentList.slice(
       (current - 1) * pageSize,

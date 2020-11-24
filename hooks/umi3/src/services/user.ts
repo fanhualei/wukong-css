@@ -58,11 +58,15 @@ export interface UserListItem {
   gender: 'male' | 'female';
   email: string;
   disabled: boolean;
+  creator: string;
+  status: string;
+  createdAt: number;
+  memo: string;
 }
 
 export async function getUserList(params: {
-  current: number;
-  pageSize: number;
+  current?: number;
+  pageSize?: number;
   filters?: {};
   sorter?: { field?: string; order?: ['ascend', 'descend'] };
 }) {

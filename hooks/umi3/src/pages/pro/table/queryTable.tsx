@@ -68,6 +68,13 @@ const columns: ProColumns<GithubIssueItem>[] = [
       processing: {
         text: '解决中',
         status: 'Processing',
+        valueEnum: {
+          all: { text: '全部', status: 'Default' },
+          close: { text: '关闭', status: 'Default' },
+          running: { text: '运行中', status: 'Processing' },
+          online: { text: '已上线', status: 'Success' },
+          error: { text: '异常', status: 'Error' },
+        },
       },
     },
   },
