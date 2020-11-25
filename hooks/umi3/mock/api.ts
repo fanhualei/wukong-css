@@ -12,6 +12,7 @@ export interface UserListItem {
   status: string;
   createdAt: number;
   memo: string;
+  gradeId: number;
 }
 
 export interface UserSearchParams {
@@ -43,6 +44,7 @@ function fakeUserList(count: number): UserListItem[] {
         creator: creators[Math.floor(Math.random() * creators.length)],
         status: valueEnum[Math.floor(Math.random() * 10) % 4],
         createdAt: Date.now() - Math.floor(Math.random() * 100000),
+        gradeId: (Math.floor(Math.random() * 10) % 6) + 1,
         memo:
           i % 2 === 1
             ? '很长很长很长很长很长很长很长的文字要展示但是要留下尾巴'

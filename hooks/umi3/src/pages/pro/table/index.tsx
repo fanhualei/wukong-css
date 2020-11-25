@@ -32,7 +32,7 @@ export default () => {
       </PageContainer>
 
       <PageContainer>
-        <Card title="不带查询条件的表格">
+        <Card title="不带查询条件:search={false}">
           <NoQueryTable />
         </Card>
       </PageContainer>

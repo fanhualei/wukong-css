@@ -2770,3 +2770,270 @@ export default () => {
 
 ## 6.4 ProTable - 高级表格
 
+
+
+### 6.4.1 基本功能
+
+掌握下面的功能，可以覆盖90%的应用场景。
+
+![](imgs/pro-demo-table-noquery.png)
+
+#### ① 数据查询
+
+
+
+方法1：
+
+* 建立一个service
+  * 如果为了标准化，可以在服务器端接受如下参数：params,sorter,filter
+* 在ProTable中引用
+
+```jsx
+      request={async (params, sorter, filter) => {
+        const result = await getUserList({
+          current: params.current,
+          pageSize: params.pageSize,
+        });
+        return {
+          data: result.list,
+          total: result.total,
+          success: true,
+        };
+      }}
+```
+
+
+
+#### ② ProTable属性设置
+
+默认分页大小
+
+```tsx
+      pagination={{ pageSize: 5 }}
+```
+
+
+
+检索区域的label对齐，为了让label跟表格对齐，可以使用下面的内容,但是为了好看，字数尽量一致
+
+```tsx
+      search={{
+        labelWidth: 'auto',
+      }}
+```
+
+
+
+必须设定的项目：
+
+* 指定rowKey，不然有错误警告
+* 指定colums
+
+
+
+不显示检索功能
+
+```tsx
+search={false}
+```
+
+
+
+
+
+#### ③ 新增按钮
+
+设置`ProTable`的其他属性
+
+```tsx
+const toolBar = (): React.ReactNode[] => {
+  return [
+    <Button>
+      导出数据
+      <DownOutlined />
+    </Button>,
+    <Button type="primary">新建</Button>,
+  ];
+};
+toolBarRender={toolBar}
+```
+
+
+
+#### ④  colums属性设置
+
+必要属性:标题与编号
+
+```tsx
+    title: '编号',
+    dataIndex: 'id',
+```
+
+
+
+友好型显示：将编号转换成便于理解的语言
+
+```tsx
+    valueEnum: {
+      all: { text: '全部' },
+      male: { text: '男' },
+      female: { text: '女' },
+    },
+```
+
+或者使用数字开头
+
+```tsx
+  {
+    title: '年级',
+    dataIndex: 'gradeId',
+    valueEnum: {
+      0: { text: '全部' },
+      1: { text: '一年级' },
+      2: { text: '二年级' },
+      3: { text: '三年级' },
+      4: { text: '四年级' },
+      5: { text: '五年级' },
+      6: { text: '六年级' },
+    },
+  },
+```
+
+
+
+排序与筛选
+
+```jsx
+sorter: true,
+filters: true,    
+```
+
+
+
+#### ⑤ 编辑删除按钮
+
+```tsx
+  {
+    title: '操作',
+    key: 'option',
+    width: 100,
+    valueType: 'option',
+    render: () => [<a key="modify">编辑</a>, <a key="delete">删除</a>],
+  },
+```
+
+可以做一个use钩子函数，传入两个参数：编辑与删除的回调函数（上面带有主键ID,与文本信息），这样就可以重用这个功能。
+
+
+
+#### ⑥   colums控制Form
+
+下拉框时，可以使用`valueEnum`来定义。但是如果想要跟`valueEnum`不一样，可以使用options
+
+```tsx
+  {
+    title: '年级',
+    dataIndex: 'gradeId',
+    valueEnum: {
+      0: { text: '全部' },
+      1: { text: '一年级' },
+      2: { text: '二年级' },
+      3: { text: '三年级' },
+      4: { text: '四年级' },
+      5: { text: '五年级' },
+      6: { text: '六年级' },
+    },
+    fieldProps: {
+      options: [
+        {
+          label: '低年级',
+          value: '1-2年级',
+        },
+        {
+          label: '中年级',
+          value: '3-4年级',
+        },
+        {
+          label: '高年级',
+          value: '5-6年级',
+        },
+      ],
+    },
+  },
+```
+
+如果想更高级的定义Form内容，可以使用：`renderFormItem`，具体看高级功能。
+
+
+
+如果不想让这个选项出现在搜索框:`search: false`
+
+```tsx
+  {
+    title: '备注',
+    dataIndex: 'memo',
+    ellipsis: true,
+    search: false,
+  },
+```
+
+
+
+#### ⑦ colums 状态图标
+
+通过valueEnum来的status来控制
+
+```tsx
+    valueEnum: {
+      all: { text: '全部', status: 'Default' },
+      close: { text: '关闭', status: 'Default' },
+      running: { text: '运行中', status: 'Processing' },
+      online: { text: '已上线', status: 'Success' },
+      error: { text: '异常', status: 'Error' },
+    },
+```
+
+
+
+
+
+
+
+### 6.4.2 业务逻辑设计
+
+有没有一个通用的场景？
+
+场景假设：每次只从服务器得到一页的数据，当跳转到第5页的时候。
+
+一：如果点击【新增】按钮，弹出对话框进行新增，新增成功后，这个页面怎么刷新？还在第5页码？新增的记录会在第几页显示？
+
+二：点击【删除】按钮，这个页面怎么刷新，还在第5页码？
+
+三：点击【修改】按钮，弹出修改对话款，修改成功后，这个页面怎么刷新，还在第5页码？
+
+![](imgs/pro-demo-table-logic-function.png)
+
+
+
+
+
+场景假设：每次只从服务器得到一页的数据，这时候需要进行相关的页面操作。
+
+* 点击某列，进行排序
+  * 跳转到第一页
+* 改变查询条件
+  * 跳转到第一页
+* 新增
+  * 跳转到那一页呢？
+    * 如果页面的默认显示顺序是最后一条，放在第一页的最上面，那么可以跳转到第一页。
+* 编辑与删除
+  * 跳转吗？怎么显示？
+    * 如果是删除，那么就从服务器刷新出数据，然后刷新这一页的数据。
+    * 如果是修改：还刷新这一些，如果是排序规则按照`编辑时间`排序，那么就跳转到第一页，否则还在这一页。
+
+> 还有一个应用场景
+
+提示用户，新增加或编辑的数据，被放置在第一页，用户是在当前页，或者跳转到相应的页面。
+
+
+

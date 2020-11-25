@@ -61,6 +61,7 @@ export interface UserListItem {
   creator: string;
   status: string;
   createdAt: number;
+  gradeId: number;
   memo: string;
 }
 
