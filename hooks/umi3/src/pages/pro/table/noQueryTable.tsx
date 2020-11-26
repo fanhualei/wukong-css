@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tooltip } from 'antd';
+import { Button, Form } from 'antd';
 import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import ProTable, { ProColumns, TableDropdown } from '@ant-design/pro-table';
 
@@ -103,11 +103,13 @@ const columns: ProColumns<UserListItem>[] = [
 
 const toolBar = (): React.ReactNode[] => {
   return [
-    <Button>
+    <Button key="ddd">
       导出数据
       <DownOutlined />
     </Button>,
-    <Button type="primary">新建</Button>,
+    <Button type="primary" key="bbb">
+      新建
+    </Button>,
   ];
 };
 
@@ -126,12 +128,12 @@ export default () => {
       rowKey="id"
       pagination={{ pageSize: 5 }}
       request={async (params, sorter, filter) => {
-        console.log(params, sorter, filter);
+        //console.log(params, sorter, filter);
         const result = await getUserList({
           current: params.current,
           pageSize: params.pageSize,
         });
-        console.log(result);
+        //console.log(result);
         return {
           data: result.list,
           total: result.total,

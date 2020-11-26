@@ -10,6 +10,7 @@ import QueryTable from './queryTable';
 
 import NoQueryTable from './noQueryTable';
 import Expandable from './expandable';
+import LeftAndRight from './leftAndRight';
 
 export default () => {
   return (
@@ -28,6 +29,10 @@ export default () => {
 
       <Card title="嵌套表格" style={{ marginBottom: 15 }} key="Expandable">
         <Expandable />
+      </Card>
+
+      <Card title="左右结构" style={{ marginBottom: 15 }} key="leftAndRight">
+        <LeftAndRight />
       </Card>
     </PageContainer>
   );

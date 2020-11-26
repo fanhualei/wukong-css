@@ -3090,6 +3090,31 @@ valueType: 'option',
 
 
 
+日期区间
+
+```tsx
+valueType: 'dateRange',
+```
+
+
+
+代码类型
+
+```tsx
+valueType: 'code',
+```
+
+
+
+百分比
+
+```tsx
+valueType: {
+        type: 'percent',
+        precision: 0,
+},
+```
+
 
 
 
@@ -3146,6 +3171,33 @@ toolBarRender={false}
 
 
 
+只去掉ToolBar后面那三个固定的按钮
+
+```tsx
+import { ListToolBarProps } from '@ant-design/pro-table/lib/component/ListToolBar';  
+
+const toolBarRender: ListToolBarProps = {
+    search: {
+      onSearch: (keyWords: string) => {
+        console.log(keyWords);
+        alert(keyWords);
+      },
+    },
+    actions: [
+      <Button type="primary" key="leftRightButton">
+        新建项目
+      </Button>,
+    ],
+  };
+
+    <ProTable
+      pagination={false}
+      toolbar={toolBarRender}
+    />
+```
+
+
+
 去掉查询Form
 
 ```tsx
@@ -3168,6 +3220,10 @@ search={{
 
 ### 6.4.4 高级功能
 
+![](imgs/pro-demo-table-expandabl.png)
+
+
+
 
 
 #### ①  嵌套表格
@@ -3179,7 +3235,308 @@ search={{
 
 
 
+下面做两个Mock，一个是用户表，一个是用户登录日志表。
 
+```typescript
+//模拟日志ID
+const actionTypes = ['login', 'logout', 'regist', 'searchGoods', 'delGoogs'];
+
+export interface LogListItem {
+  logId: number;
+  userId: string;
+  actionType: string;
+  createdAt: number;
+  memo: string;
+}
+
+function fakeUserLogList(count: number): LogListItem[] {
+  const list: LogListItem[] = [];
+  let logId = 0;
+
+  for (let i = 1; i < count + 1; i++) {
+    for (let j = 1; j < 30; j++) {
+      logId = logId + 1;
+      list.push(
+        mockjs.mock({
+          userId: `${i}`,
+          logId,
+          actionType: actionTypes[Math.floor(Math.random() * 10) % 5],
+          createdAt: Date.now() - Math.floor(Math.random() * 100000),
+          memo:
+            j % 2 === 1
+              ? '很长很长很长很长很长很长很长的logloglgo'
+              : '简短log文案',
+        }),
+      );
+    }
+  }
+  return list;
+}
+const LogListConst: LogListItem[] = fakeUserLogList(55);
+```
+
+
+
+制作一个组件，可以从父表格，将当前记录传递过去。
+
+```tsx
+const expandedRowRender = (recorder: UserListItem) => {
+  return <SubTable user={recorder} />;
+};    
+
+<ProTable<UserListItem>
+      expandable={{ expandedRowRender }}
+/>
+```
+
+
+
+在嵌套表格组件中，获取userId，然后进行查询。有以下注意事项：
+
+* 不显示分页：showSizeChanger
+* 表格紧凑：size="small"
+* 自动缩放：ellipsis: true,
+
+```tsx
+import React from 'react';
+import ProTable, { ProColumns } from '@ant-design/pro-table';
+import { UserListItem, LogListItem, getLogList } from '@/services/user';
+
+interface SubTableProps {
+  user: UserListItem;
+}
+
+const columns: ProColumns<LogListItem>[] = [
+  {
+    title: '编号',
+    dataIndex: 'logId',
+  },
+  {
+    title: '操作',
+    dataIndex: 'actionType',
+    valueEnum: {
+      login: { text: '登录' },
+      logout: { text: '退出' },
+      searchGoods: { text: '查询商品' },
+      regist: { text: '注册' },
+      delGoogs: { text: '删除商品' },
+    },
+  },
+  {
+    title: '操作时间',
+    dataIndex: 'createdAt',
+    valueType: 'dateTime',
+  },
+  {
+    title: '备注',
+    dataIndex: 'memo',
+    ellipsis: true,
+  },
+];
+
+const SubTable: React.FC<SubTableProps> = ({ user }) => {
+  console.log(user);
+  return (
+    <div>
+      <ProTable<LogListItem>
+        headerTitle={user?.name}
+        search={false}
+        toolBarRender={false}
+        rowKey="logId"
+        pagination={{
+          pageSize: 5,
+          showSizeChanger: false,
+        }}
+        size="small"
+        columns={columns}
+        request={async (params, sort, filter) => {
+          const result = await getLogList({
+            current: params.current,
+            pageSize: params.pageSize,
+            userId: user.id,
+          });
+          return {
+            data: result.list,
+            total: result.total,
+            success: true,
+          };
+        }}
+      />
+    </div>
+  );
+};
+
+export default SubTable;
+```
+
+
+
+#### ② 左右结构  
+
+![](imgs/proLeftAndRight.png)
+
+
+
+总体布局相关问题：
+
+* 如何实现左右结构？
+  * 使用了ProCard
+* 如何左右表格对齐？
+  * 使用了ProCard的ghost设置
+
+
+
+ProTable相关问题：
+
+* 如何没有Toolbar那三个按钮？
+  * `options={false}`
+* 如何有百分比，上下两个，以及code格式？
+  * column的`valueType`
+
+
+
+如何去掉重复warning
+
+* 设置RowKey，如果没有主键
+  * `rowKey={() => Math.floor(Math.random() * 1000)}`
+* ToolBar也会重复
+  * 给ToolBar的元素设置key
+
+
+
+下面是具体的代码
+
+```tsx
+import React from 'react';
+import { Button, Badge } from 'antd';
+import { BadgeProps } from 'antd/lib/badge';
+import ProTable, { ProColumns } from '@ant-design/pro-table';
+import ProCard from '@ant-design/pro-card';
+import { ListToolBarProps } from '@ant-design/pro-table/lib/component/ListToolBar';
+import { IpItem, IpLogItem, getIPList, getIPLogList } from '@/services/user';
+import { values } from 'lodash';
+
+const IpLogList: React.FC = () => {
+  const columns: ProColumns<IpLogItem>[] = [
+    {
+      title: '时间区间',
+      key: 'createdAtRange',
+      dataIndex: 'createdAtRange',
+      valueType: 'dateRange',
+    },
+    {
+      title: '时间点',
+      key: 'createdAt',
+      dataIndex: 'createdAt',
+      valueType: 'date',
+    },
+    {
+      title: '代码',
+      key: 'code',
+      width: 80,
+      dataIndex: 'code',
+      valueType: 'code',
+    },
+  ];
+
+  return (
+    <ProTable<IpLogItem>
+      columns={columns}
+      search={false}
+      toolBarRender={false}
+      rowKey="createdAt"
+      pagination={{
+        pageSize: 3,
+        showSizeChanger: false,
+      }}
+      request={async (params, sorter, filter) => {
+        const result: IpLogItem[] = await getIPLogList({
+          current: params.current,
+          pageSize: params.pageSize,
+        });
+        return {
+          data: result,
+          total: result.length,
+          success: true,
+        };
+      }}
+    />
+  );
+};
+
+const IpList: React.FC = () => {
+  const columns: ProColumns<IpItem>[] = [
+    {
+      title: 'IP',
+      render: (_, item) => {
+        return <Badge status={item.status} text={item.ip} />;
+      },
+    },
+    {
+      title: 'cpu',
+      dataIndex: 'cpu',
+      valueType: {
+        type: 'percent',
+        precision: 0,
+      },
+    },
+    {
+      title: 'mem',
+      dataIndex: 'mem',
+    },
+    {
+      title: 'disk',
+      dataIndex: 'disk',
+    },
+  ];
+
+  const toolBarRender: ListToolBarProps = {
+    search: {
+      onSearch: (keyWords: string) => {
+        console.log(keyWords);
+        alert(keyWords);
+      },
+    },
+    actions: [
+      <Button type="primary" key="leftRightButton">
+        新建项目
+      </Button>,
+    ],
+  };
+
+  return (
+    <ProTable<IpItem>
+      columns={columns}
+      search={false}
+      options={false}
+      rowKey={() => Math.floor(Math.random() * 1000)}
+      pagination={false}
+      toolbar={toolBarRender}
+      request={async (params, sort, filter) => {
+        const result: IpItem[] = await getIPList({});
+        return {
+          data: result,
+          total: result.length,
+          success: true,
+        };
+      }}
+    />
+  );
+};
+
+export default () => {
+  return (
+    <ProCard split="vertical" key="totle">
+      <ProCard colSpan="420px" key="left" ghost>
+        <IpList />
+      </ProCard>
+      <ProCard title="IP: 106.14.98.124" key="right">
+        <IpLogList />
+      </ProCard>
+    </ProCard>
+  );
+};
+```
 
 
 

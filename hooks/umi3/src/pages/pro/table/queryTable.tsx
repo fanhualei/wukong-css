@@ -125,7 +125,7 @@ export default () => {
       dateFormatter="string"
       headerTitle="高级表格"
       request={async (params = {}) => {
-        console.log(params);
+        //console.log(params);
         return request<{
           data: GithubIssueItem[];
         }>('https://proapi.azurewebsites.net/github/issues', {

@@ -105,3 +105,45 @@ export async function getLogList(params: {
     },
   );
 }
+
+export interface IpLogItem {
+  createdAtRange?: number[];
+  createdAt: number;
+  code: string;
+}
+
+export async function getIPLogList(params: {
+  current?: number;
+  pageSize?: number;
+  filters?: {};
+  sorter?: { field?: string; order?: ['ascend', 'descend'] };
+}) {
+  console.log(params);
+  console.log('=============================');
+  return request<{ total: number; list: IpLogItem[] }>(
+    `/api/demo/getIPLogList`,
+    {
+      params: { ...params },
+    },
+  );
+}
+
+export interface IpItem {
+  ip?: string;
+  cpu?: number | string;
+  mem?: number | string;
+  disk?: number | string;
+  status: string;
+}
+
+export async function getIPList(params: {
+  current?: number;
+  pageSize?: number;
+  filters?: {};
+  sorter?: { field?: string; order?: ['ascend', 'descend'] };
+}) {
+  console.log(params);
+  return request<{ total: number; list: IpItem[] }>(`/api/demo/getIPList`, {
+    params: { ...params },
+  });
+}

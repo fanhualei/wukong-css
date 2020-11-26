@@ -68,7 +68,7 @@ export interface LogListItem {
 
 function fakeUserLogList(count: number): LogListItem[] {
   const list: LogListItem[] = [];
-  let logId = 1;
+  let logId = 0;
 
   for (let i = 1; i < count + 1; i++) {
     for (let j = 1; j < 30; j++) {

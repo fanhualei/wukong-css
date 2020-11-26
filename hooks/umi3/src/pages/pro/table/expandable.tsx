@@ -78,11 +78,7 @@ const columns: ProColumns<UserListItem>[] = [
 ];
 
 const expandedRowRender = (recorder: UserListItem) => {
-  return (
-    <SubTable user={recorder}>
-      <Button>ddddd</Button>
-    </SubTable>
-  );
+  return <SubTable user={recorder} />;
 };
 
 export default () => {
