@@ -1,16 +1,8 @@
 import React from 'react';
-import { Button, Tooltip } from 'antd';
-import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import ProTable, { ProColumns, TableDropdown } from '@ant-design/pro-table';
-
-import { getUserList, UserListItem } from '@/services/user';
-
-const valueEnum = {
-  0: 'close',
-  1: 'running',
-  2: 'online',
-  3: 'error',
-};
+import { Button } from 'antd';
+import ProTable, { ProColumns } from '@ant-design/pro-table';
+import { UserListItem, getUserList } from '@/services/user';
+import SubTable from './expandable-sub';
 
 const columns: ProColumns<UserListItem>[] = [
   {
@@ -44,22 +36,6 @@ const columns: ProColumns<UserListItem>[] = [
       4: { text: '四年级' },
       5: { text: '五年级' },
       6: { text: '六年级' },
-    },
-    fieldProps: {
-      options: [
-        {
-          label: '低年级',
-          value: '1-2年级',
-        },
-        {
-          label: '中年级',
-          value: '3-4年级',
-        },
-        {
-          label: '高年级',
-          value: '5-6年级',
-        },
-      ],
     },
   },
   {
@@ -101,37 +77,30 @@ const columns: ProColumns<UserListItem>[] = [
   },
 ];
 
-const toolBar = (): React.ReactNode[] => {
-  return [
-    <Button>
-      导出数据
-      <DownOutlined />
-    </Button>,
-    <Button type="primary">新建</Button>,
-  ];
+const expandedRowRender = (recorder: UserListItem) => {
+  return (
+    <SubTable user={recorder}>
+      <Button>ddddd</Button>
+    </SubTable>
+  );
 };
 
 export default () => {
   return (
-    <ProTable
-      headerTitle="普通表格"
-      columns={columns}
-      //search={false}
-      search={{
-        labelWidth: 'auto',
-        filterType: 'light',
-      }}
-      //toolBarRender={false}
-      toolBarRender={toolBar}
+    <ProTable<UserListItem>
+      style={{ color: 'red' }}
+      search={false}
+      toolBarRender={false}
       rowKey="id"
+      columns={columns}
+      expandable={{ expandedRowRender }}
+      options={false}
       pagination={{ pageSize: 5 }}
       request={async (params, sorter, filter) => {
-        console.log(params, sorter, filter);
         const result = await getUserList({
           current: params.current,
           pageSize: params.pageSize,
         });
-        console.log(result);
         return {
           data: result.list,
           total: result.total,

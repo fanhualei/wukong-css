@@ -45,6 +45,79 @@ yarn build
 
 
 
+## 1.3 常用语法
+
+哪些简单的就不在这里描述了，这里只描述那些容易被遗忘的重要语法
+
+### 1.3.1 类型定义
+
+Omit ：去掉某个属性
+
+```typescript
+type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+type UserWithoutEmail = Omit<User, "email">;
+
+// 等价于:
+type UserWithoutEmail = {
+  id: string;
+  name: string;
+};
+```
+
+
+
+Partial: 将每一对中的 `key` 变为可选，即添加 `?`
+
+```typescript
+interface IUser {
+  name: string
+  age: number
+  department: string
+}
+type optional = Partial<IUser>
+
+// optional的结果如下
+type optional = {
+    name?: string | undefined;
+    age?: number | undefined;
+    department?: string | undefined;
+}
+```
+
+
+
+keyof: 即 `索引类型查询操作符`，我们可以将 `keyof` 作用于`泛型 T` 上来获取`泛型 T` 上的`所有 public 属性名`构成的 `联合类型`
+
+```typescript
+type unionKey = keyof IUser
+
+// unionKey 结果如下，其获得了接口类型 IUser 中的所有属性名组成的联合类型
+type unionKey = "name" | "age" | "department"
+```
+
+这样T[P]可以组成联合类型
+
+```typescript
+type unionKey = keyof IUser // "name" | "age" | "department"
+
+type values = IUser[unionKey] // string | number 属性值类型组成的联合类型
+```
+
+
+
+
+
+
+
+
+
+
+
 # 2. 从0开始
 
 假设从umi开始，构建整个antPro框架。
@@ -2995,6 +3068,28 @@ filters: true,
 
 
 
+#### ⑧  colums 数据类型
+
+一些特殊数据类型需要指定。
+
+
+
+日期类型
+
+```tsx
+valueType: 'date',
+```
+
+
+
+操作类型
+
+```tsx
+valueType: 'option',
+```
+
+
+
 
 
 
@@ -3037,3 +3132,136 @@ filters: true,
 
 
 
+### 6.4.3 实用功能
+
+
+
+#### ① ToolBar与Form
+
+去掉ToolBar
+
+```tsx
+toolBarRender={false}
+```
+
+
+
+去掉查询Form
+
+```tsx
+search={false}
+```
+
+
+
+查询轻量级
+
+```tsx
+search={{
+        filterType: 'light',
+       }}
+```
+
+
+
+
+
+### 6.4.4 高级功能
+
+
+
+#### ①  嵌套表格
+
+实用ProTable的属性` expandable={{ expandedRowRender }}`
+
+* 定义也给父亲表格。
+* 然后再定义一个子表格。
+
+
+
+
+
+
+
+
+
+
+
+# 7. 自定义
+
+
+
+## 7.1 组件
+
+有下面的需求：
+
+* 如何从父组件传入参数？
+* 如何做参数校验？
+* 如何得到剩余参数？
+* 如何得到一些公用的参数，例如style
+* 如何集成其他参数。
+* 如何传入一个【子控件】
+* 如果设定默认值
+
+
+
+### 7.1.1 简单案例
+
+```tsx
+import React from 'react';
+import ProTable from '@ant-design/pro-table';
+import { UserListItem, getUserList } from '@/services/user';
+
+interface SubTableProps {
+  user: UserListItem;
+  className?: string;
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
+}
+
+const SubTable: React.FC<SubTableProps> = ({
+  user,
+  children,
+  className,
+  ...restProps
+}) => {
+  console.log(restProps);
+  return (
+    <div {...restProps}>
+      userid:{user?.id} {user?.name}
+      {children}
+    </div>
+  );
+};
+
+//设置默认值
+SubTable.defaultProps = {};
+
+export default SubTable;
+```
+
+*FC是 react 官方提供的一个 interface 的简写：FunctionComponent，接收一个范型。*
+
+[参考文档](https://www.cnblogs.com/xiaozhumaopao/p/12636559.html)
+
+
+
+
+
+### 7.1.2 常用功能
+
+
+
+
+
+
+
+
+
+## 7.2 Hooks
+
+
+
+
+
+## 7.3 公用函数

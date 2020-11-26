@@ -54,8 +54,42 @@ function fakeUserList(count: number): UserListItem[] {
   }
   return list;
 }
-
 const userListConst: UserListItem[] = fakeUserList(55);
+//模拟日志ID
+const actionTypes = ['login', 'logout', 'regist', 'searchGoods', 'delGoogs'];
+
+export interface LogListItem {
+  logId: number;
+  userId: string;
+  actionType: string;
+  createdAt: number;
+  memo: string;
+}
+
+function fakeUserLogList(count: number): LogListItem[] {
+  const list: LogListItem[] = [];
+  let logId = 1;
+
+  for (let i = 1; i < count + 1; i++) {
+    for (let j = 1; j < 30; j++) {
+      logId = logId + 1;
+      list.push(
+        mockjs.mock({
+          userId: `${i}`,
+          logId,
+          actionType: actionTypes[Math.floor(Math.random() * 10) % 5],
+          createdAt: Date.now() - Math.floor(Math.random() * 100000),
+          memo:
+            j % 2 === 1
+              ? '很长很长很长很长很长很长很长的logloglgo'
+              : '简短log文案',
+        }),
+      );
+    }
+  }
+  return list;
+}
+const LogListConst: LogListItem[] = fakeUserLogList(55);
 
 const proxy = {
   // 支持值为 Object 和 Array
@@ -199,6 +233,53 @@ const proxy = {
 
   'GET /api/demo/getUserList1': (req: Request, res: Response) => {
     res.send(userListConst);
+  },
+
+  //模拟日志的查询
+  'GET /api/demo/getLogList': (req: Request, res: Response) => {
+    console.log(`/api/demo/getLogList`);
+
+    let current: number = <number>(req.query.current || 1);
+    const pageSize: number = <number>(req.query.pageSize || 10);
+
+    let userId: string = <string>(req.query.userId || undefined);
+
+    if (!userId) {
+      res.send({
+        total: 0,
+        list: [],
+      });
+      return;
+    }
+
+    let newList = LogListConst.filter((log) => {
+      if (log.userId === userId) {
+        return true;
+      }
+    });
+
+    const total: number = newList.length;
+    const totalPage: number = Math.ceil(total / pageSize);
+
+    let currentList: LogListItem[] = newList;
+
+    if (current > totalPage) {
+      current = totalPage;
+    }
+    if (current <= 0) {
+      current = 1;
+    }
+    console.log(current);
+
+    let renList: LogListItem[] = currentList.slice(
+      (current - 1) * pageSize,
+      current * pageSize,
+    );
+
+    res.send({
+      total,
+      list: renList,
+    });
   },
 };
 

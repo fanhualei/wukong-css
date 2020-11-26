@@ -80,3 +80,28 @@ export async function getUserList(params: {
     },
   );
 }
+
+export interface LogListItem {
+  logId: number;
+  userId: string;
+  actionType: string;
+  createdAt: number;
+  memo: string;
+}
+
+export async function getLogList(params: {
+  current?: number;
+  pageSize?: number;
+  userId: string;
+  filters?: {};
+  sorter?: { field?: string; order?: ['ascend', 'descend'] };
+}) {
+  // console.log(params?.filters);
+  console.log(params);
+  return request<{ total: number; list: LogListItem[] }>(
+    `/api/demo/getLogList`,
+    {
+      params: { ...params },
+    },
+  );
+}

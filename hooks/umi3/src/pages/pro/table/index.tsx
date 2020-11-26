@@ -9,33 +9,26 @@ import style from './index.less';
 import QueryTable from './queryTable';
 
 import NoQueryTable from './noQueryTable';
+import Expandable from './expandable';
 
 export default () => {
   return (
-    <>
-      {/* <Anchor
-        affix={true}
-        style={{ float: 'right', marginRight: 25, paddingRight: 40 }}
-        offsetTop={180}
-      >
-        <Link href="#demoLogin" title="登录表单" />
-        <Link href="#demoSqmple" title="基础用法">
-          <Link href="#demoSqmple" title="基本" />
-          <Link href="#demoSampleEx" title="扩展" />
-          <Link href="#demoSampleGroup" title="分组" />
-        </Link>
-      </Anchor> */}
-      <PageContainer>
-        <Card title="查询表格">
-          <QueryTable />
-        </Card>
-      </PageContainer>
+    <PageContainer>
+      <Card title="查询表格" style={{ marginBottom: 15 }} key="QueryTable">
+        <QueryTable />
+      </Card>
 
-      <PageContainer>
-        <Card title="不带查询条件:search={false}">
-          <NoQueryTable />
-        </Card>
-      </PageContainer>
-    </>
+      <Card
+        title="不带查询条件:search={false} 无toolBar:toolBarRender={false}"
+        style={{ marginBottom: 15 }}
+        key="NoQueryTable"
+      >
+        <NoQueryTable />
+      </Card>
+
+      <Card title="嵌套表格" style={{ marginBottom: 15 }} key="Expandable">
+        <Expandable />
+      </Card>
+    </PageContainer>
   );
 };
