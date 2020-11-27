@@ -11,6 +11,7 @@ import QueryTable from './queryTable';
 import NoQueryTable from './noQueryTable';
 import Expandable from './expandable';
 import LeftAndRight from './leftAndRight';
+import SelectTable from './selectTable';
 
 export default () => {
   return (
@@ -33,6 +34,10 @@ export default () => {
 
       <Card title="左右结构" style={{ marginBottom: 15 }} key="leftAndRight">
         <LeftAndRight />
+      </Card>
+
+      <Card title="可选表格" style={{ marginBottom: 15 }} key="selectTable">
+        <SelectTable />
       </Card>
     </PageContainer>
   );

@@ -119,7 +119,6 @@ export async function getIPLogList(params: {
   sorter?: { field?: string; order?: ['ascend', 'descend'] };
 }) {
   console.log(params);
-  console.log('=============================');
   return request<{ total: number; list: IpLogItem[] }>(
     `/api/demo/getIPLogList`,
     {
@@ -144,6 +143,30 @@ export async function getIPList(params: {
 }) {
   console.log(params);
   return request<{ total: number; list: IpItem[] }>(`/api/demo/getIPList`, {
+    params: { ...params },
+  });
+}
+
+export interface AppItem {
+  key: number;
+  name: string;
+  progress: number;
+  containers: number;
+  callNumber: number;
+  creator: string;
+  status: string;
+  createdAt: number;
+  memo: string;
+}
+
+export async function getAppList(params: {
+  current?: number;
+  pageSize?: number;
+  filters?: {};
+  sorter?: { field?: string; order?: ['ascend', 'descend'] };
+}) {
+  console.log(params);
+  return request<{ total: number; list: IpItem[] }>(`/api/demo/getAppList`, {
     params: { ...params },
   });
 }

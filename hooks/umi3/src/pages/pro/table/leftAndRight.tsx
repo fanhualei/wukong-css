@@ -84,7 +84,7 @@ const IpList: React.FC = () => {
   const toolBarRender: ListToolBarProps = {
     search: {
       onSearch: (keyWords: string) => {
-        console.log(keyWords);
+        //console.log(keyWords);
         alert(keyWords);
       },
     },
