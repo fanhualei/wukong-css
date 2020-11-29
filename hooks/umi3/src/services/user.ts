@@ -118,13 +118,10 @@ export async function getIPLogList(params: {
   filters?: {};
   sorter?: { field?: string; order?: ['ascend', 'descend'] };
 }) {
-  console.log(params);
-  return request<{ total: number; list: IpLogItem[] }>(
-    `/api/demo/getIPLogList`,
-    {
-      params: { ...params },
-    },
-  );
+  //console.log(params);
+  return request<IpLogItem[]>(`/api/demo/getIPLogList`, {
+    params: { ...params },
+  });
 }
 
 export interface IpItem {
@@ -142,7 +139,7 @@ export async function getIPList(params: {
   sorter?: { field?: string; order?: ['ascend', 'descend'] };
 }) {
   console.log(params);
-  return request<{ total: number; list: IpItem[] }>(`/api/demo/getIPList`, {
+  return request<IpItem[]>(`/api/demo/getIPList`, {
     params: { ...params },
   });
 }

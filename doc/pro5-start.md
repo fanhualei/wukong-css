@@ -3557,6 +3557,99 @@ export default () => {
 
 
 
+#### ④  手工控制Table与Form
+
+使用引用来实现。
+
+手工控制Table
+
+```tsx
+interface ActionType {
+  reload: (resetPageIndex?: boolean) => void;
+  fetchMore: () => void;
+  reset: () => void;
+}
+const ref = useRef<ActionType>();
+<ProTable actionRef={ref} />;
+
+
+if (actionRef.current?.reload && actionRef.current?.reset) {
+    actionRef.current?.reset();
+	actionRef.current?.reload();
+}
+// 刷新
+ref.current.reload();
+// 刷新并清空
+ref.current.reloadAndRest;
+// 重置到默认值
+ref.current.reset();
+// 清空选中项
+ref.current.clearSelected();
+```
+
+
+
+手工控制form
+
+```tsx
+import { FormInstance } from 'antd/lib/form';
+const ref = React.useRef<FormInstance>();
+
+ <ProTable<GithubIssueItem>
+   formRef={ref} 
+ />   
+    
+    
+    //可以赋值或者其他的方法
+    ref.current?.setFieldsValue({
+        state: 'dddddd',
+    });    
+    ref.current?.submit
+```
+
+
+
+#### ⑤ 某些列默认不显示
+
+例如有20列，但是只显示一部分列。
+
+```tsx
+//引入一个属性
+import ProTable, {
+  ColumnsState,
+} from '@ant-design/pro-table';
+
+
+  //隐藏state列
+  const [columnsStateMap, setColumnsStateMap] = React.useState<{
+    [key: string]: ColumnsState;
+  }>({
+    state: {
+      show: false,
+    },
+  });
+
+//columns中一定要设置key，才可以。
+const columns: ProColumns<GithubIssueItem>[] = [
+  {
+    title: '状态',
+    dataIndex: 'state',
+    key: 'state',
+  },
+  ]
+//设置下面两个属性
+    <ProTable<GithubIssueItem>
+      columnsStateMap={columnsStateMap}
+      onColumnsStateChange={(map) => setColumnsStateMap(map)}
+    />
+```
+
+
+
+ 
+
+
+
 # 7. 自定义
 
 

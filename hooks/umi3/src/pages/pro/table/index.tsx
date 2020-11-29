@@ -12,6 +12,7 @@ import NoQueryTable from './noQueryTable';
 import Expandable from './expandable';
 import LeftAndRight from './leftAndRight';
 import SelectTable from './selectTable';
+import EffectTable from './effect';
 
 export default () => {
   return (
@@ -38,6 +39,10 @@ export default () => {
 
       <Card title="可选表格" style={{ marginBottom: 15 }} key="selectTable">
         <SelectTable />
+      </Card>
+
+      <Card title="定期轮询" style={{ marginBottom: 15 }} key="effectTable">
+        <EffectTable />
       </Card>
     </PageContainer>
   );

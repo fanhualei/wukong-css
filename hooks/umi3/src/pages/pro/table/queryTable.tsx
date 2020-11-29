@@ -4,11 +4,13 @@ import ProTable, {
   ProColumns,
   TableDropdown,
   ActionType,
+  ColumnsState,
 } from '@ant-design/pro-table';
 import {} from '@ant-design/pro-form';
 import { PlusOutlined, EllipsisOutlined } from '@ant-design/icons';
 //import { useRequest } from 'ahooks';
 import request from 'umi-request';
+import { FormInstance } from 'antd/lib/form';
 
 interface GithubIssueItem {
   url: string;
@@ -52,6 +54,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
   {
     title: '状态',
     dataIndex: 'state',
+    key: 'state',
     initialValue: 'open',
     filters: true,
     valueType: 'select',
@@ -116,11 +119,23 @@ const menu = (
 
 export default () => {
   const actionRef = React.useRef<ActionType>();
+  const ref = React.useRef<FormInstance>();
+  //隐藏某一列
+  const [columnsStateMap, setColumnsStateMap] = React.useState<{
+    [key: string]: ColumnsState;
+  }>({
+    state: {
+      show: false,
+    },
+  });
   return (
     <ProTable<GithubIssueItem>
       columns={columns}
+      columnsStateMap={columnsStateMap}
+      onColumnsStateChange={(map) => setColumnsStateMap(map)}
       rowKey="id"
       actionRef={actionRef}
+      formRef={ref}
       pagination={{ pageSize: 5 }}
       dateFormatter="string"
       headerTitle="高级表格"
@@ -136,8 +151,24 @@ export default () => {
         labelWidth: 'auto',
       }}
       toolBarRender={() => [
-        <Button key="button" icon={<PlusOutlined />} type="primary">
-          新建123
+        <Button
+          key="button"
+          icon={<PlusOutlined />}
+          type="primary"
+          onClick={() => {
+            console.log(actionRef.current);
+
+            if (actionRef.current?.reload && actionRef.current?.reset) {
+              actionRef.current?.reset();
+              actionRef.current?.reload();
+            }
+
+            ref.current?.setFieldsValue({
+              state: 'dddddd',
+            });
+          }}
+        >
+          给form赋值
         </Button>,
         <Dropdown key="menu" overlay={menu}>
           <Button>
