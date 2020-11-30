@@ -92,6 +92,11 @@ export default defineConfig({
           path: '/pro/table',
           component: '@/pages/pro/table',
         },
+        {
+          name: 'editTable',
+          path: '/pro/editTable',
+          component: '@/pages/pro/editTable',
+        },
       ],
     },
     {

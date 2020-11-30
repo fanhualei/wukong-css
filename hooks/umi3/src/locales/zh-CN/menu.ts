@@ -59,4 +59,5 @@ export default {
   'menu.pro.form': '表单',
   'menu.pro.formFoot': '固定按钮',
   'menu.pro.table': '高级表格',
+  'menu.pro.editTable': '可编辑表格',
 };
