@@ -2983,6 +2983,16 @@ filters: true,
 
 
 
+不想在table中显示
+
+```tsx
+ hideInTable: true,
+```
+
+
+
+
+
 #### ⑤ 编辑删除按钮
 
 ```tsx
@@ -3161,7 +3171,7 @@ valueType: {
 
 
 
-#### ① ToolBar与Form
+#### ① ToolBar与Form基本使用
 
 去掉ToolBar
 
@@ -3213,6 +3223,157 @@ search={{
         filterType: 'light',
        }}
 ```
+
+
+
+#### ② ToolBar与Form高级定制
+
+下面使用到了：
+
+* toolbar
+  * toolbar是toolBarRender的高级定义，两个不能混用
+  * toolbar中的filter必须设定，否则会出现混乱。
+  * toolbar在下图中使用的属性有：
+    * menu
+    * filter
+    * actions
+* search
+  * 按钮部分，在ProTable属性的search->optionRender设定。
+  * 也可以自定义输入框，是在columns属性中设定，例如下面的自定义框：
+    * `hideInTable: true,` 不出现在显示列中
+    * `renderFormItem` 定义显示的样式
+      * 可以通过`form.getFieldValue('gender')` 得到某个输入内容，并进行联动显示。
+    * 一定要定义key
+
+![](imgs/pro-demo-table-customer-form-toolbar.png)
+
+```tsx
+import React from 'react';
+import { Button, Input } from 'antd';
+
+import ProTable, { ProColumns } from '@ant-design/pro-table';
+import { getUserList, UserListItem } from '@/services/user';
+import { PlusOutlined } from '@ant-design/icons';
+
+const columns: ProColumns<UserListItem>[] = [
+  {
+    title: '编号',
+    dataIndex: 'id',
+    search: false,
+  },
+  {
+    title: '名称',
+    dataIndex: 'name',
+    search: false,
+  },
+  {
+    title: '性别',
+    dataIndex: 'gender',
+    valueEnum: {
+      all: { text: '全部' },
+      male: { text: '男' },
+      female: { text: '女' },
+    },
+  },
+  {
+    title: 'email',
+    dataIndex: 'email',
+    search: false,
+  },
+  {
+    title: '自定义框',
+    dataIndex: 'customer',
+    key: 'customer',
+    hideInTable: true,
+    //自定义显示的内容
+    renderFormItem: (item, { type, defaultRender, ...rest }, form) => {
+      if (type == 'form') {
+        return null;
+      }
+      console.log(type);
+      console.log(item, type, rest);
+      const gender = form.getFieldValue('gender');
+      return <div>{gender}</div>;
+    },
+  },
+];
+
+export default () => {
+  return (
+    <ProTable<UserListItem>
+      columns={columns}
+      rowKey="id"
+      pagination={{
+        pageSize: 3,
+      }}
+      //   toolBarRender={() => [
+      //     <Button key="new" type="primary">
+      //       <PlusOutlined />
+      //       新建
+      //     </Button>,
+      //   ]}
+
+      toolbar={{
+        menu: {
+          type: 'inline',
+          items: [
+            {
+              key: 'tab1',
+              label: <span>应用</span>,
+            },
+            {
+              key: 'tab2',
+              label: <span>项目</span>,
+            },
+            {
+              key: 'tab3',
+              label: <span>文章</span>,
+            },
+          ],
+          onChange: (key) => {
+            console.log(key);
+          },
+        },
+        filter: [<Input.Search key="input" type="search" />],
+        actions: [
+          <Button key="new" type="primary">
+            <PlusOutlined />
+            新建
+          </Button>,
+        ],
+      }}
+      search={{
+        labelWidth: 'auto',
+        optionRender: ({ searchText, resetText }, { form }) => [
+          <Button key="search" type="primary" onClick={() => form?.submit()}>
+            {searchText}
+          </Button>,
+          <Button key="reset" onClick={() => form?.resetFields}>
+            {resetText}
+          </Button>,
+          <Button key="out">导出</Button>,
+        ],
+      }}
+      request={async (params, sorter, filter) => {
+        console.log(filter);
+        const result = await getUserList({
+          current: params.current,
+          pageSize: params.pageSize,
+        });
+        return {
+          data: result.list,
+          total: result.total,
+          success: true,
+        };
+      }}
+    />
+  );
+};
+```
+
+
+
+
 
 
 
@@ -3372,6 +3533,8 @@ export default SubTable;
 
 
 #### ② 左右结构  
+
+没有使用ProTable的功能，而是用了`ProCard`的功能。
 
 ![](imgs/proLeftAndRight.png)
 
@@ -3646,7 +3809,20 @@ const columns: ProColumns<GithubIssueItem>[] = [
 
 
 
- 
+ #### ⑥ 定制Table主体
+
+使用ProTable的如下属性：
+
+* tableRender
+* tableExtraRender
+
+
+
+
+
+
+
+
 
 
 

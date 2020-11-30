@@ -13,6 +13,7 @@ import Expandable from './expandable';
 import LeftAndRight from './leftAndRight';
 import SelectTable from './selectTable';
 import EffectTable from './effect';
+import CustomerForm from './customerForm';
 
 export default () => {
   return (
@@ -43,6 +44,14 @@ export default () => {
 
       <Card title="定期轮询" style={{ marginBottom: 15 }} key="effectTable">
         <EffectTable />
+      </Card>
+
+      <Card
+        title="自定义搜索框"
+        style={{ marginBottom: 15 }}
+        key="customerForm"
+      >
+        <CustomerForm />
       </Card>
     </PageContainer>
   );
