@@ -14,6 +14,7 @@ import LeftAndRight from './leftAndRight';
 import SelectTable from './selectTable';
 import EffectTable from './effect';
 import CustomerForm from './customerForm';
+import CustomerTable from './customerTable';
 
 export default () => {
   return (
@@ -53,6 +54,10 @@ export default () => {
       >
         <CustomerForm />
       </Card>
+
+      <>
+        <CustomerTable />
+      </>
     </PageContainer>
   );
 };
