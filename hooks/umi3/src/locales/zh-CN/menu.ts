@@ -60,4 +60,5 @@ export default {
   'menu.pro.formFoot': '固定按钮',
   'menu.pro.table': '高级表格',
   'menu.pro.editTable': '可编辑表格',
+  'menu.pro.description': '详情页',
 };
