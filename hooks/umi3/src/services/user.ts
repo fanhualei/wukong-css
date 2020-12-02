@@ -168,3 +168,14 @@ export async function getAppList(params: {
     params: { ...params },
   });
 }
+
+export async function getAppByKey(params: { key: number }) {
+  console.log(params);
+  const list = request<{ total: number; list: IpItem[] }>(
+    `/api/demo/getAppList`,
+    {
+      params: { ...params },
+    },
+  );
+  return (await list).list[params.key];
+}
