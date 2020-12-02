@@ -3968,7 +3968,7 @@ ProTable 封装了一些常用的值类型来减少重复的 `render` 操作，�
 | avatar        | 头像                                                         | 展示一个头像                            |
 | password      | 密码框                                                       | 密码相关的展示                          |
 
-#### 传入 function
+#### ①  传入 function
 
 只有一个值并不能表现很多类型，`progress` 就是一个很好的例子。所以我们支持传入一个 function。你可以这样使用：
 
@@ -3984,9 +3984,9 @@ const columns = {
 };
 ```
 
-#### 支持的返回值
+#### ② 支持的返回值
 
-#### progress
+progress
 
 ```js
 return {
@@ -3995,13 +3995,13 @@ return {
 };
 ```
 
-#### money
+money
 
 ```js
 return { type: 'money', locale: 'en-Us' };
 ```
 
-#### percent
+percent
 
 ```js
 return { type: 'percent', showSymbol: true | false, precision: 2 };
@@ -4053,6 +4053,196 @@ const valueEnum = (row) =>
 ### 6.4.6 可编辑表格
 
 可编辑表格，好像并不是太完善。
+
+#### ①  限制条件
+
+使用限制：下面功能不建议使用：
+
+* 检索Form
+* ToolBar
+* 分页
+
+
+
+如何进行设置字段的校验规则？希望能给出相关示例。
+
+`rules={[{ required: true }]}`
+
+
+
+Demo代码中删除`editableKeys`代码，这个属性好像是多余的，不知道用的场景是那些？
+
+
+
+
+
+#### ②  具体功能
+
+* 新增
+* 编辑
+  * 删除
+  * 更新
+* 字段校验
+* 某一个行不能删除？
+
+
+
+
+
+####  ③  编码要点
+
+一、通过useRequest得到数据，并付给EditableProTable.value
+
+二、实现：EditableProTable.onChange={setCurrentDataList} ; setCurrentDataList是一个useState
+
+三、实现新增的配置：recordCreatorProps
+
+四、实现editable中的：onChange onSave onDelete 事件。
+
+
+
+####   ④ 示例代码
+
+```tsx
+import React from 'react';
+import ProTable, { ProColumns, EditableProTable } from '@ant-design/pro-table';
+import ProCard from '@ant-design/pro-card';
+import ProField from '@ant-design/pro-field';
+import { Button } from 'antd';
+import { getUserList, UserListItem } from '@/services/user';
+import { useRequest } from 'ahooks';
+import { json } from 'express';
+
+const columns: ProColumns<UserListItem>[] = [
+  {
+    title: '编号',
+    dataIndex: 'id',
+    search: false,
+    sorter: true,
+  },
+  {
+    title: '名称',
+    dataIndex: 'name',
+  },
+  {
+    title: '性别',
+    dataIndex: 'gender',
+    valueEnum: {
+      all: { text: '全部' },
+      male: { text: '男' },
+      female: { text: '女' },
+    },
+  },
+  {
+    title: '邮箱',
+    dataIndex: 'email',
+  },
+  {
+    title: '操作',
+    valueType: 'option',
+    width: 200,
+    render: (text, record, _, action) => [
+      <a
+        key="editable"
+        onClick={() => {
+          action.startEditable?.(record.id);
+        }}
+      >
+        编辑
+      </a>,
+    ],
+  },
+];
+
+const newUser: UserListItem = {
+  id: (Math.random() * 1000000).toFixed(0).toString(),
+  name: '',
+  gender: 'female',
+  email: '',
+  memo: '',
+  disabled: true,
+  status: '',
+  gradeId: 1,
+  createdAt: Date.now() - Math.floor(Math.random() * 100000),
+  creator: 'system',
+};
+
+export default () => {
+  //const [editableKeys, setEditableRowKeys] = React.useState<React.Key[]>([]);
+  const [currentDataList, setCurrentDataList] = React.useState<UserListItem[]>(
+    [],
+  );
+
+  const userList = useRequest(() => getUserList({ pageSize: 3, current: 1 }), {
+    onSuccess: (result, params) => {
+      setCurrentDataList(result.list);
+    },
+  });
+
+  const onSave = async (key: React.Key, row: UserListItem) => {
+    console.log(key, row);
+  };
+
+  const onDelete = async (key: React.Key, row: UserListItem) => {
+    console.log(key, row);
+  };
+
+  const onChange = (
+    editableKeys: React.Key[],
+    editableRows: UserListItem[],
+  ) => {
+    console.log(editableKeys, editableRows);
+    //setEditableRowKeys(editableKeys);
+  };
+
+  return (
+    <>
+      <EditableProTable<UserListItem>
+        columns={columns}
+        rowKey="id"
+        headerTitle="可编辑表格"
+        //可编辑表格
+        loading={userList?.loading}
+        value={currentDataList}
+        onChange={setCurrentDataList}
+        editable={{
+          type: 'singe',
+          //editableKeys,
+          onChange,
+          onSave,
+          onDelete,
+          deletePopconfirmMessage: (
+            <>
+              <p>'删除数据要谨慎呀！！！</p>真的要删除吗？'
+            </>
+          ),
+          // actionRender: (row, config) => {
+          //   console.log(row, config);
+          //   return [
+          //     <div onClick={() => config.cancelEditable(row.id)}>取消</div>,
+          //     <div onClick={() => config.onSave(row)}>保存</div>,
+          //   ];
+          // },
+        }}
+        recordCreatorProps={{
+          position: 'end',
+          record: newUser,
+        }}
+      />
+      <ProCard title="表格数据">
+        <ProField
+          fieldProps={{ style: { width: '100%' } }}
+          mode="read"
+          valueType="jsonCode"
+          text={JSON.stringify(currentDataList)}
+        />
+      </ProCard>
+    </>
+  );
+};
+```
+
+
 
 
 

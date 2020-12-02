@@ -73,6 +73,7 @@ export async function getUserList(params: {
 }) {
   // console.log(params?.filters);
   // console.log(params?.sorter);
+  console.log(params);
   return request<{ total: number; list: UserListItem[] }>(
     `/api/demo/getUserList`,
     {
