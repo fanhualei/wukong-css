@@ -1778,7 +1778,7 @@ export default () => {
 
 
 
-## 6.1 ProLayout - 高级布局
+## 6.1 布局 - ProLayout
 
 ProLayout 可以提供一个标准又不失灵活的中后台标准布局，同时提供一键切换布局形态，自动生成菜单等功能。与 PageContainer 配合使用可以自动生成面包屑，页面标题，并且提供低成本方案接入页脚工具栏。
 
@@ -1831,7 +1831,7 @@ export const layout = ({
 
 
 
-## 6.2 ProForm - 高级表单
+## 6.2 表单 - ProForm
 
 
 
@@ -2580,6 +2580,8 @@ export default () => {
 
 ## 6.3 原子组件
 
+看看就行，官网不推荐使用。
+
 | 名称                   | 说明     |
 | ---------------------- | -------- |
 | ProFormText            | 文本输入 |
@@ -2841,7 +2843,7 @@ export default () => {
 
 
 
-## 6.4 ProTable - 高级表格
+## 6.4 表格 - ProTable
 
 
 
@@ -4246,7 +4248,7 @@ export default () => {
 
 
 
-## 6.5 ProDescriptions-详细页
+## 6.5 详细页-ProDescriptions
 
 如何得到数据,并显示列表呢？有两种方法
 
@@ -4367,6 +4369,349 @@ export default () => {
 };
 
 ```
+
+
+
+
+
+## 6.6 卡片-ProCard
+
+* 增加grow属性:放大比例，默认为`0`，即如果存在剩余空间，也不放大。如果所有项目的`grow`属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的`grow`属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍。
+* colSpan可以设置0，例如在某个尺寸就不显示：`colSpan={{ xs: 3, sm: 3, md: 3, lg: 3, xl: 0 }}`
+
+| xs   | `屏幕 < 576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number \| object | -    |      |
+| ---- | ------------------------------------------------------------ | ---------------- | ---- | ---- |
+| sm   | `屏幕 ≥ 576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number \| object | -    |      |
+| md   | `屏幕 ≥ 768px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number \| object | -    |      |
+| lg   | `屏幕 ≥ 992px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number \| object | -    |      |
+| xl   | `屏幕 ≥ 1200px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number \| object | -    |      |
+| xxl  | `屏幕 ≥ 1600px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number \| object | -    |      |
+
+> 基础配置
+
+| 项目             | 说明                                                         | 示例                             |
+| ---------------- | ------------------------------------------------------------ | -------------------------------- |
+| ghost            | 去掉padding与背景                                            | direction="column"               |
+| direction        | 子Card的排序方式                                             | gutter={[0, 8]}                  |
+| colSpan          | 占据的比率，总体是24                                         | colSpan={12}                     |
+| layout           | 居中方式                                                     | layout="center"                  |
+| colSpan响应式    | 预设六个响应尺寸：`xs` `sm` `md` `lg` `xl` `xxl`             | { xs: 4, sm: 8, md: 10, lg: 12 } |
+| split            | 切分时父卡片的内容 `padding` 会被设置为 0。<br>切分时子卡片的 `border-radius`会被设置为 0。 | split="vertical"                 |
+| headerBordered   | 头部下面的线                                                 |                                  |
+| ProCard.Group    | 会取消卡片内容边距，用于将多个卡片进行分组                   |                                  |
+| ProCard.Divider  | 用于在将内容进行分组时进行分隔。                             |                                  |
+| collapsible      | 否可折叠，受控时无效                                         |                                  |
+| collapsed        | 受控属性，是否折叠                                           |                                  |
+| defaultCollapsed | 默认折叠, 受控时无效                                         |                                  |
+| tabs             | 标签                                                         |                                  |
+| type="inner"     | 头部有一个灰色背景                                           |                                  |
+|                  |                                                              |                                  |
+
+
+
+相关示例代码
+
+```tsx
+import React from 'react';
+import { Card, Space, Statistic, Button, Steps } from 'antd';
+import { PageContainer } from '@ant-design/pro-layout';
+import ProCard from '@ant-design/pro-card';
+import { RightOutlined } from '@ant-design/icons';
+const { Divider } = ProCard;
+const { Step } = Steps;
+
+export default () => {
+  const [collapsed, setCollapsed] = React.useState(true);
+  const [current, setCurrent] = React.useState(0);
+
+  return (
+    <>
+      <PageContainer subTitle="ProCard例子">
+        <Card
+          title="Card"
+          style={{ marginBottom: 16, width: 300 }}
+          extra="exgra"
+        >
+          aaa
+        </Card>
+
+        <ProCard
+          title="ProCard"
+          style={{ marginBottom: 16, width: 300 }}
+          tooltip="这是提示"
+          extra="exgra"
+        >
+          <h1>何时使用</h1>
+          <p>需要一个标准卡片容纳内容时。</p>
+          <p>需要多个卡片栅格，gutter布局时。</p>
+          <p>需要进行卡片内切分布局时。</p>
+          <p>需要卡片可折叠时。</p>
+        </ProCard>
+
+        <ProCard
+          style={{ marginBottom: 16 }}
+          ghost
+          direction="column"
+          gutter={[0, 8]}
+        >
+          <ProCard layout="center">colSpan - 24</ProCard>
+
+          <ProCard colSpan={12}>colSpan - 12</ProCard>
+          <ProCard colSpan={8}>colSpan - 8</ProCard>
+          <ProCard title="24栅格" gutter={8}>
+            <ProCard colSpan={12} bordered layout="center">
+              colSpan - 12
+            </ProCard>
+            <ProCard colSpan={6} bordered layout="center">
+              colSpan - 6
+            </ProCard>
+            <ProCard colSpan={6} bordered layout="center">
+              colSpan - 6
+            </ProCard>
+          </ProCard>
+
+          <ProCard ghost gutter={8}>
+            <ProCard layout="center" colSpan={'200px'}>
+              conSpan-200px
+            </ProCard>
+            <ProCard layout="center">Auto</ProCard>
+          </ProCard>
+
+          <ProCard ghost gutter={8}>
+            <ProCard layout="center">Auto</ProCard>
+            <ProCard colSpan="30%" layout="center">
+              {' '}
+              colSpan - 30%
+            </ProCard>
+          </ProCard>
+        </ProCard>
+
+        <ProCard title="24栅格自适应" gutter={8}>
+          <ProCard bordered colSpan={{ xs: 10, sm: 10, md: 3, lg: 10, xl: 2 }}>
+            col1
+          </ProCard>
+          <ProCard bordered colSpan={{ xs: 3, sm: 3, md: 3, lg: 3, xl: 20 }}>
+            col2
+          </ProCard>
+          <ProCard bordered colSpan={{ xs: 10, sm: 10, md: 10, lg: 10, xl: 2 }}>
+            col3
+          </ProCard>
+        </ProCard>
+
+        <ProCard title="指定宽度px" gutter={8} style={{ marginTop: 8 }}>
+          <ProCard
+            bordered
+            colSpan={{
+              xs: '50px',
+              sm: '100px',
+              md: '200px',
+              lg: '400px',
+              xl: '400px',
+            }}
+            style={{ backgroundColor: 'pink' }}
+          >
+            col1 - px
+          </ProCard>
+          <ProCard bordered>auto</ProCard>
+        </ProCard>
+
+        <ProCard style={{ marginTop: 8 }} gutter={8} title="指定宽度百分比">
+          <ProCard layout="center" bordered>
+            Auto
+          </ProCard>
+          <ProCard
+            layout="center"
+            colSpan={{
+              xs: '10%',
+              sm: '20%',
+              md: '40%',
+              lg: '60%',
+              xl: '80%',
+            }}
+            bordered
+            style={{ backgroundColor: 'pink' }}
+          >
+            Col - 百分比
+          </ProCard>
+        </ProCard>
+
+        {/* 分割 */}
+
+        <ProCard
+          style={{ marginTop: 18 }}
+          title="左右分栏带标题"
+          extra="2019年9月28日"
+          headerBordered
+          split="vertical"
+        >
+          <ProCard style={{}} colSpan="300px" title="左侧详情">
+            left
+          </ProCard>
+          <ProCard title="流量占用情况">
+            <div style={{ height: 250 }}>right</div>
+          </ProCard>
+        </ProCard>
+
+        <ProCard
+          style={{ marginTop: 18 }}
+          title="复杂切分"
+          extra="2019年9月28日"
+          headerBordered
+          split="vertical"
+          bordered={true}
+        >
+          <ProCard colSpan="40%" split="horizontal">
+            <ProCard split="vertical">
+              <ProCard title="昨日全部流量">123</ProCard>
+              <ProCard title="昨日全部流量">234</ProCard>
+              <ProCard title="昨日全部流量">345</ProCard>
+            </ProCard>
+            <ProCard split="vertical">
+              <ProCard title="运行中试验">12/56</ProCard>
+              <ProCard title="历史试验总数">134 个</ProCard>
+            </ProCard>
+            <ProCard title="流量趋势">图表</ProCard>
+          </ProCard>
+          <ProCard title="流量占用情况">
+            <div style={{ height: 450 }}>right</div>
+          </ProCard>
+        </ProCard>
+
+        <ProCard.Group title="核心指标" style={{ marginTop: 18 }}>
+          <ProCard>
+            <Statistic title="今日UV" value={79.0} precision={2} />
+          </ProCard>
+          <Divider />
+          <ProCard>
+            <Statistic title="冻结金额" value={112893.0} precision={2} />
+          </ProCard>
+          <Divider />
+          <ProCard>
+            <Statistic title="信息完整度" value={93} suffix="/100" />
+          </ProCard>
+          <Divider />
+          <ProCard>
+            <Statistic title="冻结金额" value={112893.0} />
+          </ProCard>
+        </ProCard.Group>
+
+        <ProCard.Group
+          title="折叠"
+          style={{ marginTop: 18 }}
+          collapsible
+          defaultCollapsed
+        >
+          <ProCard>
+            <Statistic title="今日UV" value={79.0} precision={2} />
+          </ProCard>
+          <Divider />
+          <ProCard>
+            <Statistic title="冻结金额" value={112893.0} precision={2} />
+          </ProCard>
+          <Divider />
+          <ProCard>
+            <Statistic title="信息完整度" value={93} suffix="/100" />
+          </ProCard>
+          <Divider />
+          <ProCard>
+            <Statistic title="冻结金额" value={112893.0} />
+          </ProCard>
+        </ProCard.Group>
+
+        <ProCard.Group
+          title="折叠-右侧框"
+          style={{ marginTop: 18 }}
+          collapsed={collapsed}
+          extra={
+            <RightOutlined
+              rotate={!collapsed ? 90 : undefined}
+              onClick={() => {
+                setCollapsed(!collapsed);
+              }}
+            />
+          }
+        >
+          <ProCard>
+            <Statistic title="今日UV" value={79.0} precision={2} />
+          </ProCard>
+          <Divider />
+          <ProCard>
+            <Statistic title="冻结金额" value={112893.0} precision={2} />
+          </ProCard>
+          <Divider />
+          <ProCard>
+            <Statistic title="信息完整度" value={93} suffix="/100" />
+          </ProCard>
+          <Divider />
+          <ProCard>
+            <Statistic title="冻结金额" value={112893.0} />
+          </ProCard>
+        </ProCard.Group>
+
+        <ProCard style={{ marginTop: 18 }} tabs={{ tabPosition: 'left' }}>
+          <ProCard.TabPane tab="tab1" key="tab1">
+            内容1
+          </ProCard.TabPane>
+          <ProCard.TabPane tab="tab2" key="tab2">
+            内容2
+          </ProCard.TabPane>
+        </ProCard>
+
+        <ProCard
+          title="横向内部卡片"
+          bordered
+          headerBordered
+          style={{ marginTop: 18 }}
+          gutter={16}
+        >
+          <ProCard title="内部卡片标题" type="inner" bordered>
+            内部卡片内容
+          </ProCard>
+          <ProCard title="内部卡片标题" type="inner" bordered>
+            内部卡片内容
+          </ProCard>
+        </ProCard>
+
+        <ProCard style={{ marginTop: 18 }} split="vertical">
+          <ProCard colSpan="25%">
+            <Steps
+              direction="vertical"
+              size="small"
+              style={{ maxHeight: 320 }}
+              current={current}
+            >
+              <Step title="填写基本信息" />
+              <Step title="配置模板" />
+              <Step title="配置访问" />
+              <Step title="配置部署和调度" />
+              <Step title="预览" />
+            </Steps>
+          </ProCard>
+          <ProCard title="流量占用情况">
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => setCurrent(current + 1)}
+                disabled={current === 5}
+              >
+                下一步
+              </Button>
+              <Button
+                onClick={() => setCurrent(current - 1)}
+                disabled={current === 0}
+              >
+                上一步
+              </Button>
+            </Space>
+          </ProCard>
+        </ProCard>
+      </PageContainer>
+    </>
+  );
+};
+```
+
+
 
 
 
