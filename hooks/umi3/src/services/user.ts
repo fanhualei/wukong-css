@@ -164,18 +164,31 @@ export async function getAppList(params: {
   sorter?: { field?: string; order?: ['ascend', 'descend'] };
 }) {
   console.log(params);
-  return request<{ total: number; list: IpItem[] }>(`/api/demo/getAppList`, {
+  return request<{ total: number; list: AppItem[] }>(`/api/demo/getAppList`, {
     params: { ...params },
   });
 }
 
 export async function getAppByKey(params: { key: number }) {
   console.log(params);
-  const list = request<{ total: number; list: IpItem[] }>(
+  const list = request<{ total: number; list: AppItem[] }>(
     `/api/demo/getAppList`,
     {
       params: { ...params },
     },
   );
   return (await list).list[params.key];
+}
+
+export interface ListDataSourceItem {
+  name: string;
+  image: string;
+  desc: string;
+  progress: number;
+  status: string;
+}
+
+export async function getListDataSource() {
+  const list = request<ListDataSourceItem[]>(`/api/demo/getListDataSource`);
+  return list;
 }

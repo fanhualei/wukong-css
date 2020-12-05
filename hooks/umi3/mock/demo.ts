@@ -123,6 +123,48 @@ const proxy = {
       list: renList,
     });
   },
+
+  'GET /api/demo/getListDataSource': (req: Request, res: Response) => {
+    console.log(`/api/demo/getListDataSource`);
+    const dataSource = [
+      {
+        name: '语雀的天空',
+        image:
+          'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
+        desc:
+          'Ant Design, a design language for background applications, is refined by Ant UED Team',
+        progress: 20,
+        status: 'close',
+      },
+      {
+        name: 'Ant Design',
+        image:
+          'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
+        desc:
+          '我是一条测试的描述:Ant Design, a design language for background applications, is refined by Ant UED Team',
+        progress: 30,
+        status: 'success',
+      },
+      {
+        name: '蚂蚁金服体验科技',
+        image:
+          'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
+        desc:
+          'Ant Design, a design language for background applications, is refined by Ant UED Team',
+        progress: 50,
+        status: 'processing',
+      },
+      {
+        name: 'TechUI',
+        image:
+          'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
+        desc: '我是一条测试的描述',
+        progress: 60,
+        status: 'error',
+      },
+    ];
+    res.send(dataSource);
+  },
 };
 
 export default delay(proxy, 1000);

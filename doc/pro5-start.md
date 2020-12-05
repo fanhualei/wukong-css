@@ -4713,6 +4713,92 @@ export default () => {
 
 
 
+## 6.7 列表 - ProList
+
+* 如果没有指定title，能不能将top上32px高的横条给删除了，见图
+* 官方Demo中，鼠标移动到List中metas.name，都会有个小手，这个小手的点击事件的onClicked能否开放出来？，用render感觉有点麻烦，因为大部分使用的是dataIndex属性。
+
+### 6.7.1 必须设置
+
+下面这三项就能显示出数据了
+
+| 项目       | 说明                                        |
+| ---------- | ------------------------------------------- |
+| dataSource | 数据内容                                    |
+| rowKey     | 主键                                        |
+| metas      | title、avatar、description用来设置dataIndex |
+|            |                                             |
+
+
+
+### 6.7.2 其他设置
+
+
+
+#### ①  基本设置
+
+![](imgs/pro-demo-list-1.png)
+
+| 项目           | 说明                                  |
+| -------------- | ------------------------------------- |
+| headerTitle    | 左侧标题                              |
+| toolBarRender  | List右侧可以操作框                    |
+| metas.subTitle | 子标题                                |
+| showActions    | 何时展示 actions。'hover' \| 'always' |
+| metas.actions  | 每行的action                          |
+
+
+
+#### ② 折叠
+
+会折叠 description与context，需要实现以下内容：
+
+* 定义一个state
+* 在ProList中设置expandable属性
+
+```jsx
+  const [expandedRowKeys, setExpandedRowKeys] = React.useState<
+    React.ReactText[]
+  >([]);
+
+
+expandable={{ expandedRowKeys, onExpandedRowsChange: setExpandedRowKeys }}
+```
+
+
+
+ ####  ③  可选择项
+
+主要步骤如下：
+
+* 定义一个state，用来存储selectRowKeys
+* ProList中定义rowSelection属性
+
+
+
+![](imgs/pro-demo-list-2.png)
+
+```tsx
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState<
+    React.ReactText[]
+  >([]);
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (keys: React.ReactText[], selectedRows: ListDataSourceItem[]) => {
+      console.log(keys, selectedRows);
+      return setSelectedRowKeys(keys);
+    },
+  };
+
+<ProList
+     ..........
+      rowSelection={rowSelection}
+/>
+```
+
+
+
 
 
 

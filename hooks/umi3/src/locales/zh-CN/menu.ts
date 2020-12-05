@@ -62,4 +62,5 @@ export default {
   'menu.pro.editTable': '可编辑表格',
   'menu.pro.description': '详情页',
   'menu.pro.card': '卡片',
+  'menu.pro.list': '列表',
 };

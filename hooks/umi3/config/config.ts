@@ -107,6 +107,11 @@ export default defineConfig({
           path: '/pro/card',
           component: '@/pages/pro/card',
         },
+        {
+          name: 'list',
+          path: '/pro/list',
+          component: '@/pages/pro/list',
+        },
       ],
     },
     {
