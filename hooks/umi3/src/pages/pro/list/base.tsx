@@ -94,7 +94,7 @@ export default () => {
         title: {
           dataIndex: 'name',
         },
-        avatar: { dataIndex: 'image' },
+        avatar: { dataIndex: 'avatar' },
         description: { dataIndex: 'desc' },
         subTitle: {
           render: subTitleRender,

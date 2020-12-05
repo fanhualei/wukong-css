@@ -5,14 +5,18 @@ import ProCard from '@ant-design/pro-card';
 
 import Base from './base';
 import Select from './select';
+import Query from './query';
+import Vertical from './vertical';
 
 export default () => {
   return (
     <>
       <PageContainer subTitle="ProCard例子">
-        <Space direction="vertical" style={{ width: '100%' }}>
+        <Space direction="vertical" size={26} style={{ width: '100%' }}>
           <Base />
           <Select />
+          <Query />
+          <Vertical />
         </Space>
       </PageContainer>
     </>

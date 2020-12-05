@@ -79,7 +79,7 @@ export default () => {
       ]}
       metas={{
         title: { dataIndex: 'name' },
-        avatar: { dataIndex: 'image' },
+        avatar: { dataIndex: 'avatar' },
         description: { dataIndex: 'desc' },
         actions: { render: () => [<a>邀请</a>] },
         extra: { render: extraRender },

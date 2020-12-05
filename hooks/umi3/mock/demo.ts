@@ -129,38 +129,71 @@ const proxy = {
     const dataSource = [
       {
         name: '语雀的天空',
-        image:
+        avatar:
           'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
         desc:
-          'Ant Design, a design language for background applications, is refined by Ant UED Team',
+          '蚂蚁金服设计平台 design.alipay.com，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。蚂蚁金服设计平台 design.alipay.com，用最小的工作量，无缝接入蚂蚁金服生态提供跨越设计与开发的体验解决方案。',
         progress: 20,
         status: 'close',
+        image:
+          'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+        tags: [
+          { name: '语雀专栏', color: '' },
+          { name: '设计语言', color: '' },
+          { name: '蚂蚁金服', color: 'blue' },
+        ],
+        actions: { star: 30, praise: 4929, repeat: 100 },
       },
       {
         name: 'Ant Design',
-        image:
+        avatar:
           'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
         desc:
-          '我是一条测试的描述:Ant Design, a design language for background applications, is refined by Ant UED Team',
+          '蚂蚁金服设计平台 design.alipay.com，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。蚂蚁金服设计平台 design.alipay.com，用最小的工作量，无缝接入蚂蚁金服生态提供跨越设计与开发的体验解决方案。',
         progress: 30,
         status: 'success',
+        image:
+          'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+        tags: [
+          { name: 'Ant Design', color: 'red' },
+          { name: 'React', color: '' },
+          { name: 'Hooks', color: 'blue' },
+        ],
+        actions: { star: 1, praise: 0, repeat: 0 },
       },
       {
         name: '蚂蚁金服体验科技',
-        image:
+        avatar:
           'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
         desc:
-          'Ant Design, a design language for background applications, is refined by Ant UED Team',
+          '蚂蚁金服设计平台 design.alipay.com，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。蚂蚁金服设计平台 design.alipay.com，用最小的工作量，无缝接入蚂蚁金服生态提供跨越设计与开发的体验解决方案。',
         progress: 50,
         status: 'processing',
+        image:
+          'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+        tags: [
+          { name: '网贷公司', color: 'pink' },
+          { name: '上市公司', color: '' },
+          { name: '蚂蚁金服', color: '' },
+        ],
+        actions: { star: 32, praise: 33, repeat: 77 },
       },
       {
         name: 'TechUI',
-        image:
+        avatar:
           'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-        desc: '我是一条测试的描述',
+        desc:
+          '蚂蚁金服设计平台 design.alipay.com，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。蚂蚁金服设计平台 design.alipay.com，用最小的工作量，无缝接入蚂蚁金服生态提供跨越设计与开发的体验解决方案。',
         progress: 60,
         status: 'error',
+        image:
+          'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+        tags: [
+          { name: 'UI设计', color: '' },
+          { name: '前端', color: 'green' },
+          { name: '蚂蚁', color: '' },
+        ],
+        actions: { star: 23, praise: 100, repeat: 1 },
       },
     ];
     res.send(dataSource);

@@ -186,6 +186,9 @@ export interface ListDataSourceItem {
   desc: string;
   progress: number;
   status: string;
+  avatar: string;
+  tags: { name: string; color: string }[];
+  actions: { star: number; praise: number; repeat: number };
 }
 
 export async function getListDataSource() {

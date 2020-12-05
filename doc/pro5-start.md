@@ -4717,6 +4717,11 @@ export default () => {
 
 * 如果没有指定title，能不能将top上32px高的横条给删除了，见图
 * 官方Demo中，鼠标移动到List中metas.name，都会有个小手，这个小手的点击事件的onClicked能否开放出来？，用render感觉有点麻烦，因为大部分使用的是dataIndex属性。
+* 分页组件离有边框太近了，另外大小样式能不能跟ProTable一样呀？见图
+* status当前只能设置一个，要是有多个怎么办？
+  * 如果能将`metas`  换成 `columns`， 这样就跟ProTable通用了，学习成本降低了。 
+    * 无非在columns，设置一个metasType属性，用来定义：title 、avatar、description、subTitle	
+* 预设模式使用起来很不容易理解？ 例如在非dataSource下怎么使用呢？
 
 ### 6.7.1 必须设置
 
@@ -4735,7 +4740,7 @@ export default () => {
 
 
 
-#### ①  基本设置
+#### ①  基本参数
 
 ![](imgs/pro-demo-list-1.png)
 
@@ -4767,7 +4772,7 @@ expandable={{ expandedRowKeys, onExpandedRowsChange: setExpandedRowKeys }}
 
 
 
- ####  ③  可选择项
+ ####  ③  行可选
 
 主要步骤如下：
 
@@ -4798,6 +4803,196 @@ expandable={{ expandedRowKeys, onExpandedRowsChange: setExpandedRowKeys }}
 ```
 
 
+
+#### ④  远程检索数据
+
+* 使用`request`来检索数据
+* 检索条件：
+  * search来定义检索条件的类型：标准与简体
+  * metas 中可以定义是否显示检索条件。
+  * status 中定义不在检索字段中的检索条件。
+
+
+
+```tsx
+import React from 'react';
+import ProList from '@ant-design/pro-list';
+import request from 'umi-request';
+
+import { Button, Space, Tag } from 'antd';
+import { render } from 'react-dom';
+
+interface GithubIssueItem {
+  url: string;
+  id: number;
+  number: number;
+  title: string;
+  labels: {
+    name: string;
+    color: string;
+  }[];
+  state: string;
+  comments: number;
+  created_at: string;
+  updated_at: string;
+  closed_at?: string;
+}
+
+export default () => {
+  const url = 'https://proapi.azurewebsites.net/github/issues';
+  return (
+    <ProList<GithubIssueItem>
+      headerTitle="查询与筛选"
+      pagination={{
+        pageSize: 3,
+      }}
+      request={async (params, sort, filter) => {
+        console.log(params, sort, filter);
+        return request(url, { params });
+      }}
+      rowKey="id"
+      toolBarRender={() => [
+        <Button key="queryNew" type="primary">
+          新建
+        </Button>,
+      ]}
+      metas={{
+        title: { dataIndex: 'user', search: false },
+        avatar: { dataIndex: 'avatar', search: false },
+        description: { dataIndex: 'title', search: false },
+        subTitle: {
+          title: '标题',
+          render: (_, row) => {
+            return (
+              <Space>
+                {row.labels?.map((label: { name: string; color: string }) => (
+                  <Tag key={label.name} color={label.color}>
+                    {label.name}
+                  </Tag>
+                ))}
+              </Space>
+            );
+          },
+        },
+        actions: {
+          search: false,
+          render: () => [<a>链路</a>, <a>报警</a>, <a>查看</a>],
+        },
+        status: {
+          // 自己扩展的字段，主要用于筛选，不在列表中显示
+          title: '状态',
+          valueType: 'select',
+          valueEnum: {
+            all: { text: '全部', status: 'Default' },
+            open: {
+              text: '未解决',
+              status: 'Error',
+            },
+            closed: {
+              text: '已解决',
+              status: 'Success',
+            },
+            processing: {
+              text: '解决中',
+              status: 'Processing',
+            },
+          },
+        },
+      }}
+      showActions="hover"
+      search={{ filterType: 'light' }}
+      size="small"
+      split={false}
+    />
+  );
+};
+
+```
+
+
+
+#### ⑤  竖排显示
+
+只用设置成：`itemLayout="vertical"`，下面是具体的位置。
+
+![](imgs/pro-demo-list-vertical.png)
+
+
+
+相关代码
+
+```tsx
+import React from 'react';
+import { Button, Tag } from 'antd';
+import ProList from '@ant-design/pro-list';
+import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
+import { getListDataSource, ListDataSourceItem } from '@/services/user';
+import { useRequest } from 'ahooks';
+
+const IconText = ({ icon, text }: { icon: any; text: string }) => (
+  <span>
+    {React.createElement(icon, { style: { marginRight: 8 } })}
+    {text}
+  </span>
+);
+
+export default () => {
+  const request = useRequest(getListDataSource);
+  return (
+    <ProList<ListDataSourceItem>
+      headerTitle="竖排样式"
+      itemLayout="vertical"
+      toolBarRender={() => [
+        <Button type="primary" key="verticalNew">
+          新建
+        </Button>,
+      ]}
+      loading={request.loading}
+      rowKey="name"
+      dataSource={request.data}
+      metas={{
+        title: { dataIndex: 'name' },
+        description: {
+          render: (_, row) => (
+            <>
+              {row.tags?.map((tag) => (
+                <Tag key={tag.name} color={tag.color}>
+                  {tag.name}
+                </Tag>
+              ))}
+            </>
+          ),
+        },
+        content: { dataIndex: 'desc' },
+        actions: {
+          render: (_, row: ListDataSourceItem) => [
+            <IconText
+              icon={StarOutlined}
+              text={row.actions?.star.toString()}
+              key="list-vertical-star-o"
+            />,
+            <IconText
+              icon={LikeOutlined}
+              text={row.actions?.praise.toString()}
+              key="list-vertical-like-o"
+            />,
+            <IconText
+              icon={MessageOutlined}
+              text={row.actions?.repeat.toString()}
+              key="list-vertical-message"
+            />,
+          ],
+        },
+        extra: {
+          render: (_, row) => {
+            return <img src={row.image} width={270} alt={row.name} />;
+          },
+        },
+      }}
+    />
+  );
+};
+```
 
 
 
