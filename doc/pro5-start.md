@@ -374,6 +374,220 @@ ant Pro5中默认是没有多语言的。如果要使用，必须要开启。
 
 
 
+## 3.2 定制主题
+
+[antDesign官方的说明](https://ant.design/docs/react/customize-theme-cn)
+
+以下是一些最常用的通用变量，所有样式变量可以在 [这里](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less) 找到。
+
+```less
+@primary-color: #1890ff; // 全局主色
+@link-color: #1890ff; // 链接色
+@success-color: #52c41a; // 成功色
+@warning-color: #faad14; // 警告色
+@error-color: #f5222d; // 错误色
+@font-size-base: 14px; // 主字号
+@heading-color: rgba(0, 0, 0, 0.85); // 标题色
+@text-color: rgba(0, 0, 0, 0.65); // 主文本色
+@text-color-secondary: rgba(0, 0, 0, 0.45); // 次文本色
+@disabled-color: rgba(0, 0, 0, 0.25); // 失效色
+@border-radius-base: 2px; // 组件/浮层圆角
+@border-color-base: #d9d9d9; // 边框色
+@box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+  0 9px 28px 8px rgba(0, 0, 0, 0.05); // 浮层阴影
+```
+
+如果以上变量不能满足你的定制需求，可以给我们提 issue。
+
+
+
+如果你在使用 [Umi](http://umijs.org/zh/)，那么可以很方便地在项目根目录的 [config/config.js](https://github.com/ant-design/ant-design-pro/blob/56e648ec14bdb9f6724169fd64830447e224ccb1/config/config.js#L45)（Umi）文件中 [theme](https://umijs.org/zh/config/#theme) 字段进行主题配置。`theme` 可以配置为一个对象或文件路径。
+
+```js
+"theme": {
+  "primary-color": "#1DA57A",
+},
+```
+
+或者 [一个 js 文件](https://github.com/ant-design/ant-design-pro/blob/b7e7983661eb5e53dc807452e9653e93e74276d4/.webpackrc.js#L18)：
+
+```js
+"theme": "./theme.js",
+```
+
+
+
+## 3.3 基本使用
+
+### 3.3.1 全局样式
+
+#### ①  global.less定义
+
+在`global.less`中定义。
+
+例如：
+
+```less
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.gtitle {
+  color: red;
+}
+
+```
+
+使用，直接使用就可以了
+
+```tsx
+<div className="gtitle">你好</div>
+```
+
+
+
+#### ② 使用函数定义
+
+这个方法不好用，在任意文件中定义，例如：test.less
+
+```less
+/* 定义多个全局样式 */
+:global {
+  .gpink {
+    color: pink;
+  }
+  .sider {
+    background: #ebebeb;
+  }
+}
+```
+
+如下使用，不管是否`import test.less` ，都不管用。
+
+```tsx
+<div className="gpink">使用:global来在某个less文件中定义：不起作用</div>
+```
+
+
+
+### 3.3.2 页面样式
+
+直接定义less，然后在页面中引用就行。
+
+
+
+### 3.3.3 覆盖ant样式
+
+#### ① 全局覆盖
+
+在global.less直接定义就可以了，例如覆盖Button的背景颜色
+
+```css
+.ant-btn {
+  background-color: red;
+}
+
+```
+
+使用：
+
+``` tsx
+<Button> 全局覆盖Ant Button样式 </Button>
+```
+
+
+
+#### ②  页面覆盖
+
+在页面中定义个样式
+
+```less
+.customButton {
+  background-color: pink;
+}
+```
+
+在页面中使用，如果在global.less中定义了，那么以global.less为准，可以添加`!important`覆盖
+
+```tsx
+import styles from './index.less';
+
+<Button className={styles.customButton}> 覆盖Ant Button样式 </Button>
+```
+
+
+
+### 3.3.4 常用变量
+
+通过`@import '~antd/lib/style/themes/default.less';` 引入常用变量
+
+#### ① 字体
+
+正常字体、小字体、大字体。
+
+标题相关字体。
+
+```less
+@font-size-base: 14px;
+@font-size-lg: @font-size-base + 2px;
+@font-size-sm: 12px;
+@heading-1-size: ceil(@font-size-base * 2.71);
+@heading-2-size: ceil(@font-size-base * 2.14);
+@heading-3-size: ceil(@font-size-base * 1.71);
+@heading-4-size: ceil(@font-size-base * 1.42);
+@heading-5-size: ceil(@font-size-base * 1.14);
+//行高
+@line-height-base: 1.5715;
+```
+
+
+
+#### ② 颜色
+
+```less
+@primary-color: #1890ff; // 全局主色
+@link-color: #1890ff; // 链接色
+@success-color: #52c41a; // 成功色
+@warning-color: #faad14; // 警告色
+@error-color: #f5222d; // 错误色
+@heading-color: rgba(0, 0, 0, 0.85); // 标题色
+@text-color: rgba(0, 0, 0, 0.65); // 主文本色
+@text-color-secondary: rgba(0, 0, 0, 0.45); // 次文本色
+@disabled-color: rgba(0, 0, 0, 0.25); // 失效色
+@border-color-base: #d9d9d9; // 边框色
+@box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+  0 9px 28px 8px rgba(0, 0, 0, 0.05); // 浮层阴影
+```
+
+
+
+#### ③ 间隔
+
+```less
+// vertical 垂直 paddings
+@padding-lg: 24px; // containers  容器
+@padding-md: 16px; // small containers and buttons
+@padding-sm: 12px; // Form controls and items
+@padding-xs: 8px; // small items
+@padding-xss: 4px; // more small
+
+// vertical 垂直 padding for all form controls
+@control-padding-horizontal: @padding-sm;
+@control-padding-horizontal-sm: @padding-xs;
+
+// vertical 垂直 margins
+@margin-lg: 24px; // containers
+@margin-md: 16px; // small containers and buttons
+@margin-sm: 12px; // Form controls and items
+@margin-xs: 8px; // small items
+@margin-xss: 4px; // more small
+```
+
+
+
+
+
 
 
 # 4. 组件

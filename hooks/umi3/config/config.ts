@@ -115,6 +115,13 @@ export default defineConfig({
       ],
     },
     {
+      path: '/css',
+      name: 'css',
+      access: 'canAdmin',
+      icon: 'smile',
+      component: '@/pages/css',
+    },
+    {
       component: './404',
     },
   ],

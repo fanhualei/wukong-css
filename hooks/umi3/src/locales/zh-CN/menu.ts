@@ -63,4 +63,5 @@ export default {
   'menu.pro.description': '详情页',
   'menu.pro.card': '卡片',
   'menu.pro.list': '列表',
+  'menu.css': '样式',
 };

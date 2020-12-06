@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Card, Alert, Typography } from 'antd';
+import { Card, Alert, Typography, Button } from 'antd';
 import styles from './Welcome.less';
 
 const CodePreview: React.FC<{}> = ({ children }) => (
@@ -24,6 +24,8 @@ export default (): React.ReactNode => (
           marginBottom: 24,
         }}
       />
+      <Button className={styles.test}>dddd</Button>
+
       <Typography.Text strong>
         高级表格{' '}
         <a href="https://protable.ant.design/" rel="noopener noreferrer" target="__blank">
