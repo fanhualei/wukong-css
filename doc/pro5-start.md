@@ -6,6 +6,38 @@
 
 
 
+> 前台
+
+* 一个完整的表格、添加、删除、修改代码。
+* 表格完善
+  * 可编辑单元格
+  * 分页页的多选(这个应用场景不多)
+* 权限
+* layout优化
+  * [有一个布局看起来不错](https://chu1204505056.gitee.io/vue-admin-beautiful-pro/#/error/403)
+  * [上面的一个布局](https://github.com/ant-design/pro-components/issues/1123)
+* 异常处理
+
+
+
+
+
+> 后台
+
+* 按照antdesign接口封装
+* 代码生成
+  * 生成service与type定义
+  * 生成相关的界面，添加删除修改
+  * 生成Mock？ 这个可以考虑考虑
+
+
+
+> 业务
+
+* 安装模拟环境
+
+
+
 # 1. 快速开始
 
 
@@ -5273,13 +5305,19 @@ export default SubTable;
 
 
 
-### 7.1.2 常用功能
+### 7.1.2 封装已有控件
+
+[antPro的例子](https://github.com/ant-design/pro-components/blob/master/packages/field/src/components/Text/index.tsx)
+
+[refs转发 React.forwardRef](https://www.cnblogs.com/lanpang9661/p/12611087.html)
 
 
 
+React hooks 里关于这部分的几个概念，已经有博主总结得挺好了 https://blog.csdn.net/qq_24724109/article/details/103817607
 
-
-
+**useRef**：用于获取元素的原生DOM或者获取自定义组件所暴露出来的ref方法(父组件可以通过ref获取子组件，并调用相对应子组件中的方法)
+**useImperativeHandle**：在函数式组件中，用于定义暴露给父组件的ref方法。
+**React.forwardRef**：将ref父类的ref作为参数传入函数式组件中，本身props只带有children这个参数，这样可以让子类转发父类的ref,当父类把ref挂在到子组件上时，子组件外部通过forwrardRef包裹，可以直接将父组件创建的ref挂在到子组件的某个dom元素上
 
 
 

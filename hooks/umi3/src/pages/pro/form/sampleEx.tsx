@@ -14,7 +14,7 @@ import { Form, Space } from 'antd';
 export default () => {
   const formItemLayout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 18 },
+    wrapperCol: { span: 21 },
   };
 
   return (

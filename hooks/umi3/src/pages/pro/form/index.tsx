@@ -15,6 +15,7 @@ import Drawer from './drawer';
 import Query from './query';
 import QueryAdvance from './queryAdvance';
 import LightFilter from './lightFilter';
+import Shop from './shop';
 
 export default () => {
   return (
@@ -108,6 +109,19 @@ export default () => {
           id="demoLight"
         >
           <LightFilter />
+        </Card>
+
+        <Card
+          title={
+            <div>
+              模拟电商:<em style={{ fontSize: 10 }}>提示信息放在右侧</em>
+            </div>
+          }
+          style={{ marginBottom: 16 }}
+          key="shop"
+          id="shop"
+        >
+          <Shop />
         </Card>
       </PageContainer>
     </>
