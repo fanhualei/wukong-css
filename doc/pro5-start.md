@@ -81,7 +81,76 @@ yarn build
 
 哪些简单的就不在这里描述了，这里只描述那些容易被遗忘的重要语法
 
+
+
 ### 1.3.1 类型定义
+
+#### ① type & interface
+
+
+
+**type**
+
+(1) 类型别称
+
+很简单，就是为已经存在的类型创建另一个名字，代表完全相同的意义。例如：
+
+```ts
+type ObjectAlias = object
+```
+
+虽然说这个特性是`type`独有的，但当原类型不是原始类型时，即原类型不是`number`、`string`、`boolean`、`object`、`symbol`、`null`、`undefined`、`void`、`never`、`unknown`、`any`时，`interface`可以使用以下方式实现类似的功能：
+
+```ts
+interface Foo {
+  a: string
+}
+interface FooAlias extends Foo {}
+```
+
+**interface**
+
+(1) 扩展接口（extends interface）
+
+```ts
+interface Foo {
+  a: string
+}
+interface Bar extends Foo {
+  b: number
+}
+```
+
+这里使用`&`可以实现类似的效果，如下：
+
+```ts
+interface Foo {
+  a: string
+}
+type Bar = Foo & {
+  b: number
+}
+```
+
+(2) 扩展类（extends class）
+
+```ts
+class Control {
+    private state: any;
+}
+
+interface SelectableControl extends Control {
+    select(): void;
+}
+```
+
+在类声明时，其实也同时声明了一个描述该类结构和类型的接口，所以这里的扩展操作与上面（1）中的相似。
+
+
+
+### 1.3.2 使用
+
+#### ① Omit去掉
 
 Omit ：去掉某个属性
 
@@ -103,6 +172,8 @@ type UserWithoutEmail = {
 
 
 
+#### ② Partial可选
+
 Partial: 将每一对中的 `key` 变为可选，即添加 `?`
 
 ```typescript
@@ -123,6 +194,8 @@ type optional = {
 
 
 
+#### ③ keyof
+
 keyof: 即 `索引类型查询操作符`，我们可以将 `keyof` 作用于`泛型 T` 上来获取`泛型 T` 上的`所有 public 属性名`构成的 `联合类型`
 
 ```typescript
@@ -142,9 +215,37 @@ type values = IUser[unionKey] // string | number 属性值类型组成的联合�
 
 
 
+#### ④ Pick选取
+
+```typescript
+interface User{
+    id:number;
+    age:number;
+    name:string;
+}
+// 相当于: type PartialUser = { id?: number; age?: number; name?: string; }
+type PartialUser=Partial<User>
+
+// 相当于: type PickUser = { id: number; age: number; }
+type PickUser= picck<User,"id"|"age">
+
+```
 
 
 
+#### ⑤ extends 继承
+
+
+
+```typescript
+interface Context extends KoaContect{
+    logger:number;
+}
+```
+
+
+
+#### ⑥ Dictionary&Many
 
 
 
@@ -5313,11 +5414,91 @@ export default SubTable;
 
 
 
-React hooks 里关于这部分的几个概念，已经有博主总结得挺好了 https://blog.csdn.net/qq_24724109/article/details/103817607
+#### ① Ref透传
 
-**useRef**：用于获取元素的原生DOM或者获取自定义组件所暴露出来的ref方法(父组件可以通过ref获取子组件，并调用相对应子组件中的方法)
-**useImperativeHandle**：在函数式组件中，用于定义暴露给父组件的ref方法。
-**React.forwardRef**：将ref父类的ref作为参数传入函数式组件中，本身props只带有children这个参数，这样可以让子类转发父类的ref,当父类把ref挂在到子组件上时，子组件外部通过forwrardRef包裹，可以直接将父组件创建的ref挂在到子组件的某个dom元素上
+[参考网址](https://blog.csdn.net/weixin_43720095/article/details/104967478)
+
+> 基本知识
+
+* useRef
+  * 用来得到DOM或自定义组件暴露的ref方法。
+* React.forwardRef
+  * 将父组件中定义的ref方法，传入到子组件中。
+* useImperativeHandle
+  * 在父组件与子组件的ref之间做了一个中间层，这样更灵活。
+
+
+
+> 不使用useImperativeHandle
+
+在父组件中，直接操作子组件的ref
+
+```tsx
+import React, { useCallback, useRef } from 'react';
+import ReactDOM from 'react-dom';
+
+// 实现 ref 的转发
+const FancyButton = React.forwardRef((props, ref) => (
+  <div>
+    <input ref={ref} type="text" />
+    <button>{props.children}</button>
+  </div>
+));
+
+// 父组件中使用子组件的 ref
+function App() {
+  const ref = useRef();
+  const handleClick = useCallback(() => ref.current.focus(), [ ref ]);
+
+  return (
+    <div>
+      <FancyButton ref={ref}>Click Me</FancyButton>
+      <button onClick={handleClick}>获取焦点</button>
+    </div>
+  )
+}
+
+ReactDOM.render(<App />, root);
+```
+
+
+
+> 使用useImperativeHandle
+
+
+
+```tsx
+import React, { useRef, useImperativeHandle } from 'react';
+import ReactDOM from 'react-dom';
+
+const FancyInput = React.forwardRef((props, ref) => {
+  const inputRef = useRef();
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current.focus();
+    }
+  }));
+
+  return <input ref={inputRef} type="text" />
+});
+
+const App = props => {
+  const fancyInputRef = useRef();
+
+  return (
+    <div>
+      <FancyInput ref={fancyInputRef} />
+      <button
+        onClick={() => fancyInputRef.current.focus()}
+      >父组件调用子组件的 focus</button>
+    </div>
+  )
+}
+
+ReactDOM.render(<App />, root);
+```
+
+
 
 
 

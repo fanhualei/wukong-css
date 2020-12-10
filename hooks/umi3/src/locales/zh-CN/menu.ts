@@ -64,4 +64,6 @@ export default {
   'menu.pro.card': '卡片',
   'menu.pro.list': '列表',
   'menu.css': '样式',
+  'menu.customer': '自定义组件',
+  'menu.customer.ref': '封装ant组件',
 };

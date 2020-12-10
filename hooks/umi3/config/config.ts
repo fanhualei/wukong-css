@@ -121,6 +121,21 @@ export default defineConfig({
       icon: 'smile',
       component: '@/pages/css',
     },
+
+    {
+      path: '/customer',
+      name: 'customer',
+      access: 'canAdmin',
+      icon: 'smile',
+      routes: [
+        {
+          name: 'ref',
+          path: '/customer/ref',
+          component: '@/pages/customer/ref',
+        },
+      ],
+    },
+
     {
       component: './404',
     },
