@@ -3,4 +3,12 @@ import ProFormDigitEx from './ProFormDigitEx';
 import ProFormTextAreaEx from './ProFormTextAreaEx';
 import ProFormCheckboxEx from './ProFormCheckboxEx';
 
-export { ProFormTextEx, ProFormDigitEx, ProFormTextAreaEx, ProFormCheckboxEx };
+import RowLayout from './RowLayout';
+
+export {
+  ProFormTextEx,
+  ProFormDigitEx,
+  ProFormTextAreaEx,
+  ProFormCheckboxEx,
+  RowLayout,
+};

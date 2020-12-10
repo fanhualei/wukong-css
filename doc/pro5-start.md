@@ -148,6 +148,12 @@ interface SelectableControl extends Control {
 
 
 
+#### ② react类型
+
+[参考文档](https://flow.org/en/docs/react/types/#toc-react-componenttype)
+
+
+
 ### 1.3.2 使用
 
 #### ① Omit去掉
@@ -227,7 +233,7 @@ interface User{
 type PartialUser=Partial<User>
 
 // 相当于: type PickUser = { id: number; age: number; }
-type PickUser= picck<User,"id"|"age">
+type PickUser= pick<User,"id"|"age">
 
 ```
 
@@ -5412,9 +5418,13 @@ export default SubTable;
 
 [refs转发 React.forwardRef](https://www.cnblogs.com/lanpang9661/p/12611087.html)
 
+例如下图，让注释显示在右侧。
+
+![](imgs/pro-demo-wrap-inputext.png)
 
 
-#### ① Ref透传
+
+#### ① Ref透传的知识
 
 [参考网址](https://blog.csdn.net/weixin_43720095/article/details/104967478)
 
@@ -5496,6 +5506,189 @@ const App = props => {
 }
 
 ReactDOM.render(<App />, root);
+```
+
+
+
+#### ② 方案1
+
+新建立一个组件，然后让输入的组件，以子组件的方式传入。
+
+```tsx
+import React from 'react';
+import { Row, Col } from 'antd';
+import styles from './index.less';
+
+interface MyRowProps {
+  extraEx?: React.ReactNode;
+  leftSpan?: number;
+  children?: React.ReactNode;
+}
+
+export default (props: MyRowProps) => {
+  const { extraEx, leftSpan, children } = props;
+
+  //定义一个间隔
+  let myLeftSpan = 10;
+  if (leftSpan) {
+    myLeftSpan = leftSpan;
+  }
+  return (
+    <Row>
+      <Col span={myLeftSpan}>{children}</Col>
+      <Col span={24 - myLeftSpan}>
+        <div className={styles.extraEx}>{extraEx}</div>
+      </Col>
+    </Row>
+  );
+};
+```
+
+
+
+调用方式，每个输入的组件外围都包裹一个父组件。
+
+```tsx
+          <RowLayout
+            extraEx={
+              <>
+                会在 label 旁增加一个 icon <a>悬浮后展</a>
+              </>
+            }
+          >
+            <ProFormText
+              name="company111"
+              label="公司名称"
+              placeholder="请输入名称"
+              width="m"
+              tooltip="会在 label 旁增加一个 icon，悬浮后展示配置的信息"
+              rules={[{ required: true }]}
+            />
+          </RowLayout>
+```
+
+
+
+这个方案的好处，封装简单。 坏处是代码看起来比较多。
+
+
+
+#### ③ 方案2
+
+自定义一个组件。这时候要得到`ProFormText`的props,这点很麻烦
+
+
+
+```tsx
+import React, { useImperativeHandle } from 'react';
+import { Row, Col } from 'antd';
+
+import { ProFormText } from '@ant-design/pro-form';
+import { InputProps } from 'antd/lib/input';
+import { ProFormItemProps } from '@ant-design/pro-form/lib/interface';
+import { ExtendsProps } from '@ant-design/pro-form/lib/BaseForm/createField';
+
+import styles from './index.less';
+
+//ProFormText的原始props
+type originalProps = Pick<
+  ProFormItemProps<InputProps> & ExtendsProps,
+  | 'children'
+  | 'label'
+  | 'style'
+  | 'valuePropName'
+  | 'id'
+  | 'disabled'
+  | 'placeholder'
+  | 'className'
+  | 'bordered'
+  | 'secondary'
+  | 'allowClear'
+  | 'colSize'
+  | 'params'
+  | 'ignoreFormItem'
+  | 'readonly'
+  | 'transform'
+  | 'formItemProps'
+  | 'name'
+  | 'dependencies'
+  | 'getValueFromEvent'
+  | 'normalize'
+  | 'rules'
+  | 'shouldUpdate'
+  | 'trigger'
+  | 'validateTrigger'
+  | 'validateFirst'
+  | 'getValueProps'
+  | 'messageVariables'
+  | 'initialValue'
+  | 'onReset'
+  | 'preserve'
+  | 'isListField'
+  | 'isList'
+  | 'fieldProps'
+  | 'width'
+  | 'prefixCls'
+  | 'noStyle'
+  | 'hasFeedback'
+  | 'validateStatus'
+  | 'required'
+  | 'hidden'
+  | 'tooltip'
+  | 'fieldKey'
+  | 'colon'
+  | 'htmlFor'
+  | 'labelAlign'
+  | 'labelCol'
+  | 'requiredMark'
+  | 'wrapperCol'
+  | 'help'
+  | 'extra'
+  | 'status'
+>;
+
+/**
+ * 自定义的提示信息
+ * @param extraEx 在右侧显示的提示信息
+ */
+interface MyProps extends originalProps {
+  extraEx?: React.ReactNode;
+  leftSpan?: number;
+}
+
+/**
+ * 自定义的组件
+ * @param props 传入的参数
+ * @param ref   向外暴漏的ref
+ */
+const ProFormTextEx = (props: MyProps, ref: any) => {
+  const { extraEx, leftSpan, ...proProps } = props;
+
+  //现在没有用
+  useImperativeHandle(ref, () => ({
+    readme: () => {
+      console.log('author:fanhl');
+    },
+  }));
+
+  //定义一个间隔
+  let myLeftSpan = 10;
+  if (leftSpan) {
+    myLeftSpan = leftSpan;
+  }
+  return (
+    <Row>
+      <Col span={myLeftSpan}>
+        <ProFormText {...proProps} />
+      </Col>
+      <Col span={24 - myLeftSpan}>
+        <div className={styles.extraEx}>{extraEx}</div>
+      </Col>
+    </Row>
+  );
+};
+
+export default React.forwardRef(ProFormTextEx);
 ```
 
 

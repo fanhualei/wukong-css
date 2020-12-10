@@ -7,11 +7,12 @@ import ProForm, {
   ProFormDatePicker,
   ProFormSelect,
   ProFormTextArea,
+  ProFormDigit,
   ProFormCheckbox,
   ProFormDateRangePicker,
 } from '@ant-design/pro-form';
 import Input001 from './input001';
-import { ProFormTextEx, ProFormDigitEx, ProFormTextAreaEx } from './input002';
+import { ProFormTextEx, RowLayout } from './input002';
 import { Button } from 'antd';
 
 type Foo = {
@@ -52,25 +53,42 @@ export default () => {
             //extra="会在 label 旁增加一个 icon，悬浮后展示配置的信息"
             extraEx={
               <>
-                会在 label 旁增加一个 icon <a>悬浮后展</a>
+                会在 label 旁增加一个 icon <a>悬浮后展</a>{' '}
+                这个组件是封装的比较麻烦
               </>
             }
           />
 
-          <ProFormDigitEx
-            name="order"
-            label="序号"
-            placeholder="请输入序号"
-            width="xs"
-            rules={[{ required: true }]}
-            extraEx="序号：0-255,越大越靠前。"
-          />
+          <RowLayout extraEx="详细描述当前的内容">
+            <ProFormDigit
+              name="order"
+              label="序号"
+              placeholder="请输入序号"
+              width="xs"
+              rules={[{ required: true }]}
+            />
+          </RowLayout>
 
-          <ProFormTextAreaEx
-            label="合同备注说明"
-            name="remark"
-            extraEx="详细描述当前的内容"
-          />
+          <RowLayout extraEx="详细描述当前的内容">
+            <ProFormTextArea label="合同备注说明" name="remark" />
+          </RowLayout>
+
+          <RowLayout
+            extraEx={
+              <>
+                会在 label 旁增加一个 icon <a>悬浮后展</a>
+              </>
+            }
+          >
+            <ProFormText
+              name="company111"
+              label="公司名称"
+              placeholder="请输入名称"
+              width="m"
+              tooltip="会在 label 旁增加一个 icon，悬浮后展示配置的信息"
+              rules={[{ required: true }]}
+            />
+          </RowLayout>
         </ProForm>
       </Card>
     </PageContainer>
