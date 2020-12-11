@@ -15,18 +15,6 @@ import Input001 from './input001';
 import { ProFormTextEx, RowLayout } from './input002';
 import { Button } from 'antd';
 
-type Foo = {
-  a: string;
-};
-
-type Bar = Foo & {
-  b: string;
-  c: String;
-};
-
-const w: Partial<Bar> = { b: 'www' };
-console.log(w);
-
 export default () => {
   const fancyInputRef: any = useRef();
 
@@ -87,6 +75,24 @@ export default () => {
               width="m"
               tooltip="会在 label 旁增加一个 icon，悬浮后展示配置的信息"
               rules={[{ required: true }]}
+            />
+          </RowLayout>
+
+          <RowLayout extraEx="详细描述当前的内容">
+            <ProFormCheckbox.Group
+              name="checkbox"
+              layout="horizontal"
+              label="行业分布"
+              options={[
+                '农业',
+                '制造业',
+                '互联网',
+                '工业',
+                '服务业',
+                '银行业',
+                '手工业',
+                '造纸业',
+              ]}
             />
           </RowLayout>
         </ProForm>

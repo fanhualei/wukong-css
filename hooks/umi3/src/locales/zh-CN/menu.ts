@@ -66,4 +66,5 @@ export default {
   'menu.css': '样式',
   'menu.customer': '自定义组件',
   'menu.customer.ref': '封装ant组件',
+  'menu.gotlogin': '跳转到登录',
 };

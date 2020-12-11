@@ -38,6 +38,24 @@ export default defineConfig({
         },
       ],
     },
+
+    {
+      path: '/newLayout',
+      layout: false,
+      component: '@/layouts/new',
+      exact: false,
+      routes: [
+        {
+          name: 'login',
+          path: '/newLayout',
+          component: '@/pages/newLayout',
+        },
+        {
+          component: './404',
+        },
+      ],
+    },
+
     {
       path: '/admin',
       name: 'sysadmin',
@@ -134,6 +152,13 @@ export default defineConfig({
           component: '@/pages/customer/ref',
         },
       ],
+    },
+
+    {
+      path: 'http://localhost:8000/user/login',
+      target: '_blank', // 点击新窗口打开
+      name: 'gotlogin',
+      icon: 'smile',
     },
 
     {
