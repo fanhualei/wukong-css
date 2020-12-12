@@ -42,7 +42,7 @@ export default defineConfig({
     {
       path: '/newLayout',
       layout: false,
-      component: '@/layouts/new',
+      component: '@/layouts/nested',
       exact: false,
       routes: [
         {
