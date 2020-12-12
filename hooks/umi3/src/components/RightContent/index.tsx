@@ -1,8 +1,9 @@
 import React from 'react';
-import { Tooltip, Tag, Space } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Tooltip, Tag, Space, Badge } from 'antd';
+import { QuestionCircleOutlined, BellOutlined } from '@ant-design/icons';
 import { useModel, SelectLang } from 'umi';
 import Avatar from './AvatarDropdown';
+import Notic from './Notic';
 
 import styles from './index.less';
 
@@ -29,6 +30,19 @@ const GlobalHeaderRight: React.FC<{}> = () => {
 
   return (
     <Space className={className}>
+      <Tooltip title="使用文档">
+        <span
+          className={styles.action}
+          onClick={() => {
+            window.location.href =
+              'https://pro.ant.design/docs/getting-started';
+          }}
+        >
+          <QuestionCircleOutlined />
+        </span>
+      </Tooltip>
+
+      <Notic />
       <Avatar menu={true} />
       <SelectLang className={styles.action} />
     </Space>

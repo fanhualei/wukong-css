@@ -5,7 +5,7 @@ import QueryTable from '@/pages/pro/table/queryTable';
 
 export default () => {
   return (
-    <PageContainer subTitle="ProCard例子">
+    <PageContainer subTitle="ProCard例子" title="品牌总览">
       <Card title="查询表格" style={{ marginBottom: 15 }} key="QueryTable">
         <QueryTable />
       </Card>

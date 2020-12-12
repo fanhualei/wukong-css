@@ -49,7 +49,7 @@ const Logo = (props: logoProps) => {
 
 const MainSider: React.FC<{}> = (props) => {
   return (
-    <div className={classNames('mainSiderMenu')}>
+    <div className={classNames('mainSider')}>
       <Logo src="https://gw.alipayobjects.com/zos/antfincdn/PmY%24TNNDBI/logo.svg" />
       <MenuBox text="概况" selected={true} />
       <MenuBox text="商品" />

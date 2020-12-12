@@ -9,6 +9,8 @@ import { BasicLayoutProps } from '@ant-design/pro-layout';
 import MainSider from './MainSider';
 import SubSider from './SubSider';
 import HeadderContent from './HeaderContent';
+import MyFooter from '@/components/Footer';
+import RightContent from '@/components/RightContent';
 
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import { getMatchMenu } from '@umijs/route-utils';
@@ -50,19 +52,19 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
 
   return (
     <div className={'framel'}>
-      <div className={'mainSlider'}>
-        <MainSider />
-      </div>
+      <MainSider />
       <Layout>
         <Sider style={{ backgroundColor: '#fff' }} width={130}>
           <SubSider />
         </Sider>
         <Layout>
-          <Header className={'header'}>
-            <HeadderContent />
-          </Header>
+          <HeadderContent>
+            <RightContent />
+          </HeadderContent>
           <Content>{children}</Content>
-          <Footer>Footer</Footer>
+          <Footer>
+            <MyFooter />
+          </Footer>
         </Layout>
       </Layout>
     </div>
