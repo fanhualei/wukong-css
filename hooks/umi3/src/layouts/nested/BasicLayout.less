@@ -1,11 +1,20 @@
+@import './index.less';
+
 .framel {
   display: flex;
   flex-direction: row;
   height: 100%;
 
   .mainSlider {
-    width: 64px;
-    max-width: 64px;
+    width: @menuBoxWidth;
+    max-width: @menuBoxWidth;
     background: #444444;
+  }
+
+  .header {
+    background-color: #fff;
+    border-bottom: #f0f2f5 solid 1px;
+    padding-left: 24px;
+    height: @headerHeight;
   }
 }

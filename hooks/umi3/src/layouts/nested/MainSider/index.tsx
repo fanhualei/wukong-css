@@ -47,7 +47,7 @@ const Logo = (props: logoProps) => {
   );
 };
 
-const MainSiderMenu: React.FC<{}> = (props) => {
+const MainSider: React.FC<{}> = (props) => {
   return (
     <div className={classNames('mainSiderMenu')}>
       <Logo src="https://gw.alipayobjects.com/zos/antfincdn/PmY%24TNNDBI/logo.svg" />
@@ -64,4 +64,4 @@ const MainSiderMenu: React.FC<{}> = (props) => {
   );
 };
 
-export default MainSiderMenu;
+export default MainSider;

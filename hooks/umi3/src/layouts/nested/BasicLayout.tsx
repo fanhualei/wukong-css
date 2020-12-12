@@ -6,7 +6,9 @@ const { Header, Footer, Sider, Content } = Layout;
 import classNames from 'classnames';
 //直接引用ProLayout的接口，今后紧跟Pro的规范
 import { BasicLayoutProps } from '@ant-design/pro-layout';
-import MainSilderMenu from './MainSiderMenu';
+import MainSider from './MainSider';
+import SubSider from './SubSider';
+import HeadderContent from './HeaderContent';
 
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import { getMatchMenu } from '@umijs/route-utils';
@@ -49,13 +51,17 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   return (
     <div className={'framel'}>
       <div className={'mainSlider'}>
-        <MainSilderMenu />
+        <MainSider />
       </div>
       <Layout>
-        <Sider style={{ backgroundColor: '#fff', width: 32 }}>Sider2</Sider>
+        <Sider style={{ backgroundColor: '#fff' }} width={130}>
+          <SubSider />
+        </Sider>
         <Layout>
-          <Header style={{ backgroundColor: '#fff' }}>Header</Header>
-          <Content>Content</Content>
+          <Header className={'header'}>
+            <HeadderContent />
+          </Header>
+          <Content>{children}</Content>
           <Footer>Footer</Footer>
         </Layout>
       </Layout>
