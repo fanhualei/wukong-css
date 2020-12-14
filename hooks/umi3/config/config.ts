@@ -22,6 +22,7 @@ export default defineConfig({
   },
   routes: [
     { path: '/', component: '@/pages/index', name: 'welcome', icon: 'smile' },
+    //登录相关
     {
       path: '/user',
       layout: false,
@@ -39,23 +40,42 @@ export default defineConfig({
       ],
     },
 
+    // 新的一种布局
     {
       path: '/newLayout',
       layout: false,
+      //name: 'newLayout',
       component: '@/layouts/nested',
       exact: false,
+      icon: 'smile',
       routes: [
         {
-          name: 'login',
-          path: '/newLayout',
-          component: '@/pages/newLayout',
+          name: 'first',
+          path: '/new',
+          icon: 'GroupOutlined',
+          routes: [
+            {
+              name: 'firsta',
+              path: '/newLayout/a',
+              component: '@/pages/newLayout',
+            },
+            {
+              name: 'firstb',
+              path: '/newLayout/b',
+              component: '@/pages/newLayout',
+            },
+          ],
         },
         {
-          component: './404',
+          name: 'second',
+          path: '/newLayout/c',
+          component: '@/pages/admin/role',
+          icon: 'icon-tuichu',
         },
       ],
     },
 
+    // 老的布局
     {
       path: '/admin',
       name: 'sysadmin',

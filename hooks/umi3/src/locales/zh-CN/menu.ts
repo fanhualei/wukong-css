@@ -67,4 +67,10 @@ export default {
   'menu.customer': '自定义组件',
   'menu.customer.ref': '封装ant组件',
   'menu.gotlogin': '跳转到登录',
+
+  'menu.newLayout': '新页面',
+  'menu.first': '第一页',
+  'menu.first.firsta': '第一页a',
+  'menu.first.firstb': '第一页b',
+  'menu.second': '第二页',
 };
