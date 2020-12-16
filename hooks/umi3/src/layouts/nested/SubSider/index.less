@@ -1,15 +1,24 @@
 @import '../index.less';
 
-.header {
-  height: @headerHeight;
-  line-height: @headerHeight;
-  text-align: center;
-  border-bottom: @menu-border-color solid 1px;
-  border-right: @menu-border-color solid 1px;
-}
+.subsider {
+  flex-grow: 1;
 
-.customerSelected {
-  &:after {
-    border-right: none !important;
+  .header {
+    height: @headerHeight;
+    line-height: @headerHeight;
+    text-align: center;
+    border-bottom: @menu-border-color solid 1px;
+    border-right: @menu-border-color solid 1px;
+  }
+
+  .menu {
+    padding-top: 0;
+  }
+
+  .customerSelected {
+    margin-top: 0 !important;
+    &:after {
+      border-right: none !important;
+    }
   }
 }

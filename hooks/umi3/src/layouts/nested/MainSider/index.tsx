@@ -5,6 +5,7 @@ import { isUrl, isImg } from '@ant-design/pro-utils';
 import Icon, { createFromIconfontCN } from '@ant-design/icons';
 
 import getIcon from '../getIconReactNode';
+import { history } from 'umi';
 
 import {
   HomeOutlined,
@@ -28,6 +29,7 @@ type menuBoxProps = {
   text?: string;
   iconReactNode?: React.ReactNode;
   selected?: boolean;
+  menu: MenuDataItem;
 };
 
 /**
@@ -36,10 +38,26 @@ type menuBoxProps = {
  */
 const MenuBox = (props: menuBoxProps) => {
   return (
-    <div className={classNames({ menuBoxLg: true, selected: props.selected })}>
+    <a
+      className={classNames({
+        menuBoxLg: true,
+        selected: props.selected,
+        noSelected: !props.selected,
+      })}
+      onClick={() => {
+        if (props.menu.redirect) {
+          history.push(props.menu.redirect);
+        } else {
+          const a = props.menu.children ? props.menu.children[0] : undefined;
+          if (a) {
+            history.push(a.path);
+          }
+        }
+      }}
+    >
       <div className={classNames('menuIcon')}>{props.iconReactNode}</div>
       <div className={classNames('menuText')}>{props.text}</div>
-    </div>
+    </a>
   );
 };
 
@@ -75,7 +93,6 @@ type mainSiderProps = {
 };
 
 const MainSider: React.FC<mainSiderProps> = (props) => {
-  console.log(props);
   const { menuData, matchMenuKeys } = props;
   const selectMenuKey = matchMenuKeys ? matchMenuKeys?.[0] : '';
   const formatMessage = useIntl().formatMessage;
@@ -97,21 +114,13 @@ const MainSider: React.FC<mainSiderProps> = (props) => {
         return (
           <MenuBox
             text={text}
-            key={`mainSiderMenu${index}`}
+            key={menu.key || menu.path}
+            menu={menu}
             iconReactNode={iconReactNode}
             selected={menu.path == selectMenuKey}
           />
         );
       })}
-      {/* <MenuBox text="概况" selected={true} />
-      <MenuBox text="商品" />
-      <MenuBox text="店铺" />
-      <MenuBox text="订单" />
-      <MenuBox text="客户" />
-      <MenuBox text="数据" />
-      <MenuBox text="资产" />
-      <MenuBox text="营销" />
-      <MenuBox text="设置" /> */}
     </div>
   );
 };

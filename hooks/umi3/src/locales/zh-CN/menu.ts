@@ -73,4 +73,43 @@ export default {
   'menu.first.firsta': '第一页a',
   'menu.first.firstb': '第一页b',
   'menu.second': '第二页',
+
+  'menu.shop': '店铺',
+  'menu.overview': '总览',
+  'menu.overview.dashboard': '平台一览',
+
+  'menu.goods': '商品',
+  'menu.goods.category': '分类管理',
+  'menu.goods.brand': '品牌管理',
+  'menu.goods.list': '商品总览',
+  'menu.goods.typology': '类型管理',
+  'menu.goods.specification': '规格管理',
+  'menu.goods.imageSpace': '图片空间',
+
+  'menu.store': '店铺',
+  'menu.store.list': '店铺一览',
+
+  'menu.user': '会员',
+  'menu.user.list': '会员一览',
+
+  'menu.transaction': '交易',
+  'menu.transaction.order': '实物订单',
+
+  'menu.content': '内容',
+  'menu.content.content': '内容',
+
+  'menu.operation': '运营',
+  'menu.operation.operation': '运营',
+
+  'menu.risk': '风控',
+  'menu.risk.risk': '风控',
+
+  'menu.statistics': '统计',
+  'menu.statistics.statistics': '统计',
+
+  'menu.mobile': '移动端',
+  'menu.mobile.home': '首页管理',
+
+  'menu.setting': '设置',
+  'menu.setting.baseInfo': '基本信息',
 };

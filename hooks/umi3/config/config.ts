@@ -42,35 +42,193 @@ export default defineConfig({
 
     // 新的一种布局
     {
-      path: '/newLayout',
+      path: '/shop',
       layout: false,
-      //name: 'newLayout',
       component: '@/layouts/nested',
       exact: false,
       icon: 'smile',
       routes: [
         {
-          name: 'first',
-          path: '/new',
-          icon: 'GroupOutlined',
+          name: 'overview',
+          path: '/shop/overview',
+          icon: 'HomeOutlined',
           routes: [
             {
-              name: 'firsta',
-              path: '/newLayout/a',
-              component: '@/pages/newLayout',
-            },
-            {
-              name: 'firstb',
-              path: '/newLayout/b',
+              name: 'dashboard',
+              path: '/shop/overview/dashboard',
               component: '@/pages/newLayout',
             },
           ],
         },
         {
-          name: 'second',
-          path: '/newLayout/c',
-          component: '@/pages/admin/role',
-          icon: 'icon-tuichu',
+          name: 'goods',
+          path: '/shop/goods',
+          icon: 'SketchOutlined',
+          routes: [
+            {
+              //分类管理
+              name: 'category',
+              path: '/shop/goods/category',
+              component: '@/pages/newLayout',
+            },
+            {
+              //品牌管理
+              name: 'brand',
+              path: '/shop/goods/brand',
+              component: '@/pages/newLayout',
+            },
+            {
+              //商品总览
+              name: 'list',
+              path: '/shop/goods/list',
+              component: '@/pages/newLayout',
+            },
+            {
+              //类型管理
+              name: 'typology',
+              path: '/shop/goods/typology',
+              component: '@/pages/newLayout',
+            },
+            {
+              //规格管理
+              name: 'specification',
+              path: '/shop/goods/specification',
+              component: '@/pages/newLayout',
+            },
+            {
+              //图片空间
+              name: 'imageSpace',
+              path: '/shop/goods/imageSpace',
+              component: '@/pages/newLayout',
+            },
+          ],
+        },
+
+        //店铺
+        {
+          name: 'store',
+          path: '/shop/store',
+          icon: 'ShopOutlined',
+          routes: [
+            {
+              name: 'list',
+              path: '/shop/store/list',
+              component: '@/pages/newLayout',
+            },
+          ],
+        },
+
+        //会员
+        {
+          name: 'user',
+          path: '/shop/user',
+          icon: 'UserOutlined',
+          routes: [
+            {
+              name: 'list',
+              path: '/shop/user/list',
+              component: '@/pages/newLayout',
+            },
+          ],
+        },
+
+        //交易
+        {
+          name: 'transaction',
+          path: '/shop/transaction',
+          icon: 'TransactionOutlined',
+          routes: [
+            {
+              name: 'order',
+              path: '/shop/transaction/order',
+              component: '@/pages/newLayout',
+            },
+          ],
+        },
+
+        //内容
+        {
+          name: 'content',
+          path: '/shop/content',
+          icon: 'ProfileOutlined',
+          routes: [
+            {
+              name: 'content',
+              path: '/shop/content',
+              component: '@/pages/newLayout',
+            },
+          ],
+        },
+
+        //运营
+        {
+          name: 'operation',
+          path: '/shop/operation',
+          icon: 'AccountBookOutlined',
+          routes: [
+            {
+              name: 'operation',
+              path: '/shop/operation',
+              component: '@/pages/newLayout',
+            },
+          ],
+        },
+
+        //风控
+        {
+          name: 'risk',
+          path: '/shop/risk',
+          icon: 'PropertySafetyOutlined',
+          routes: [
+            {
+              name: 'risk',
+              path: '/shop/risk',
+              component: '@/pages/newLayout',
+            },
+          ],
+        },
+
+        //统计
+        {
+          name: 'statistics',
+          path: '/shop/statistics',
+          icon: 'AreaChartOutlined',
+          routes: [
+            {
+              name: 'statistics',
+              path: '/shop/statistics',
+              component: '@/pages/newLayout',
+            },
+          ],
+        },
+
+        //移动端
+        {
+          name: 'mobile',
+          path: '/shop/mobile',
+          icon: 'MobileOutlined',
+          routes: [
+            {
+              name: 'home',
+              path: '/shop/mobile/order',
+              component: '@/pages/newLayout',
+            },
+          ],
+        },
+
+        //设置
+        {
+          name: 'setting',
+          path: '/shop/setting',
+          icon: 'SettingOutlined',
+          routes: [
+            {
+              //基本信息
+              name: 'baseInfo',
+              path: '/shop/setting/baseInfo',
+              component: '@/pages/newLayout',
+            },
+          ],
         },
       ],
     },

@@ -1,30 +1,77 @@
 import React from 'react';
 import styles from './index.less';
 import { Menu } from 'antd';
+import { MenuClickEventHandler, MenuInfo } from 'rc-menu/lib/interface';
+import { history } from 'umi';
 const { SubMenu } = Menu;
+
+//自定义的内容
+import {
+  MenuDataItem,
+  MessageDescriptor,
+  Route,
+  RouterTypes,
+  WithFalse,
+} from '../typings';
+import Item from 'antd/lib/list/Item';
+
+import { useIntl } from 'umi';
 
 const Header = (props: any) => {
   const { children } = props;
   return <div className={styles.header}>{children}</div>;
 };
 
-const SubSider: React.FC<{}> = (props) => {
+type siderProps = {
+  matchMenuKeys: string[];
+  menuData: MenuDataItem[];
+  hide?: boolean;
+  iconScriptUrl?: string;
+};
+
+const SubSider: React.FC<siderProps> = (props) => {
+  const formatMessage = useIntl().formatMessage;
+  const { matchMenuKeys, menuData } = props;
+
+  //得到一级菜单的标示
+  const parentMenuKey = matchMenuKeys[0];
+  //得到这个级别下菜单的子菜单
+  let subMenuData: MenuDataItem[] = [];
+  menuData.forEach((item) => {
+    if (item.path === parentMenuKey) {
+      subMenuData = item.children || [];
+    }
+  });
+
+  const menuClicked = (menu: MenuInfo) => {
+    //console.log(menu);
+    history.push(menu.key);
+  };
   return (
-    <div>
+    <div className={styles.subsider}>
       <Header>
         <h1>Ant Design Pro</h1>
       </Header>
-      <Menu mode="inline" selectedKeys={['2']}>
-        <Menu.Item key="1" className={styles.customerSelected}>
-          分类管理
-        </Menu.Item>
-        <Menu.Item key="2" className={styles.customerSelected}>
-          品牌总览
-        </Menu.Item>
-        <Menu.Item key="3">商品总览</Menu.Item>
-        <Menu.Item key="4">类型管理</Menu.Item>
-        <Menu.Item key="5">规格管理</Menu.Item>
-        <Menu.Item key="6">图片空间</Menu.Item>
+      <Menu
+        mode="inline"
+        selectedKeys={matchMenuKeys}
+        className={styles.menu}
+        onClick={menuClicked}
+      >
+        {subMenuData.map((menu, index) => {
+          var text = formatMessage({
+            id: menu.locale || '',
+            defaultMessage: menu.name,
+          });
+          return (
+            <Menu.Item
+              key={menu.key || menu.path}
+              className={styles.customerSelected}
+            >
+              {text}
+            </Menu.Item>
+          );
+        })}
       </Menu>
     </div>
   );

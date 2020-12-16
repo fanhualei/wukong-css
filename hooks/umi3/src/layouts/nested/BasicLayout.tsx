@@ -1,6 +1,8 @@
 import './BasicLayout.less';
 
 import React, { CSSProperties, useContext, useEffect, useState } from 'react';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
+
 import { createFromIconfontCN } from '@ant-design/icons';
 import { Layout, ConfigProvider } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
@@ -18,7 +20,6 @@ import HeadderContent from './HeaderContent';
 import MyFooter from '@/components/Footer';
 import RightContent from '@/components/RightContent';
 
-import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import { getMatchMenu } from '@umijs/route-utils';
 import getMenuData from './utils/getMenuData';
 import getLocales, { LocaleType } from './locales';
@@ -27,6 +28,9 @@ import compatibleLayout from './utils/compatibleLayout';
 import useAntdMediaQuery from 'use-media-antd-query';
 import { stringify } from 'use-json-comparison';
 import Omit from 'omit.js';
+
+import { getBreadcrumbProps } from './utils/getBreadcrumbProps';
+import { BreadcrumbProps as AntdBreadcrumbProps } from 'antd/lib/breadcrumb';
 
 import { useIntl } from 'umi';
 
@@ -63,43 +67,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const context = useContext(ConfigProvider.ConfigContext);
   const prefixCls = props.prefixCls ?? context.getPrefixCls('pro');
 
-  // console.log(context, prefixCls);
-  //console.log(props.formatMessage);
-
   const intl = useIntl();
-  const aa = intl.formatMessage({
-    id: 'menu.first',
-    defaultMessage: '你好，旅行者',
-  });
-  //console.log(aa);
-
   const formatMessage = intl.formatMessage;
-  /**
-   * 定义一个翻译多语言的函数
-   * 如果有props的formatMessage，那么就是用外部的函数。否则就用自己的。
-   */
-  // const formatMessage = ({
-  //   id,
-  //   defaultMessage,
-  //   ...restParams
-  // }: {
-  //   id: string;
-  //   defaultMessage?: string;
-  // }): string => {
-  //   if (props.formatMessage) {
-  //     console.log('locales---------------------');
-  //     return props.formatMessage({
-  //       id,
-  //       defaultMessage,
-  //       ...restParams,
-  //     });
-  //   }
 
-  //   const locales = getLocales();
-  //   console.log(locales);
-  //   return locales[id] ? locales[id] : (defaultMessage as string);
-  // };
-  ``;
   /**
    * 得到菜单信息
    */
@@ -110,9 +80,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     breadcrumbMap?: Map<string, MenuDataItem>;
     menuData?: MenuDataItem[];
   }>(() =>
-    getMenuData(route?.routes || [], menu, intl.formatMessage, menuDataRender),
+    getMenuData(route?.routes || [], menu, formatMessage, menuDataRender),
   );
 
+  //得到当前的选择的菜单
   const { breadcrumb = {}, breadcrumbMap, menuData = [] } = menuInfoData;
   const matchMenus = getMatchMenu(location.pathname || '/', menuData, true);
   const matchMenuKeys = Array.from(
@@ -130,14 +101,11 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
 
   const propsLayout = compatibleLayout(defaultPropsLayout);
 
-  // console.log(menuInfoData, matchMenus, matchMenuKeys);
-
+  //得到页面大小
   const colSize = useAntdMediaQuery();
-
   const isMobile =
     (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
 
-  //console.log(colSize);
   /**
    *  如果 menuRender 不存在，可以做一下性能优化
    *  只要 routers 没有更新就不需要重新计算
@@ -164,7 +132,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   // If it is a fix menu, calculate padding
   // don't need padding in phone mode
   const hasLeftPadding = propsLayout !== 'top' && !isMobile;
-
   const [collapsed, onCollapse] = useMergedState<boolean>(
     defaultCollapsed || false,
     {
@@ -187,21 +154,49 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     ['className', 'style'],
   );
 
+  // gen breadcrumbProps, parameter for pageHeader
+  const breadcrumbProps = getBreadcrumbProps({
+    ...defaultProps,
+    breadcrumbMap,
+  });
+
   const iconScriptUrl = '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js';
+  const [myCollapsed, setCollapsed] = React.useState(false);
 
   return (
     <div className={'framel'}>
-      <MainSider
-        matchMenuKeys={matchMenuKeys}
-        menuData={menuData}
-        iconScriptUrl={iconScriptUrl}
-      />
       <Layout>
-        <Sider style={{ backgroundColor: '#fff' }} width={130}>
-          <SubSider />
+        <Sider
+          style={
+            myCollapsed
+              ? { backgroundColor: '#fff', display: 'none' }
+              : { backgroundColor: '#fff' }
+          }
+          width={64 + 130}
+          collapsed={myCollapsed}
+        >
+          <div
+            style={{ display: 'flex', flexDirection: 'row', height: '100%' }}
+          >
+            <MainSider
+              matchMenuKeys={matchMenuKeys}
+              menuData={menuData}
+              iconScriptUrl={iconScriptUrl}
+            />
+            <SubSider
+              matchMenuKeys={matchMenuKeys}
+              menuData={menuData}
+              iconScriptUrl={iconScriptUrl}
+            />
+          </div>
         </Sider>
         <Layout>
-          <HeadderContent>
+          <HeadderContent
+            matchMenuKeys={matchMenuKeys}
+            breadcrumbMap={breadcrumbMap}
+            collapsed={myCollapsed}
+            onCollapseClick={setCollapsed}
+          >
             <RightContent />
           </HeadderContent>
           <Content>{children}</Content>

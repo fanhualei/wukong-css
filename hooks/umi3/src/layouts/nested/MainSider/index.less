@@ -3,6 +3,11 @@
 .mainSider {
   color: #cbcbcd;
   background: #444444;
+  height: 100%;
+  // overflow-y: scroll;
+  // &::-webkit-scrollbar {
+  //   width: 0px;
+  // }
 
   .logoBox {
     text-align: center;
@@ -21,17 +26,15 @@
     text-align: center;
     flex-direction: column;
     width: 100%;
-    height: 64px;
-
-    .menuText {
-      margin-top: 2px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
+    height: 55px;
+    color: #cbcbcd;
     .menuIcon {
       font-size: 17px;
-      //font-weight: 500;
+    }
+    .menuText {
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: -6px;
     }
   }
 
@@ -40,24 +43,30 @@
     align-items: center;
     flex-direction: row;
     width: 100%;
-    height: 45px;
-
-    .menuText {
-      margin-top: 2px;
-      font-size: 14px;
-      font-weight: 600;
+    height: 40px;
+    color: #cbcbcd;
+    .menuIcon {
+      font-size: 15px;
+      margin-left: 3px;
+      vertical-align: middle;
     }
 
-    .menuIcon {
+    .menuText {
       font-size: 14px;
-      font-weight: 600;
-      margin: 0 5px;
-      vertical-align: middle;
+      text-align: center;
+      margin-left: -2px;
+      width: 100%;
     }
   }
 
   .selected {
     background-color: #f8f8f8;
     color: #333333;
+  }
+
+  .noSelected {
+    &:hover {
+      color: white;
+    }
   }
 }

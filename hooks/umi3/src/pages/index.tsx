@@ -5,7 +5,8 @@ import bcImg from '../../public/home_bg.png';
 
 import { Link } from 'umi';
 
-export default () => {
+export default (props: any) => {
+  console.log(props);
   return (
     <PageContainer>
       <h1 className={styles.title}>Page index</h1>

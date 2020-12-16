@@ -2,23 +2,50 @@ import React from 'react';
 import './index.less';
 
 import classNames from 'classnames';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  HomeOutlined,
-} from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'antd';
+import { useIntl } from 'umi';
 
-const HeadderContent: React.FC<{}> = (props) => {
+//自定义的内容
+import { MenuDataItem } from '../typings';
+
+type headerProps = {
+  matchMenuKeys?: string[];
+  breadcrumbMap?: Map<string, MenuDataItem>;
+  children?: React.ReactNode;
+  collapsed: boolean;
+  onCollapseClick: (collapsed: boolean) => void;
+};
+
+const HeadderContent: React.FC<headerProps> = (props) => {
+  const { matchMenuKeys, breadcrumbMap, collapsed, onCollapseClick } = props;
+
+  const formatMessage = useIntl().formatMessage;
+
   return (
     <div className={classNames({ header: true, fixed: false })}>
-      <MenuFoldOutlined className={classNames('menuFold')} />
+      <a
+        className={classNames('menuFold')}
+        onClick={() => onCollapseClick(!collapsed)}
+      >
+        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+      </a>
+
       <div className={classNames('breadcrumb')}>
         <Breadcrumb>
-          <Breadcrumb.Item>
-            <a href="">概况</a>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>品牌总览</Breadcrumb.Item>
+          {matchMenuKeys?.map((key, index) => {
+            const menu: any = breadcrumbMap?.get(key);
+            if (menu) {
+              return (
+                <Breadcrumb.Item key={menu.path}>
+                  {formatMessage({
+                    id: menu.locale || '',
+                    defaultMessage: menu.name,
+                  })}
+                </Breadcrumb.Item>
+              );
+            }
+          })}
         </Breadcrumb>
       </div>
       <div className={classNames('left')}></div>
