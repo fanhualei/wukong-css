@@ -6,8 +6,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'antd';
 import { useIntl } from 'umi';
 
-//自定义的内容
-import { MenuDataItem } from '../typings';
+import { MenuDataItem } from '@ant-design/pro-layout/lib/typings';
 
 type headerProps = {
   matchMenuKeys?: string[];

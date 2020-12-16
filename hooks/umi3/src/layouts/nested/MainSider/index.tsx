@@ -1,29 +1,14 @@
 import React, { useEffect } from 'react';
 import './index.less';
 import classNames from 'classnames';
-import { isUrl, isImg } from '@ant-design/pro-utils';
-import Icon, { createFromIconfontCN } from '@ant-design/icons';
+import { createFromIconfontCN } from '@ant-design/icons';
 
 import getIcon from '../getIconReactNode';
 import { history } from 'umi';
 
-import {
-  HomeOutlined,
-  SettingFilled,
-  SmileOutlined,
-  SyncOutlined,
-  LoadingOutlined,
-} from '@ant-design/icons';
 import { useIntl } from 'umi';
 
-//自定义的内容
-import {
-  MenuDataItem,
-  MessageDescriptor,
-  Route,
-  RouterTypes,
-  WithFalse,
-} from '../typings';
+import { MenuDataItem } from '@ant-design/pro-layout/lib/typings';
 
 type menuBoxProps = {
   text?: string;

@@ -1,19 +1,11 @@
 import React from 'react';
 import styles from './index.less';
 import { Menu } from 'antd';
-import { MenuClickEventHandler, MenuInfo } from 'rc-menu/lib/interface';
+import { MenuInfo } from 'rc-menu/lib/interface';
 import { history } from 'umi';
-const { SubMenu } = Menu;
 
 //自定义的内容
-import {
-  MenuDataItem,
-  MessageDescriptor,
-  Route,
-  RouterTypes,
-  WithFalse,
-} from '../typings';
-import Item from 'antd/lib/list/Item';
+import { MenuDataItem } from '@ant-design/pro-layout/lib/typings';
 
 import { useIntl } from 'umi';
 

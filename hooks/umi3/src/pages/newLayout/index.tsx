@@ -12,7 +12,6 @@ export default () => {
     >
       <Card title="查询表格" style={{ marginBottom: 15 }} key="QueryTable">
         {/* <QueryTable /> */}
-        aaaa
       </Card>
     </PageContainer>
   );
