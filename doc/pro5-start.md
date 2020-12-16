@@ -13,9 +13,11 @@
   * 可编辑单元格
   * 分页页的多选(这个应用场景不多)
 * 权限
+* 从服务器得到菜单
 * layout优化
   * [有一个布局看起来不错](https://chu1204505056.gitee.io/vue-admin-beautiful-pro/#/error/403)
   * [上面的一个布局](https://github.com/ant-design/pro-components/issues/1123)
+  * [关于布局的文档](proLayout.md)
 * 异常处理
 
 
