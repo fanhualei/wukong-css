@@ -10,6 +10,7 @@ import { ResponseError, RequestOptionsInit } from 'umi-request';
 import RightContent from '@/components/RightContent';
 import defaultSettings from '../config/defaultSettings';
 import { queryCurrent } from './services/user';
+import { MenuDataItem } from '@ant-design/pro-layout';
 
 export async function getInitialState(): Promise<{
   settings?: LayoutSettings;
@@ -17,6 +18,9 @@ export async function getInitialState(): Promise<{
   token?: string;
   fetchUserInfo: () => Promise<API.CurrentUser | undefined>;
 }> {
+  console.log(
+    '------getInitialState---------------getInitialState-------------------------',
+  );
   const fetchUserInfo = async () => {
     try {
       const currentUser = await queryCurrent();
@@ -54,6 +58,13 @@ export const layout = ({
     rightContentRender: () => <RightContent />,
     footerRender: () => <Footer />,
     ...initialState?.settings,
+    menuDataRender: (menuData: MenuDataItem[]) => {
+      console.log(
+        '======menuDataRender============menuDataRender=================',
+      );
+      const aaa = menuData.reverse();
+      return aaa;
+    },
   };
 };
 

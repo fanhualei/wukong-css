@@ -34,7 +34,7 @@ const HeadderContent: React.FC<headerProps> = (props) => {
         <Breadcrumb>
           {matchMenuKeys?.map((key, index) => {
             const menu: any = breadcrumbMap?.get(key);
-            if (menu) {
+            if (menu && !menu.unaccessible) {
               return (
                 <Breadcrumb.Item key={menu.path}>
                   {formatMessage({

@@ -51,6 +51,9 @@ const SubSider: React.FC<siderProps> = (props) => {
         onClick={menuClicked}
       >
         {subMenuData.map((menu, index) => {
+          if (menu.unaccessible) {
+            return;
+          }
           var text = formatMessage({
             id: menu.locale || '',
             defaultMessage: menu.name,
@@ -64,6 +67,10 @@ const SubSider: React.FC<siderProps> = (props) => {
             </Menu.Item>
           );
         })}
+
+        <Menu.Item key="/shop/goods/brand" className={styles.customerSelected}>
+          test
+        </Menu.Item>
       </Menu>
     </div>
   );

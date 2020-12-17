@@ -75,6 +75,7 @@ export default defineConfig({
               //品牌管理
               name: 'brand',
               path: '/shop/goods/brand',
+              access: 'canDeleteFoo',
               component: '@/pages/newLayout',
             },
             {
@@ -243,11 +244,13 @@ export default defineConfig({
         {
           name: 'role',
           path: '/admin/role',
+          access: 'canDeleteFoo',
           component: '@/pages/admin/role',
         },
         {
           name: 'user',
           path: '/admin/user',
+          access: '/admin/user',
           component: 'admin/users',
         },
         {
