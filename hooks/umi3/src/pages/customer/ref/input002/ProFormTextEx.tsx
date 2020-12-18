@@ -5,6 +5,7 @@ import { ProFormText } from '@ant-design/pro-form';
 import { InputProps } from 'antd/lib/input';
 import { ProFormItemProps } from '@ant-design/pro-form/lib/interface';
 import { ExtendsProps } from '@ant-design/pro-form/lib/BaseForm/createField';
+import { FormItemProps } from 'antd/lib/form';
 
 import styles from './index.less';
 
@@ -73,6 +74,12 @@ interface MyProps extends originalProps {
   extraEx?: React.ReactNode;
   leftSpan?: number;
 }
+
+// type ProFormTextProps = FormItemProps &
+//   InputProps & {
+//     extraEx?: React.ReactNode;
+//     leftSpan?: number;
+//   };
 
 /**
  * 自定义的组件

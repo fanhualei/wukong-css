@@ -12,6 +12,20 @@ import defaultSettings from '../config/defaultSettings';
 import { queryCurrent } from './services/user';
 import { MenuDataItem } from '@ant-design/pro-layout';
 
+const fetchUserInfo = async () => {
+  try {
+    const currentUser = await queryCurrent();
+    return currentUser;
+  } catch (error) {
+    //console.log(error);
+    const { response, data } = error;
+    //console.log(response);
+    //console.log(data);
+    history.push('/user/login');
+  }
+  return undefined;
+};
+
 export async function getInitialState(): Promise<{
   settings?: LayoutSettings;
   currentUser?: API.CurrentUser;
@@ -21,19 +35,7 @@ export async function getInitialState(): Promise<{
   console.log(
     '------getInitialState---------------getInitialState-------------------------',
   );
-  const fetchUserInfo = async () => {
-    try {
-      const currentUser = await queryCurrent();
-      return currentUser;
-    } catch (error) {
-      //console.log(error);
-      const { response, data } = error;
-      //console.log(response);
-      //console.log(data);
-      history.push('/user/login');
-    }
-    return undefined;
-  };
+
   // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {
     const currentUser = await fetchUserInfo();

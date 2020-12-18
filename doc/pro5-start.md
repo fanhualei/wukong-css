@@ -19,6 +19,7 @@
   * [上面的一个布局](https://github.com/ant-design/pro-components/issues/1123)
   * [关于布局的文档](proLayout.md)
 * 异常处理
+* 登录的处理
 
 
 
@@ -5821,3 +5822,156 @@ export default React.forwardRef(ProFormTextEx);
 
 
 ## 7.3 公用函数
+
+
+
+
+
+# 8. 登录
+
+页面跳转以及第一次登录。
+
+
+
+## 8.1 登录流程
+
+
+
+### 8.1.1 初始化数据
+
+在app中有一个init事件，这个事件会在浏览器中键入新的url来触发，并且触发一次。
+
+有 `src/app.ts` 并且导出 `getInitialState` 方法时启用。详细见[官方文档](https://umijs.org/zh-CN/plugins/plugin-initial-state)
+
+#### ① 主要功能
+
+在getInitialState中执行下面的功能。
+
+如果是默认登录，那么就立即初始化数据，添加到一个集合中。
+
+如果是手工登录，那么跳转到Login页面，在Login页面中登录成功后，将数据放入集合中使用。
+
+
+
+![](imgs/pro5-login-init.png)
+
+
+
+
+
+#### ② 使用与修改
+
+使用的场景：
+
+* 所有的页面都要使用token，来进行权限验证。
+* 缓存数据，提高效率
+  * 当前登录用户的基本信息：用户名、头像以及其他信息。
+  * 当前用户的菜单权限信息，access.ts会使用到
+  * 其他程序认为要缓存的内容。
+
+
+
+修改场景：
+
+* 登录成功后，要修改token与权限等信息。
+
+```tsx
+import { useModel } from 'umi';
+export default () => {
+  const { initialState, loading, error, refresh, setInitialState } = useModel('@@initialState');
+  
+   setInitialState({
+          ...initialState,
+          currentUser,
+          token: '456789',
+  });
+};
+```
+
+
+
+
+
+###  8.1.2 Login
+
+具体步骤：
+
+* 进入登录页面
+* 输入用户名与密码，并点击登录。
+* 系统去调用服务器登录函数
+* 登录成功
+  * 返回信息
+    * 返回用户基本信息：用户名，token
+    * 返回用户所拥有的菜单权限
+    * 其他业务信息。
+  * 将这些信息保存到一个本地文件中(这里是否考虑要加密与解密)
+  * 跳转到欢迎页，如果是已有页面退出，那么就跳回已有的页面。
+* 登录失败
+  * 当前页面提示登录失败信息。
+
+
+
+### 8.1.3 layout展示
+
+使用`useModel('@@initialState')`得到系统初始化信息
+
+主要显示菜单、用户名、头像等信息。
+
+* 在access.ts中，读取初始化数据中保存的菜单权限信息。
+
+
+
+### 8.1.4 本地缓存
+
+
+
+自动登录
+
+```json
+//是否自动登录、到期时间、默认token.
+autoLogin={
+	enable:false,
+	expire:date,
+	token:'22222'
+}
+```
+
+
+
+登录后初始化数据（不缓存到本地，为了安全）
+
+```json
+//token 用户信息  权限信息
+initialState={
+    token:'22222',
+    userInfo:{},
+    access:{}
+}
+```
+
+
+
+
+
+
+
+
+
+## 8.2 安全加密
+
+
+
+
+
+
+
+
+
+# 9. 其他
+
+
+
+## 9.1 常用工具
+
+* [自动化的多语言工具](https://github.com/alibaba/kiwi)
+

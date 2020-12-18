@@ -18,7 +18,7 @@
   * [看TypeScript相关文档](https://www.runoob.com/typescript/ts-tutorial.html)
   * [ES6 教程](https://www.runoob.com/w3cnote/es6-tutorial.html)
 
-* 看Ant基础知识
+* 看Ant基础知识(7天)
 
   * [react官方文档](https://zh-hans.reactjs.org/)
   * 底层架构
@@ -29,13 +29,14 @@
     * [antDesignPro](https://pro.ant.design/index-cn)
     * [ProComponents](https://procomponents.ant.design/)
 
-* 练习：使用umi@3从头搭建一个antDesignPro
+* 练习：使用umi@3从头搭建一个antDesignPro(7天)
 
   * 新建工程
   * 搭建layout
   * 编写登录与注册页面
   * 撰写useRequest相关的例子
-
+* [在线流程图工具processon-微信登录](https://www.processon.com/)
+  
   
 
 
