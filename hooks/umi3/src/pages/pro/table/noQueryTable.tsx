@@ -118,7 +118,7 @@ export default () => {
     <ProTable
       headerTitle="普通表格"
       columns={columns}
-      //search={false}
+      // search={false}
       search={{
         labelWidth: 'auto',
         filterType: 'light',
@@ -128,7 +128,7 @@ export default () => {
       rowKey="id"
       pagination={{ pageSize: 5 }}
       request={async (params, sorter, filter) => {
-        //console.log(params, sorter, filter);
+        console.log(params, sorter, filter);
         const result = await getUserList({
           current: params.current,
           pageSize: params.pageSize,
