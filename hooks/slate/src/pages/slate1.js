@@ -1,8 +1,11 @@
 import React, { useEffect, useCallback, useMemo, useState } from "react";
-import { createEditor, Editor, Transforms } from "slate";
+import { createEditor, Editor, Transforms, Text } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 
 import "./slate.css";
+
+// https://www.yuque.com/jacob.lcs/slatejs/keotzc
+// 自定义样式
 
 export default () => {
   // Create a Slate editor object that won't change across renders.
@@ -27,9 +30,15 @@ export default () => {
     }
   }, []);
 
+  // Define a leaf rendering function that is memoized with `useCallback`.
+  const renderLeaf = useCallback((props) => {
+    return <Leaf {...props} />;
+  }, []);
+
   // Render the Slate context.
   return (
     <div className="app">
+      aaaa
       <Slate
         editor={editor}
         value={value}
@@ -37,24 +46,44 @@ export default () => {
       >
         <Editable
           renderElement={renderElement}
+          renderLeaf={renderLeaf}
           onKeyDown={(event) => {
             if (event.key === "&") {
               event.preventDefault();
               editor.insertText("and");
             }
-            if (event.key === "`" && event.ctrlKey) {
-              event.preventDefault();
-              // Determine whether any of the currently selected blocks are code blocks.
-              const [match] = Editor.nodes(editor, {
-                match: (n) => n.type === "code",
-              });
-              // Toggle the block type depending on whether there's already a match.
-              Transforms.setNodes(
-                editor,
-                { type: match ? "paragraph" : "code" },
-                { match: (n) => Editor.isBlock(editor, n) }
-              );
+
+            if (event.ctrlKey) {
+              switch (event.key) {
+                // When "`" is pressed, keep our existing code block logic.
+                case "`": {
+                  event.preventDefault();
+                  const [match] = Editor.nodes(editor, {
+                    match: (n) => n.type === "code",
+                  });
+                  Transforms.setNodes(
+                    editor,
+                    {
+                      type: match ? "paragraph" : "code",
+                    },
+                    { match: (n) => Editor.isBlock(editor, n) }
+                  );
+                  break;
+                }
+                // When "B" is pressed, bold the text in the selection.
+                case "b": {
+                  event.preventDefault();
+                  Transforms.setNodes(
+                    editor,
+                    { bold: true },
+                    { match: (n) => Text.isText(n), split: true }
+                  );
+                  break;
+                }
+              }
             }
+
+            // ----------------------
           }}
         />
       </Slate>
@@ -73,4 +102,16 @@ const CodeElement = (props) => {
 
 const DefaultElement = (props) => {
   return <p {...props.attributes}>{props.children}</p>;
+};
+
+// Define a React component to render leaves with bold text.
+const Leaf = (props) => {
+  return (
+    <span
+      {...props.attributes}
+      style={{ fontWeight: props.leaf.bold ? "bold" : "normal" }}
+    >
+      {props.children}
+    </span>
+  );
 };
