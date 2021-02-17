@@ -105,7 +105,7 @@ export default () => {
         ],
       }}
       request={async (params, sorter, filter) => {
-        console.log(filter);
+        console.log(params, sorter, filter);
         const result = await getUserList({
           current: params.current,
           pageSize: params.pageSize,

@@ -77,6 +77,11 @@ const columns: ProColumns<UserListItem>[] = [
       error: { text: '异常', status: 'Error' },
     },
     filters: true,
+    // onFilter: (value, record) => {
+    //   console.log(value, record);
+    //   return true;
+    // },
+    valueType: 'checkbox',
   },
 
   {
@@ -116,19 +121,19 @@ const toolBar = (): React.ReactNode[] => {
 export default () => {
   return (
     <ProTable
-      headerTitle="普通表格"
+      headerTitle="普通表格1"
       columns={columns}
       // search={false}
       search={{
         labelWidth: 'auto',
-        filterType: 'light',
+        //filterType: 'light',
       }}
       //toolBarRender={false}
       toolBarRender={toolBar}
       rowKey="id"
       pagination={{ pageSize: 5 }}
       request={async (params, sorter, filter) => {
-        console.log(params, sorter, filter);
+        console.log(JSON.stringify(params), sorter, filter);
         const result = await getUserList({
           current: params.current,
           pageSize: params.pageSize,
